@@ -64,10 +64,66 @@ related:
 description: |-
   A Terraform module for deploying Atlantis to an AWS ECS cluster.
 
+introduction: |-
+  This module provisions the following resources:
+
+  - ECS Atlantis web application, which includes:
+      - ECR Docker registry
+      - ALB target group, listener rule and alarms
+      - ECS container definition (using a default backend**)
+      - ECS task definition and IAM role
+      - ECS service and IAM role
+      - ECS task autoscaling
+      - ECS SNS based alarms
+      - ECS Codepipeline to build our Atlantis image on GitHub release
+      - ECS Codedeploy to deploy our ECS Atlantis web app
+  - SSH key pair for Atlantis to pull private Github repositories, which are written to SSM for reading with [chamber](https://github.com/segmentio/chamber)
+  - Route53 alias for Atlantis
+  - GitHub webhook to trigger Atlantis for a given repository
+
+  What this module does not provision:
+    - ALB
+    - ACM certificate
+    - VPC
+    - Subnets
+
+  Note that if no `github_oauth_token` is set, this module attempts to look one up from SSM. Do not commit this token to source control. We suggest creating a personal token for a bot user with the following scopes:
+    * repo:status
+    * repo_deployment
+    * public_repo
+    * repo:invite
+    * write:repo_hook
+    * read:repo_hook
+
 # How to use this project
 usage: |-
   ```
-  TODO
+  module "atlantis" {
+    source = "git::https://github.com/cloudposse/terraform-aws-ecs-atlantis.git?ref=master"
+    enabled   = "true"
+    name      = "${var.name}"
+    namespace = "${var.namespace}"
+    region    = "${var.region}"
+    stage     = "${var.stage}"
+
+    atlantis_gh_team_whitelist = "admins:*,engineering:plan"
+    atlantis_gh_user           = "atlantis_bot"
+    atlantis_repo_whitelist    = ["github.com/testing.example.co/*"]
+
+    alb_arn_suffix    = "${module.alb.alb_arn_suffix}"
+    alb_dns_name      = "${module.alb.alb_dns_name}"
+    alb_listener_arns = ["${module.alb.listener_arns}"]
+    alb_name          = "${module.alb.alb_name}"
+    alb_zone_id       = "${module.alb.alb_zone_id}"
+
+    domain_name        = "${var.domain_name}"
+    ecs_cluster_arn    = "${aws_ecs_cluster.default.arn}"
+    ecs_cluster_name   = "${aws_ecs_cluster.default.name}"
+    repo_name          = "testing.example.co"
+    repo_owner         = "example_org"
+    private_subnet_ids = ["${module.subnets.private_subnet_ids}"]
+    security_group_ids = ["${module.vpc.vpc_default_security_group_id}"]
+    vpc_id             = "${module.vpc.vpc_id}"
   }
   ```
 
