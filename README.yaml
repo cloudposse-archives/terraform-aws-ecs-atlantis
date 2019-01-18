@@ -22,7 +22,6 @@ screenshots:
     description: "Example of a Pull Request comment from running `terraform plan` using `atlantis`"
     url: "docs/example.png"
 
-
 # Badges to display
 badges:
   - name: "Build Status"
