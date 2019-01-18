@@ -40,6 +40,12 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 
 
+## Screenshots
+
+
+![demo](docs/example.png)
+*Example of a Pull Request comment from running `terraform plan` using `atlantis`*
+
 
 ## Introduction
 

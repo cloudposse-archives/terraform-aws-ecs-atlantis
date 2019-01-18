@@ -16,6 +16,13 @@ license: "APACHE2"
 # Canonical GitHub repo
 github_repo: cloudposse/terraform-aws-ecs-atlantis
 
+# Screenshots
+screenshots:
+  - name: "demo"
+    description: "Example of a Pull Request comment from running `terraform plan` using `atlantis`"
+    url: "docs/example.png"
+
+
 # Badges to display
 badges:
   - name: "Build Status"
