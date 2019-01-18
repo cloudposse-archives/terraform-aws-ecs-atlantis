@@ -213,7 +213,7 @@ resource "aws_ssm_parameter" "atlantis_iam_role_arn" {
   name        = "${format(var.chamber_format, var.chamber_service, "atlantis_iam_role_arn")}"
   overwrite   = "${var.overwrite_ssm_parameter}"
   type        = "String"
-  value       = "${module.atlantis_web_app.task_role_arn}"
+  value       = "${module.web_app.task_role_arn}"
 }
 
 resource "aws_ssm_parameter" "atlantis_log_level" {
@@ -267,7 +267,7 @@ resource "aws_security_group_rule" "egress_http" {
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 80
   protocol          = "tcp"
-  security_group_id = "${module.atlantis_web_app.service_security_group_id}"
+  security_group_id = "${module.web_app.service_security_group_id}"
   to_port           = 80
   type              = "egress"
 }
@@ -277,7 +277,7 @@ resource "aws_security_group_rule" "egress_https" {
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 443
   protocol          = "tcp"
-  security_group_id = "${module.atlantis_web_app.service_security_group_id}"
+  security_group_id = "${module.web_app.service_security_group_id}"
   to_port           = 443
   type              = "egress"
 }
@@ -287,7 +287,7 @@ resource "aws_security_group_rule" "egress_udp_dns" {
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 53
   protocol          = "udp"
-  security_group_id = "${module.atlantis_web_app.service_security_group_id}"
+  security_group_id = "${module.web_app.service_security_group_id}"
   to_port           = 53
   type              = "egress"
 }
@@ -297,14 +297,14 @@ resource "aws_security_group_rule" "egress_tcp_dns" {
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 53
   protocol          = "tcp"
-  security_group_id = "${module.atlantis_web_app.service_security_group_id}"
+  security_group_id = "${module.web_app.service_security_group_id}"
   to_port           = 53
   type              = "egress"
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
   count      = "${local.enabled ? 1 : 0}"
-  role       = "${module.atlantis_web_app.task_role_name}"
+  role       = "${module.web_app.task_role_name}"
   policy_arn = "${var.policy_arn}"
 
   lifecycle {
