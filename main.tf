@@ -32,7 +32,7 @@ locals {
 
 # Modules
 #--------------------------------------------------------------
-module "atlantis_ssh_key_pair" {
+module "ssh_key_pair" {
   source               = "git::https://github.com/cloudposse/terraform-aws-ssm-tls-ssh-key-pair.git?ref=tags/0.2.0"
   enabled              = "${local.enabled}"
   namespace            = "${var.namespace}"
@@ -53,7 +53,7 @@ module "hostname" {
   target_zone_id   = "${var.alb_zone_id}"
 }
 
-module "atlantis_webhooks" {
+module "webhooks" {
   source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.1.1"
   github_token        = "${local.github_oauth_token}"
   webhook_secret      = "${local.atlantis_gh_webhook_secret}"
@@ -64,8 +64,8 @@ module "atlantis_webhooks" {
   events              = ["${var.webhook_events}"]
 }
 
-module "atlantis_web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.11.0"
+module "web_app" {
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=fix-pipeline"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
