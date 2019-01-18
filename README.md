@@ -50,6 +50,7 @@ Under the hood, it is self-hosted `golang` application that listens for `terrafo
 
 Using Atlantis, engineers can run `terraform plan` and `terraform apply` using "chat ops" type comments on the Pull Request.
 
+### Features
 
 This module provisions the following resources:
 
@@ -68,24 +69,34 @@ This module provisions the following resources:
 - GitHub webhook to trigger Atlantis for a given repository
 
 What this module does not provision:
+  
   - ALB
   - ACM certificate
   - VPC
   - Subnets
 
-**NOTE:** if no `github_oauth_token` is set, this module attempts to look one up from SSM. 
+
+### GitHub Repo Scopes
 
 We suggest creating a personal access token for a GitHub bot user with the following scopes:
-  * `repo:status`
-  * `repo_deployment`
-  * `public_repo`
-  * `repo:invite`
-  * `write:repo_hook`
-  * `read:repo_hook`
+
+  - `repo`
+    * `repo:status`
+    * `repo_deployment`
+    * `public_repo`
+    * `repo:invite`
+  - `admin:repo_hook`
+    * `write:repo_hook`
+    * `read:repo_hook`
+
+![GitHub Repo Scopes](docs/github-repo-scopes.png)
 
 **IMPORTANT:** Do not commit this `github_oauth_token` to source control (e.g. via `terraform.tvfars`). 
 
 ## Usage
+
+
+**NOTE:** if no `github_oauth_token` is set, this module attempts to look one up from SSM. 
 
 ```
 module "atlantis" {
