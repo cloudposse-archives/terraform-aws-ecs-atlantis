@@ -7,6 +7,7 @@
 
 
 ![terraform-aws-ecs-atlantis](docs/logo.png)
+
 A Terraform module for deploying [Atlantis](https://runatlantis.io) to an AWS ECS cluster.
 
 
