@@ -6,7 +6,8 @@
 # terraform-aws-ecs-atlantis [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-ecs-atlantis.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-ecs-atlantis) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-atlantis.svg)](https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
-A Terraform module for deploying Atlantis to an AWS ECS cluster.
+![terraform-aws-ecs-atlantis](docs/logo.png)
+A Terraform module for deploying [Atlantis](https://runatlantis.io) to an AWS ECS cluster.
 
 
 ---
@@ -41,12 +42,20 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 ## Introduction
 
+
+Atlantis enables GitOps workflows so that teams can collaborate on operations using Pull Requests. 
+
+Under the hood, it is self-hosted `golang` application that listens for `terraform` Pull Request events via webhooks.
+
+Using Atlantis, engineers can run `terraform plan` and `terraform apply` using "chat ops" type comments on the Pull Request.
+
+
 This module provisions the following resources:
 
 - ECS Atlantis web application, which includes:
     - ECR Docker registry
     - ALB target group, listener rule and alarms
-    - ECS container definition (using a default backend**)
+    - ECS container definition (using a default backend)
     - ECS task definition and IAM role
     - ECS service and IAM role
     - ECS task autoscaling
@@ -63,13 +72,17 @@ What this module does not provision:
   - VPC
   - Subnets
 
-Note that if no `github_oauth_token` is set, this module attempts to look one up from SSM. Do not commit this token to source control. We suggest creating a personal token for a bot user with the following scopes:
-  * repo:status
-  * repo_deployment
-  * public_repo
-  * repo:invite
-  * write:repo_hook
-  * read:repo_hook
+**NOTE:** if no `github_oauth_token` is set, this module attempts to look one up from SSM. 
+
+We suggest creating a personal access token for a GitHub bot user with the following scopes:
+  * `repo:status`
+  * `repo_deployment`
+  * `public_repo`
+  * `repo:invite`
+  * `write:repo_hook`
+  * `read:repo_hook`
+
+**IMPORTANT:** Do not commit this `github_oauth_token` to source control (e.g. via `terraform.tvfars`). 
 
 ## Usage
 
@@ -118,7 +131,6 @@ Available targets:
   lint                                Lint terraform code
 
 ```
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -141,7 +153,7 @@ Available targets:
 | atlantis_repo_config | Path to atlantis config file | string | `atlantis.yaml` | no |
 | atlantis_repo_whitelist | Whitelist of repositories Atlantis will accept webhooks from | list | `<list>` | no |
 | atlantis_wake_word | Wake world for Atlantis | string | `atlantis` | no |
-| atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with hostname | string | `https://%s/events` | no |
+| atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with the hostname | string | `https://%s/events` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
 | autoscaling_max_capacity | Atlantis maximum tasks to run | string | `1` | no |
 | autoscaling_min_capacity | Atlantis minimum tasks to run | string | `1` | no |
@@ -202,8 +214,8 @@ Are you using this project or any of our other projects? Consider [leaving a tes
 
 Check out these related projects.
 
-- [terraform-aws-ecs-webapp](https://github.com/cloudposse/terraform-aws-ecs-web-app) - Terraform module that implements a web app on ECS and supports autoscaling, CI/CD, monitoring, ALB integration, and much more
-- [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-alb) - Terraform module to provision a standard ALB for HTTP/HTTP traffic
+- [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app) - Terraform module that implements a web app on ECS and supporting AWS resources
+- [terraform-aws-alb](https://github.com/cloudposse/terraform-aws-alb) - Terraform module to provision a standard ALB for HTTP/HTTP traffic
 - [terraform-aws-alb-ingress](https://github.com/cloudposse/terraform-aws-alb-ingress) - Terraform module to provision an HTTP style ingress rule based on hostname and path for an ALB
 - [terraform-aws-codebuild](https://github.com/cloudposse/terraform-aws-codebuild) - Terraform Module to easily leverage AWS CodeBuild for Continuous Integration
 - [terraform-aws-ecr](https://github.com/cloudposse/terraform-aws-ecr) - Terraform Module to manage Docker Container Registries on AWS ECR

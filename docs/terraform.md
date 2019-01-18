@@ -1,4 +1,3 @@
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -21,7 +20,7 @@
 | atlantis_repo_config | Path to atlantis config file | string | `atlantis.yaml` | no |
 | atlantis_repo_whitelist | Whitelist of repositories Atlantis will accept webhooks from | list | `<list>` | no |
 | atlantis_wake_word | Wake world for Atlantis | string | `atlantis` | no |
-| atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with hostname | string | `https://%s/events` | no |
+| atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with the hostname | string | `https://%s/events` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
 | autoscaling_max_capacity | Atlantis maximum tasks to run | string | `1` | no |
 | autoscaling_min_capacity | Atlantis minimum tasks to run | string | `1` | no |

@@ -8,7 +8,7 @@
 name: terraform-aws-ecs-atlantis
 
 # Logo for this project
-#logo: docs/logo.png
+logo: docs/logo.png
 
 # License of this project
 license: "APACHE2"
@@ -62,15 +62,23 @@ related:
 
 # Short description of this project
 description: |-
-  A Terraform module for deploying Atlantis to an AWS ECS cluster.
+  A Terraform module for deploying [Atlantis](https://runatlantis.io) to an AWS ECS cluster.
 
 introduction: |-
+
+  Atlantis enables GitOps workflows so that teams can collaborate on operations using Pull Requests. 
+  
+  Under the hood, it is self-hosted `golang` application that listens for `terraform` Pull Request events via webhooks.
+
+  Using Atlantis, engineers can run `terraform plan` and `terraform apply` using "chat ops" type comments on the Pull Request.
+
+
   This module provisions the following resources:
 
   - ECS Atlantis web application, which includes:
       - ECR Docker registry
       - ALB target group, listener rule and alarms
-      - ECS container definition (using a default backend**)
+      - ECS container definition (using a default backend)
       - ECS task definition and IAM role
       - ECS service and IAM role
       - ECS task autoscaling
@@ -87,13 +95,17 @@ introduction: |-
     - VPC
     - Subnets
 
-  Note that if no `github_oauth_token` is set, this module attempts to look one up from SSM. Do not commit this token to source control. We suggest creating a personal token for a bot user with the following scopes:
-    * repo:status
-    * repo_deployment
-    * public_repo
-    * repo:invite
-    * write:repo_hook
-    * read:repo_hook
+  **NOTE:** if no `github_oauth_token` is set, this module attempts to look one up from SSM. 
+
+  We suggest creating a personal access token for a GitHub bot user with the following scopes:
+    * `repo:status`
+    * `repo_deployment`
+    * `public_repo`
+    * `repo:invite`
+    * `write:repo_hook`
+    * `read:repo_hook`
+
+  **IMPORTANT:** Do not commit this `github_oauth_token` to source control (e.g. via `terraform.tvfars`). 
 
 # How to use this project
 usage: |-
@@ -139,6 +151,38 @@ usage: |-
 include:
   - "docs/targets.md"
   - "docs/terraform.md"
+
+related:
+  - name: "terraform-aws-ecs-web-app"
+    description: "Terraform module that implements a web app on ECS and supporting AWS resources"
+    url: "https://github.com/cloudposse/terraform-aws-ecs-web-app"
+  - name: "terraform-aws-alb"
+    description: "Terraform module to provision a standard ALB for HTTP/HTTP traffic"
+    url: "https://github.com/cloudposse/terraform-aws-alb"
+  - name: "terraform-aws-alb-ingress"
+    description: "Terraform module to provision an HTTP style ingress rule based on hostname and path for an ALB"
+    url: "https://github.com/cloudposse/terraform-aws-alb-ingress"
+  - name: "terraform-aws-codebuild"
+    description: "Terraform Module to easily leverage AWS CodeBuild for Continuous Integration"
+    url: "https://github.com/cloudposse/terraform-aws-codebuild"
+  - name: "terraform-aws-ecr"
+    description: "Terraform Module to manage Docker Container Registries on AWS ECR"
+    url: "https://github.com/cloudposse/terraform-aws-ecr"
+  - name: "terraform-aws-ecs-alb-service-task"
+    description: "Terraform module which implements an ECS service which exposes a web service via ALB."
+    url: "https://github.com/cloudposse/terraform-aws-ecs-alb-service-task"
+  - name: "terraform-aws-ecs-codepipeline"
+    description: "Terraform Module for CI/CD with AWS Code Pipeline and Code Build for ECS"
+    url: "https://github.com/cloudposse/terraform-aws-ecs-codepipeline"
+  - name: "terraform-aws-ecs-container-definition"
+    description: "Terraform module to generate well-formed JSON documents that are passed to the aws_ecs_task_definition Terraform resource"
+    url: "https://github.com/cloudposse/terraform-aws-ecs-container-definition"
+  - name: "terraform-aws-lb-s3-bucket"
+    description: "Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs."
+    url: "https://github.com/cloudposse/terraform-aws-lb-s3-bucket"
+
+
+
 
 # Contributors to this project
 contributors:
