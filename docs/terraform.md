@@ -5,7 +5,7 @@
 | alb_arn_suffix | The ARN suffix of the ALB | string | - | yes |
 | alb_dns_name | DNS name of ALB | string | - | yes |
 | alb_ingress_paths | Path pattern to match (a maximum of 1 can be defined), at least one of hosts or paths must be set | list | `<list>` | no |
-| alb_listener_arns | A list of ALB listener ARNs | list | `<list>` | no |
+| alb_listener_arns | A list of ALB listener ARNs | list | - | yes |
 | alb_name | The Name of the ALB | string | - | yes |
 | alb_target_group_alarms_alarm_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an ALARM state from any other state. | list | `<list>` | no |
 | alb_target_group_alarms_insufficient_data_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT_DATA state from any other state. | list | `<list>` | no |

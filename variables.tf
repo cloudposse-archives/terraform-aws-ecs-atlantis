@@ -242,7 +242,6 @@ variable "vpc_id" {
 
 variable "alb_listener_arns" {
   type        = "list"
-  default     = []
   description = "A list of ALB listener ARNs"
 }
 
