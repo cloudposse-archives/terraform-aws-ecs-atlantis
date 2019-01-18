@@ -74,6 +74,11 @@ What this module does not provision:
   - ACM certificate
   - VPC
   - Subnets
+  
+## Caveats
+
+- This project assumes that the repo being deployed defines a `Dockerfile` which runs `atlantis`. It might not work with the official version of atlantis. We use [`geodesic`](https://github.com/cloudposse/geodesic) as our docker base image.
+- This project defines parameters which are not available in the *official version* of `atlantis`. Our [fork](https://github.com/cloudposse/atlantis) implements the ability to restrict `plan` and `apply` to GitHub teams.
 
 
 ### GitHub Repo Scopes
@@ -236,6 +241,14 @@ Check out these related projects.
 - [terraform-aws-ecs-container-definition](https://github.com/cloudposse/terraform-aws-ecs-container-definition) - Terraform module to generate well-formed JSON documents that are passed to the aws_ecs_task_definition Terraform resource
 - [terraform-aws-lb-s3-bucket](https://github.com/cloudposse/terraform-aws-lb-s3-bucket) - Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs.
 
+
+
+
+## References
+
+For additional context, refer to some of these links. 
+
+- [atlantis](https://runatlantis.io) - Official home of the Atlantis project
 
 
 ## Help

@@ -97,6 +97,11 @@ introduction: |-
     - ACM certificate
     - VPC
     - Subnets
+    
+  ## Caveats
+
+  - This project assumes that the repo being deployed defines a `Dockerfile` which runs `atlantis`. It might not work with the official version of atlantis. We use [`geodesic`](https://github.com/cloudposse/geodesic) as our docker base image.
+  - This project defines parameters which are not available in the *official version* of `atlantis`. Our [fork](https://github.com/cloudposse/atlantis) implements the ability to restrict `plan` and `apply` to GitHub teams.
 
   
   ### GitHub Repo Scopes
@@ -163,6 +168,11 @@ usage: |-
 include:
   - "docs/targets.md"
   - "docs/terraform.md"
+
+references:
+  - name: "atlantis"
+    description: "Official home of the Atlantis project"
+    url: "https://runatlantis.io"
 
 related:
   - name: "terraform-aws-ecs-web-app"
