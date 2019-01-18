@@ -52,9 +52,9 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 Atlantis enables GitOps workflows so that teams can collaborate on operations using Pull Requests. 
 
-Under the hood, it is self-hosted `golang` application that listens for `terraform` Pull Request events via webhooks.
+Under the hood, it's a small self-hosted daemon (`#golang`) that listens for Pull Request webhook events from GitHub.
 
-Using Atlantis, engineers can run `terraform plan` and `terraform apply` using "chat ops" type comments on the Pull Request.
+With Atlantis, engineers can run `terraform plan` and `terraform apply` using "chat ops" type comments on the Pull Request.
 
 ### Features
 
@@ -76,6 +76,7 @@ This module provisions the following resources:
 
 What this module does not provision:
   
+  - ECS Cluster (BYOC)
   - ALB
   - ACM certificate
   - VPC
