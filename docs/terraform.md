@@ -45,6 +45,7 @@
 | name | Application or solution name (e.g. `app`) | string | `ecs` | no |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
+| parent_zone_id | The zone ID of the `domain_name`. Leave blank and it will be looked up using the `domain_name`. Define it to avoid cold-start problems. | string | `` | no |
 | policy_arn | Permission to grant to atlantis server | string | `arn:aws:iam::aws:policy/AdministratorAccess` | no |
 | private_subnet_ids | The private subnet IDs | list | `<list>` | no |
 | region | AWS Region for Atlantis deployment | string | `us-west-2` | no |

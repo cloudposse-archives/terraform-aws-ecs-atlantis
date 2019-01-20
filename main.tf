@@ -49,6 +49,7 @@ module "hostname" {
   enabled          = "${local.enabled}"
   aliases          = ["${local.hostname}"]
   parent_zone_name = "${var.domain_name}"
+  parent_zone_id   = "${var.parent_zone_id}"
   target_dns_name  = "${var.alb_dns_name}"
   target_zone_id   = "${var.alb_zone_id}"
 }
