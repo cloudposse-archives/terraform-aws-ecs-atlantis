@@ -65,5 +65,6 @@
 | Name | Description |
 |------|-------------|
 | atlantis_ssh_public_key | Atlantis SSH Public Key |
-| badge_url | the url of the build badge when badge_enabled is enabled |
+| atlantis_url | The URL endpoint for the atlantis server |
+| badge_url | The URL of the build badge when `badge_enabled` is enabled |
 
