@@ -48,7 +48,7 @@ module "hostname" {
   source           = "git::https://github.com/cloudposse/terraform-aws-route53-alias.git?ref=tags/0.2.7"
   enabled          = "${local.enabled}"
   aliases          = ["${local.hostname}"]
-  parent_zone_name = "${var.domain_name}"
+  #parent_zone_name = "${var.domain_name}"
   parent_zone_id   = "${var.parent_zone_id}"
   target_dns_name  = "${var.alb_dns_name}"
   target_zone_id   = "${var.alb_zone_id}"
