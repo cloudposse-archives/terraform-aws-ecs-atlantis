@@ -44,19 +44,6 @@ module "ssh_key_pair" {
   ssm_path_prefix      = "${var.chamber_service}"
 }
 
-resource "aws_route53_record" "default" {
-  count   = "${local.enabled ? 1 : 0}"
-  zone_id = "${var.parent_zone_id}"
-  name    = "${var.short_name}"
-  type    = "A"
-
-  alias {
-    name                   = "${var.alb_dns_name}"
-    zone_id                = "${var.alb_zone_id}"
-    evaluate_target_health = "false"
-  }
-}
-
 module "webhooks" {
   source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.1.1"
   github_token        = "${local.github_oauth_token}"
@@ -150,6 +137,20 @@ module "web_app" {
 
 # Resources
 #--------------------------------------------------------------
+
+resource "aws_route53_record" "default" {
+  count   = "${local.enabled ? 1 : 0}"
+  zone_id = "${var.parent_zone_id}"
+  name    = "${var.short_name}"
+  type    = "A"
+
+  alias {
+    name                   = "${var.alb_dns_name}"
+    zone_id                = "${var.alb_zone_id}"
+    evaluate_target_health = "false"
+  }
+}
+
 resource "random_string" "atlantis_gh_webhook_secret" {
   count   = "${local.enabled ? 1 : 0}"
   length  = "${var.webhook_secret_length}"

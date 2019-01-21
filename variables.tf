@@ -317,11 +317,6 @@ variable "region" {
   default     = "us-west-2"
 }
 
-variable "domain_name" {
-  type        = "string"
-  description = "A domain name for which the certificate should be issued"
-}
-
 variable "parent_zone_id" {
   type        = "string"
   description = "The zone ID of the `domain_name`. Leave blank and it will be looked up using the `domain_name`. Define it to avoid cold-start problems."

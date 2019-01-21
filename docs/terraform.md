@@ -33,7 +33,6 @@
 | default_backend_image | ECS default (bootstrap) image | string | `cloudposse/default-backend:0.1.2` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | desired_count | Atlantis desired number of tasks | string | `1` | no |
-| domain_name | A domain name for which the certificate should be issued | string | - | yes |
 | ecs_cluster_arn | ARN of the ECS cluster to deploy Atlantis | string | - | yes |
 | ecs_cluster_name | Name of the ECS cluster to deploy Atlantis | string | - | yes |
 | enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | string | `false` | no |
