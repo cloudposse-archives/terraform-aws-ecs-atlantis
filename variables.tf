@@ -319,7 +319,7 @@ variable "region" {
 
 variable "parent_zone_id" {
   type        = "string"
-  description = "The zone ID where the DNS record for the `short_name` will be written`."
+  description = "The zone ID where the DNS record for the `short_name` will be written"
   default     = ""
 }
 
