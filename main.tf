@@ -44,17 +44,6 @@ module "ssh_key_pair" {
   ssm_path_prefix      = "${var.chamber_service}"
 }
 
-module "hostname" {
-  source  = "git::https://github.com/cloudposse/terraform-aws-route53-alias.git?ref=avoid-data"
-  enabled = "${local.enabled}"
-  aliases = ["${local.hostname}"]
-
-  #parent_zone_name = "${var.domain_name}"
-  parent_zone_id  = "${var.parent_zone_id}"
-  target_dns_name = "${var.alb_dns_name}"
-  target_zone_id  = "${var.alb_zone_id}"
-}
-
 resource "aws_route53_record" "default" {
   count   = "${local.enabled ? 1 : 0}"
   zone_id = "${var.parent_zone_id}"
@@ -62,8 +51,9 @@ resource "aws_route53_record" "default" {
   type    = "A"
 
   alias {
-    name    = "${var.alb_dns_name}"
-    zone_id = "${var.alb_zone_id}"
+    name                   = "${var.alb_dns_name}"
+    zone_id                = "${var.alb_zone_id}"
+    evaluate_target_health = "false"
   }
 }
 
