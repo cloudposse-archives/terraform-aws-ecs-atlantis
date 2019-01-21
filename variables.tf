@@ -323,9 +323,9 @@ variable "domain_name" {
 }
 
 variable "parent_zone_id" {
-  type = "string"
+  type        = "string"
   description = "The zone ID of the `domain_name`. Leave blank and it will be looked up using the `domain_name`. Define it to avoid cold-start problems."
-  default = ""
+  default     = ""
 }
 
 variable "overwrite_ssm_parameter" {

@@ -23,7 +23,7 @@ locals {
   atlantis_gh_webhook_secret  = "${length(var.atlantis_gh_webhook_secret) > 0 ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)}"
   atlantis_url                = "${format(var.atlantis_webhook_format, local.hostname)}"
   attributes                  = "${concat(list(var.short_name), var.attributes)}"
-  default_hostname            = "${var.short_name}.${var.domain_name}"
+  default_hostname            = "${join("", aws_route53_record.default.*.fqdn)}"
   github_oauth_token          = "${length(join("", data.aws_ssm_parameter.atlantis_gh_token.*.value)) > 0 ? join("", data.aws_ssm_parameter.atlantis_gh_token.*.value) : var.github_oauth_token}"
   github_oauth_token_ssm_name = "${length(var.github_oauth_token_ssm_name) > 0 ? var.github_oauth_token_ssm_name : format(var.chamber_format, var.chamber_service, "atlantis_gh_token")}"
   hostname                    = "${length(var.hostname) > 0 ? var.hostname : local.default_hostname}"
@@ -45,13 +45,26 @@ module "ssh_key_pair" {
 }
 
 module "hostname" {
-  source           = "git::https://github.com/cloudposse/terraform-aws-route53-alias.git?ref=avoid-data"
-  enabled          = "${local.enabled}"
-  aliases          = ["${local.hostname}"]
+  source  = "git::https://github.com/cloudposse/terraform-aws-route53-alias.git?ref=avoid-data"
+  enabled = "${local.enabled}"
+  aliases = ["${local.hostname}"]
+
   #parent_zone_name = "${var.domain_name}"
-  parent_zone_id   = "${var.parent_zone_id}"
-  target_dns_name  = "${var.alb_dns_name}"
-  target_zone_id   = "${var.alb_zone_id}"
+  parent_zone_id  = "${var.parent_zone_id}"
+  target_dns_name = "${var.alb_dns_name}"
+  target_zone_id  = "${var.alb_zone_id}"
+}
+
+resource "aws_route53_record" "default" {
+  count   = "${local.enabled ? 1 : 0}"
+  zone_id = "${var.parent_zone_id}"
+  name    = "${var.short_name}"
+  type    = "A"
+
+  alias {
+    name    = "${var.alb_dns_name}"
+    zone_id = "${var.alb_zone_id}"
+  }
 }
 
 module "webhooks" {
