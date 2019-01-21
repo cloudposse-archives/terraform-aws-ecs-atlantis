@@ -317,9 +317,10 @@ variable "region" {
   default     = "us-west-2"
 }
 
-variable "domain_name" {
+variable "parent_zone_id" {
   type        = "string"
-  description = "A domain name for which the certificate should be issued"
+  description = "The zone ID where the DNS record for the `short_name` will be written"
+  default     = ""
 }
 
 variable "overwrite_ssm_parameter" {

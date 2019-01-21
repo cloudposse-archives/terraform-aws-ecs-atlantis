@@ -190,7 +190,6 @@ Available targets:
 | default_backend_image | ECS default (bootstrap) image | string | `cloudposse/default-backend:0.1.2` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | desired_count | Atlantis desired number of tasks | string | `1` | no |
-| domain_name | A domain name for which the certificate should be issued | string | - | yes |
 | ecs_cluster_arn | ARN of the ECS cluster to deploy Atlantis | string | - | yes |
 | ecs_cluster_name | Name of the ECS cluster to deploy Atlantis | string | - | yes |
 | enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | string | `false` | no |
@@ -202,6 +201,7 @@ Available targets:
 | name | Application or solution name (e.g. `app`) | string | `ecs` | no |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
+| parent_zone_id | The zone ID where the DNS record for the `short_name` will be written | string | `` | no |
 | policy_arn | Permission to grant to atlantis server | string | `arn:aws:iam::aws:policy/AdministratorAccess` | no |
 | private_subnet_ids | The private subnet IDs | list | `<list>` | no |
 | region | AWS Region for Atlantis deployment | string | `us-west-2` | no |
@@ -222,7 +222,8 @@ Available targets:
 | Name | Description |
 |------|-------------|
 | atlantis_ssh_public_key | Atlantis SSH Public Key |
-| badge_url | the url of the build badge when badge_enabled is enabled |
+| atlantis_url | The URL endpoint for the atlantis server |
+| badge_url | The URL of the build badge when `badge_enabled` is enabled |
 
 
 
