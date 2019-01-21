@@ -45,7 +45,7 @@ module "ssh_key_pair" {
 }
 
 module "hostname" {
-  source           = "git::https://github.com/cloudposse/terraform-aws-route53-alias.git?ref=tags/0.2.7"
+  source           = "git::https://github.com/cloudposse/terraform-aws-route53-alias.git?ref=avoid-data"
   enabled          = "${local.enabled}"
   aliases          = ["${local.hostname}"]
   #parent_zone_name = "${var.domain_name}"
