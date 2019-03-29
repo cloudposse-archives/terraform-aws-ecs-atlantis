@@ -56,7 +56,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.11.1"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.14.0"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
@@ -101,7 +101,7 @@ module "web_app" {
   autoscaling_scale_down_cooldown   = "300"
 
   listener_arns          = "${var.alb_listener_arns}"
-  listener_arns_count    = "2"
+  listener_arns_count    = "${var.alb_listener_arns_count}"
   aws_logs_region        = "${var.region}"
   ecs_alarms_enabled     = "${local.enabled}"
   ecs_cluster_arn        = "${var.ecs_cluster_arn}"
@@ -133,6 +133,9 @@ module "web_app" {
   alb_target_group_alarms_alarm_actions             = ["${var.alb_target_group_alarms_alarm_actions}"]
   alb_target_group_alarms_ok_actions                = ["${var.alb_target_group_alarms_ok_actions}"]
   alb_target_group_alarms_insufficient_data_actions = ["${var.alb_target_group_alarms_insufficient_data_actions}"]
+
+  authentication_enabled = "${var.authentication_enabled}"
+  authentication_action  = "${var.authentication_action}"
 }
 
 # Resources

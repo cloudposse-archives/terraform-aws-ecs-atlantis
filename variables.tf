@@ -245,6 +245,12 @@ variable "alb_listener_arns" {
   description = "A list of ALB listener ARNs"
 }
 
+variable "alb_listener_arns_count" {
+  type        = "string"
+  description = "Number of elements in the list of ALB Listener ARNs for the ECS service"
+  default     = 2
+}
+
 variable "alb_ingress_paths" {
   type        = "list"
   default     = ["/*"]
@@ -327,4 +333,16 @@ variable "overwrite_ssm_parameter" {
   type        = "string"
   default     = "true"
   description = "Whether to overwrite an existing SSM parameter"
+}
+
+variable "authentication_enabled" {
+  type        = "string"
+  default     = "false"
+  description = "Whether to enable authentication action for ALB listener to authenticate users with Cognito or OIDC"
+}
+
+variable "authentication_action" {
+  type        = "map"
+  default     = {}
+  description = "Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `authentication_enabled=true`"
 }
