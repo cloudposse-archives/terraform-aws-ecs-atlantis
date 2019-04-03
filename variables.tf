@@ -251,12 +251,6 @@ variable "alb_listener_arns_count" {
   default     = 2
 }
 
-variable "alb_ingress_paths" {
-  type        = "list"
-  default     = ["/*"]
-  description = "Path pattern to match (a maximum of 1 can be defined), at least one of hosts or paths must be set"
-}
-
 variable "alb_name" {
   type        = "string"
   description = "The Name of the ALB"
@@ -335,14 +329,44 @@ variable "overwrite_ssm_parameter" {
   description = "Whether to overwrite an existing SSM parameter"
 }
 
-variable "authentication_enabled" {
+variable "alb_ingress_listener_unauthenticated_priority" {
   type        = "string"
-  default     = "false"
-  description = "Whether to enable authentication action for ALB listener to authenticate users with Cognito or OIDC"
+  default     = "50"
+  description = "The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority"
+}
+
+variable "alb_ingress_listener_authenticated_priority" {
+  type        = "string"
+  default     = "100"
+  description = "The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority"
+}
+
+variable "alb_ingress_unauthenticated_hosts" {
+  type        = "list"
+  default     = []
+  description = "Unauthenticated hosts to match in Hosts header (a maximum of 1 can be defined)"
+}
+
+variable "alb_ingress_authenticated_hosts" {
+  type        = "list"
+  default     = []
+  description = "Authenticated hosts to match in Hosts header (a maximum of 1 can be defined)"
+}
+
+variable "alb_ingress_unauthenticated_paths" {
+  type        = "list"
+  default     = ["/events"]
+  description = "Unauthenticated path pattern to match (a maximum of 1 can be defined)"
+}
+
+variable "alb_ingress_authenticated_paths" {
+  type        = "list"
+  default     = ["/*"]
+  description = "Authenticated path pattern to match (a maximum of 1 can be defined)"
 }
 
 variable "authentication_action" {
   type        = "map"
   default     = {}
-  description = "Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `authentication_enabled=true`"
+  description = "Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `alb_ingress_authenticated_hosts` or `alb_ingress_authenticated_paths` are provided"
 }

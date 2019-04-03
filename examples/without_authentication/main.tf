@@ -96,4 +96,8 @@ module "atlantis" {
 
   # If using without authentication, we support both HTTP and HTTPS endpoints for Atlantis
   alb_listener_arns_count = 2
+
+  alb_ingress_unauthenticated_paths             = ["/*"]
+  alb_ingress_listener_unauthenticated_priority = "50"
+  alb_ingress_authenticated_paths               = []
 }

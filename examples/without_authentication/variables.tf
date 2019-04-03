@@ -1,7 +1,7 @@
 variable "namespace" {
   type        = "string"
   description = "Namespace (e.g. `cp` or `cloudposse`)"
-  default     = "ex2"
+  default     = "eg"
 }
 
 variable "stage" {
@@ -13,7 +13,7 @@ variable "stage" {
 variable "name" {
   type        = "string"
   description = "Application or solution name (e.g. `app`)"
-  default     = "ecs"
+  default     = "atlantis"
 }
 
 variable "delimiter" {

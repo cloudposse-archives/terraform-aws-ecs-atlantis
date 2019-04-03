@@ -4,7 +4,12 @@
 |------|-------------|:----:|:-----:|:-----:|
 | alb_arn_suffix | The ARN suffix of the ALB | string | - | yes |
 | alb_dns_name | DNS name of ALB | string | - | yes |
-| alb_ingress_paths | Path pattern to match (a maximum of 1 can be defined), at least one of hosts or paths must be set | list | `<list>` | no |
+| alb_ingress_authenticated_hosts | Authenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list | `<list>` | no |
+| alb_ingress_authenticated_paths | Authenticated path pattern to match (a maximum of 1 can be defined) | list | `<list>` | no |
+| alb_ingress_listener_authenticated_priority | The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority | string | `100` | no |
+| alb_ingress_listener_unauthenticated_priority | The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority | string | `50` | no |
+| alb_ingress_unauthenticated_hosts | Unauthenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list | `<list>` | no |
+| alb_ingress_unauthenticated_paths | Unauthenticated path pattern to match (a maximum of 1 can be defined) | list | `<list>` | no |
 | alb_listener_arns | A list of ALB listener ARNs | list | - | yes |
 | alb_listener_arns_count | Number of elements in the list of ALB Listener ARNs for the ECS service | string | `2` | no |
 | alb_name | The Name of the ALB | string | - | yes |
@@ -23,8 +28,7 @@
 | atlantis_wake_word | Wake world for Atlantis | string | `atlantis` | no |
 | atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with the hostname | string | `https://%s/events` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
-| authentication_action | Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `authentication_enabled=true` | map | `<map>` | no |
-| authentication_enabled | Whether to enable authentication action for ALB listener to authenticate users with Cognito or OIDC | string | `false` | no |
+| authentication_action | Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `alb_ingress_authenticated_hosts` or `alb_ingress_authenticated_paths` are provided | map | `<map>` | no |
 | autoscaling_max_capacity | Atlantis maximum tasks to run | string | `1` | no |
 | autoscaling_min_capacity | Atlantis minimum tasks to run | string | `1` | no |
 | branch | Atlantis branch of the GitHub repository, _e.g._ `master` | string | `master` | no |

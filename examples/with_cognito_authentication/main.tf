@@ -96,7 +96,13 @@ module "atlantis" {
   alb_listener_arns       = ["${module.alb.https_listener_arn}"]
   alb_listener_arns_count = 1
 
-  authentication_enabled = "true"
+  # Unauthenticated paths
+  alb_ingress_unauthenticated_paths             = ["/events"]
+  alb_ingress_listener_unauthenticated_priority = "50"
+
+  # Authenticated paths
+  alb_ingress_authenticated_paths             = ["/*"]
+  alb_ingress_listener_authenticated_priority = "100"
 
   # https://www.terraform.io/docs/providers/aws/r/lb_listener_rule.html
   authentication_action = {
