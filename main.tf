@@ -56,7 +56,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.11.1"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.15.0"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
@@ -101,7 +101,7 @@ module "web_app" {
   autoscaling_scale_down_cooldown   = "300"
 
   listener_arns          = "${var.alb_listener_arns}"
-  listener_arns_count    = "2"
+  listener_arns_count    = "${var.alb_listener_arns_count}"
   aws_logs_region        = "${var.region}"
   ecs_alarms_enabled     = "${local.enabled}"
   ecs_cluster_arn        = "${var.ecs_cluster_arn}"
@@ -109,9 +109,7 @@ module "web_app" {
   ecs_security_group_ids = ["${var.security_group_ids}"]
   ecs_private_subnet_ids = ["${var.private_subnet_ids}"]
 
-  alb_ingress_healthcheck_path  = "${var.healthcheck_path}"
-  alb_ingress_paths             = ["${var.alb_ingress_paths}"]
-  alb_ingress_listener_priority = "100"
+  alb_ingress_healthcheck_path = "${var.healthcheck_path}"
 
   github_oauth_token = "${local.github_oauth_token}"
   repo_owner         = "${var.repo_owner}"
@@ -133,6 +131,16 @@ module "web_app" {
   alb_target_group_alarms_alarm_actions             = ["${var.alb_target_group_alarms_alarm_actions}"]
   alb_target_group_alarms_ok_actions                = ["${var.alb_target_group_alarms_ok_actions}"]
   alb_target_group_alarms_insufficient_data_actions = ["${var.alb_target_group_alarms_insufficient_data_actions}"]
+
+  # Unauthenticated paths
+  alb_ingress_unauthenticated_paths             = ["${var.alb_ingress_unauthenticated_paths}"]
+  alb_ingress_listener_unauthenticated_priority = "${var.alb_ingress_listener_unauthenticated_priority}"
+
+  # Authenticated paths
+  alb_ingress_authenticated_paths             = ["${var.alb_ingress_authenticated_paths}"]
+  alb_ingress_listener_authenticated_priority = "${var.alb_ingress_listener_authenticated_priority}"
+
+  authentication_action = "${var.authentication_action}"
 }
 
 # Resources

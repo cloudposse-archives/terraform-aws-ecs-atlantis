@@ -50,7 +50,7 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 ## Introduction
 
 
-Atlantis enables GitOps workflows so that teams can collaborate on operations using Pull Requests. 
+Atlantis enables GitOps workflows so that teams can collaborate on operations using Pull Requests.
 
 Under the hood, it's a small self-hosted daemon (`#golang`) that listens for Pull Request webhook events from GitHub.
 
@@ -75,13 +75,13 @@ This module provisions the following resources:
 - GitHub webhook to trigger Atlantis for a given repository
 
 What this module does not provision:
-  
+
   - ECS Cluster (BYOC)
   - ALB
   - ACM certificate
   - VPC
   - Subnets
-  
+
 ## Caveats
 
 - This project assumes that the repo being deployed defines a `Dockerfile` which runs `atlantis`. It might not work with the official version of atlantis. We use [`geodesic`](https://github.com/cloudposse/geodesic) as our docker base image.
@@ -103,12 +103,19 @@ We suggest creating a personal access token for a GitHub bot user with the follo
 
 ![GitHub Repo Scopes](docs/github-repo-scopes.png)
 
-**IMPORTANT:** Do not commit this `github_oauth_token` to source control (e.g. via `terraform.tvfars`). 
+**IMPORTANT:** Do not commit this `github_oauth_token` to source control (e.g. via `terraform.tvfars`).
 
 ## Usage
 
 
-**NOTE:** if no `github_oauth_token` is set, this module attempts to look one up from SSM. 
+Module usage examples:
+
+- [without authentication](examples/without_authentication) - complete example without authentication
+- [with Google OIDC authentication](examples/with_google_oidc_authentication) - complete example with Google OIDC authentication
+- [with Cognito authentication](examples/with_cognito_authentication) - complete example with Cognito authentication
+
+
+**NOTE:** if no `github_oauth_token` is set, this module attempts to look one up from SSM.
 
 ```
 module "atlantis" {
@@ -161,8 +168,14 @@ Available targets:
 |------|-------------|:----:|:-----:|:-----:|
 | alb_arn_suffix | The ARN suffix of the ALB | string | - | yes |
 | alb_dns_name | DNS name of ALB | string | - | yes |
-| alb_ingress_paths | Path pattern to match (a maximum of 1 can be defined), at least one of hosts or paths must be set | list | `<list>` | no |
+| alb_ingress_authenticated_hosts | Authenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list | `<list>` | no |
+| alb_ingress_authenticated_paths | Authenticated path pattern to match (a maximum of 1 can be defined) | list | `<list>` | no |
+| alb_ingress_listener_authenticated_priority | The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority | string | `100` | no |
+| alb_ingress_listener_unauthenticated_priority | The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority | string | `50` | no |
+| alb_ingress_unauthenticated_hosts | Unauthenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list | `<list>` | no |
+| alb_ingress_unauthenticated_paths | Unauthenticated path pattern to match (a maximum of 1 can be defined) | list | `<list>` | no |
 | alb_listener_arns | A list of ALB listener ARNs | list | - | yes |
+| alb_listener_arns_count | Number of elements in the list of ALB Listener ARNs for the ECS service | string | `2` | no |
 | alb_name | The Name of the ALB | string | - | yes |
 | alb_target_group_alarms_alarm_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an ALARM state from any other state. | list | `<list>` | no |
 | alb_target_group_alarms_insufficient_data_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT_DATA state from any other state. | list | `<list>` | no |
@@ -179,6 +192,7 @@ Available targets:
 | atlantis_wake_word | Wake world for Atlantis | string | `atlantis` | no |
 | atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with the hostname | string | `https://%s/events` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
+| authentication_action | Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `alb_ingress_authenticated_hosts` or `alb_ingress_authenticated_paths` are provided | map | `<map>` | no |
 | autoscaling_max_capacity | Atlantis maximum tasks to run | string | `1` | no |
 | autoscaling_min_capacity | Atlantis minimum tasks to run | string | `1` | no |
 | branch | Atlantis branch of the GitHub repository, _e.g._ `master` | string | `master` | no |
