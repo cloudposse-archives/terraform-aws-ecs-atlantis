@@ -240,17 +240,6 @@ variable "vpc_id" {
   description = "VPC ID for the ECS Cluster"
 }
 
-variable "alb_listener_arns" {
-  type        = "list"
-  description = "A list of ALB listener ARNs"
-}
-
-variable "alb_listener_arns_count" {
-  type        = "string"
-  description = "Number of elements in the list of ALB Listener ARNs for the ECS service"
-  default     = 2
-}
-
 variable "alb_name" {
   type        = "string"
   description = "The Name of the ALB"
@@ -365,8 +354,86 @@ variable "alb_ingress_authenticated_paths" {
   description = "Authenticated path pattern to match (a maximum of 1 can be defined)"
 }
 
-variable "authentication_action" {
-  type        = "map"
-  default     = {}
-  description = "Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `alb_ingress_authenticated_hosts` or `alb_ingress_authenticated_paths` are provided"
+variable "alb_ingress_unauthenticated_listener_arns" {
+  type        = "list"
+  default     = []
+  description = "A list of unauthenticated ALB listener ARNs to attach ALB listener rules to"
+}
+
+variable "alb_ingress_unauthenticated_listener_arns_count" {
+  type        = "string"
+  default     = "0"
+  description = "The number of unauthenticated ARNs in `alb_ingress_unauthenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed"
+}
+
+variable "alb_ingress_authenticated_listener_arns" {
+  type        = "list"
+  default     = []
+  description = "A list of authenticated ALB listener ARNs to attach ALB listener rules to"
+}
+
+variable "alb_ingress_authenticated_listener_arns_count" {
+  type        = "string"
+  default     = "0"
+  description = "The number of authenticated ARNs in `alb_ingress_authenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed"
+}
+
+variable "authentication_type" {
+  type        = "string"
+  default     = "NONE"
+  description = "Authentication type. Supported values are `COGNITO`, `OIDC`, `NONE`"
+}
+
+variable "authentication_cognito_user_pool_arn" {
+  type        = "string"
+  description = "Cognito User Pool ARN"
+  default     = ""
+}
+
+variable "authentication_cognito_user_pool_client_id" {
+  type        = "string"
+  description = "Cognito User Pool Client ID"
+  default     = ""
+}
+
+variable "authentication_cognito_user_pool_domain" {
+  type        = "string"
+  description = "Cognito User Pool Domain. The User Pool Domain should be set to the domain prefix (`xxx`) instead of full domain (https://xxx.auth.us-west-2.amazoncognito.com)"
+  default     = ""
+}
+
+variable "authentication_oidc_client_id" {
+  type        = "string"
+  description = "OIDC Client ID"
+  default     = ""
+}
+
+variable "authentication_oidc_client_secret" {
+  type        = "string"
+  description = "OIDC Client Secret"
+  default     = ""
+}
+
+variable "authentication_oidc_issuer" {
+  type        = "string"
+  description = "OIDC Issuer"
+  default     = ""
+}
+
+variable "authentication_oidc_authorization_endpoint" {
+  type        = "string"
+  description = "OIDC Authorization Endpoint"
+  default     = ""
+}
+
+variable "authentication_oidc_token_endpoint" {
+  type        = "string"
+  description = "OIDC Token Endpoint"
+  default     = ""
+}
+
+variable "authentication_oidc_user_info_endpoint" {
+  type        = "string"
+  description = "OIDC User Info Endpoint"
+  default     = ""
 }

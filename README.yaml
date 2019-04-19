@@ -142,7 +142,7 @@ usage: |-
 
   ```
   module "atlantis" {
-    source = "git::https://github.com/cloudposse/terraform-aws-ecs-atlantis.git?ref=master"
+    source    = "git::https://github.com/cloudposse/terraform-aws-ecs-atlantis.git?ref=master"
     enabled   = "true"
     name      = "${var.name}"
     namespace = "${var.namespace}"
@@ -155,7 +155,6 @@ usage: |-
 
     alb_arn_suffix    = "${module.alb.alb_arn_suffix}"
     alb_dns_name      = "${module.alb.alb_dns_name}"
-    alb_listener_arns = ["${module.alb.listener_arns}"]
     alb_name          = "${module.alb.alb_name}"
     alb_zone_id       = "${module.alb.alb_zone_id}"
 
@@ -167,6 +166,12 @@ usage: |-
     private_subnet_ids = ["${module.subnets.private_subnet_ids}"]
     security_group_ids = ["${module.vpc.vpc_default_security_group_id}"]
     vpc_id             = "${module.vpc.vpc_id}"
+
+    alb_ingress_unauthenticated_listener_arns       = ["${module.alb.listener_arns}"]
+    alb_ingress_unauthenticated_listener_arns_count = 2
+    alb_ingress_unauthenticated_paths               = ["/*"]
+    alb_ingress_listener_unauthenticated_priority   = "100"
+    alb_ingress_authenticated_paths                 = []
   }
   ```
 

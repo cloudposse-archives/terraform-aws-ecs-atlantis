@@ -92,12 +92,12 @@ module "atlantis" {
   security_group_ids = ["${module.vpc.vpc_default_security_group_id}"]
   vpc_id             = "${module.vpc.vpc_id}"
 
-  alb_listener_arns = ["${module.alb.listener_arns}"]
+  # Without authentication, both HTTP and HTTPS endpoints are supported
+  alb_ingress_unauthenticated_listener_arns       = ["${module.alb.listener_arns}"]
+  alb_ingress_unauthenticated_listener_arns_count = 2
 
-  # If using without authentication, we support both HTTP and HTTPS endpoints for Atlantis
-  alb_listener_arns_count = 2
-
+  # All paths are unauthenticated
   alb_ingress_unauthenticated_paths             = ["/*"]
-  alb_ingress_listener_unauthenticated_priority = "50"
+  alb_ingress_listener_unauthenticated_priority = "100"
   alb_ingress_authenticated_paths               = []
 }
