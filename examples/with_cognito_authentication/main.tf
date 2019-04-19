@@ -92,11 +92,13 @@ module "atlantis" {
   security_group_ids = ["${module.vpc.vpc_default_security_group_id}"]
   vpc_id             = "${module.vpc.vpc_id}"
 
-  # NOTE: Cognito and OIDC authentication only supported on HTTPS endpoints; here we provide `https_listener_arn` from ALB
-  alb_listener_arns       = ["${module.alb.https_listener_arn}"]
-  alb_listener_arns_count = 1
+  alb_ingress_authenticated_listener_arns       = ["${module.alb.https_listener_arn}"]
+  alb_ingress_authenticated_listener_arns_count = 1
 
-  # Unauthenticated paths
+  alb_ingress_unauthenticated_listener_arns       = ["${module.alb.listener_arns}"]
+  alb_ingress_unauthenticated_listener_arns_count = 2
+
+  # Unauthenticated paths (with higher priority than the authenticated paths)
   alb_ingress_unauthenticated_paths             = ["/events"]
   alb_ingress_listener_unauthenticated_priority = "50"
 
@@ -104,16 +106,8 @@ module "atlantis" {
   alb_ingress_authenticated_paths             = ["/*"]
   alb_ingress_listener_authenticated_priority = "100"
 
-  # https://www.terraform.io/docs/providers/aws/r/lb_listener_rule.html
-  authentication_action = {
-    type = "authenticate-cognito"
-
-    authenticate_cognito = [{
-      user_pool_arn       = "${var.cognito_user_pool_arn}"
-      user_pool_client_id = "${var.cognito_user_pool_client_id}"
-
-      # NOTE: The User Pool Domain should be set to the domain prefix (`xxx`) instead of full domain (https://xxx.auth.us-west-2.amazoncognito.com)
-      user_pool_domain = "${var.cognito_user_pool_domain}"
-    }]
-  }
+  authentication_type                        = "COGNITO"
+  authentication_cognito_user_pool_arn       = "${var.cognito_user_pool_arn}"
+  authentication_cognito_user_pool_client_id = "${var.cognito_user_pool_client_id}"
+  authentication_cognito_user_pool_domain    = "${var.cognito_user_pool_domain}"
 }

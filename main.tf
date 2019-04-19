@@ -56,7 +56,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.15.0"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.17.0"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
@@ -100,8 +100,6 @@ module "web_app" {
   autoscaling_scale_down_adjustment = "-1"
   autoscaling_scale_down_cooldown   = "300"
 
-  listener_arns          = "${var.alb_listener_arns}"
-  listener_arns_count    = "${var.alb_listener_arns_count}"
   aws_logs_region        = "${var.region}"
   ecs_alarms_enabled     = "${local.enabled}"
   ecs_cluster_arn        = "${var.ecs_cluster_arn}"
@@ -132,15 +130,29 @@ module "web_app" {
   alb_target_group_alarms_ok_actions                = ["${var.alb_target_group_alarms_ok_actions}"]
   alb_target_group_alarms_insufficient_data_actions = ["${var.alb_target_group_alarms_insufficient_data_actions}"]
 
-  # Unauthenticated paths
-  alb_ingress_unauthenticated_paths             = ["${var.alb_ingress_unauthenticated_paths}"]
+  alb_ingress_authenticated_paths   = ["${var.alb_ingress_authenticated_paths}"]
+  alb_ingress_unauthenticated_paths = ["${var.alb_ingress_unauthenticated_paths}"]
+  alb_ingress_authenticated_hosts   = ["${var.alb_ingress_authenticated_hosts}"]
+  alb_ingress_unauthenticated_hosts = ["${var.alb_ingress_unauthenticated_hosts}"]
+
+  alb_ingress_listener_authenticated_priority   = "${var.alb_ingress_listener_authenticated_priority}"
   alb_ingress_listener_unauthenticated_priority = "${var.alb_ingress_listener_unauthenticated_priority}"
 
-  # Authenticated paths
-  alb_ingress_authenticated_paths             = ["${var.alb_ingress_authenticated_paths}"]
-  alb_ingress_listener_authenticated_priority = "${var.alb_ingress_listener_authenticated_priority}"
+  alb_ingress_unauthenticated_listener_arns       = "${var.alb_ingress_unauthenticated_listener_arns}"
+  alb_ingress_unauthenticated_listener_arns_count = "${var.alb_ingress_unauthenticated_listener_arns_count}"
+  alb_ingress_authenticated_listener_arns         = "${var.alb_ingress_authenticated_listener_arns}"
+  alb_ingress_authenticated_listener_arns_count   = "${var.alb_ingress_authenticated_listener_arns_count}"
 
-  authentication_action = "${var.authentication_action}"
+  authentication_type                        = "${var.authentication_type}"
+  authentication_cognito_user_pool_arn       = "${var.authentication_cognito_user_pool_arn}"
+  authentication_cognito_user_pool_client_id = "${var.authentication_cognito_user_pool_client_id}"
+  authentication_cognito_user_pool_domain    = "${var.authentication_cognito_user_pool_domain}"
+  authentication_oidc_client_id              = "${var.authentication_oidc_client_id}"
+  authentication_oidc_client_secret          = "${var.authentication_oidc_client_secret}"
+  authentication_oidc_issuer                 = "${var.authentication_oidc_issuer}"
+  authentication_oidc_authorization_endpoint = "${var.authentication_oidc_authorization_endpoint}"
+  authentication_oidc_token_endpoint         = "${var.authentication_oidc_token_endpoint}"
+  authentication_oidc_user_info_endpoint     = "${var.authentication_oidc_user_info_endpoint}"
 }
 
 # Resources
