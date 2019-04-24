@@ -1,0 +1,16 @@
+module "autoscaling" {
+  enabled               = "${var.autoscaling_enabled}"
+  source                = "git::https://github.com/cloudposse/terraform-aws-ecs-cloudwatch-autoscaling.git?ref=tags/0.1.0"
+  name                  = "${var.name}"
+  namespace             = "${var.namespace}"
+  stage                 = "${var.stage}"
+  attributes            = "${var.attributes}"
+  service_name          = "${module.ecs_alb_service_task.service_name}"
+  cluster_name          = "${var.ecs_cluster_name}"
+  min_capacity          = "${var.autoscaling_min_capacity}"
+  max_capacity          = "${var.autoscaling_max_capacity}"
+  scale_down_adjustment = "${var.autoscaling_scale_down_adjustment}"
+  scale_down_cooldown   = "${var.autoscaling_scale_down_cooldown}"
+  scale_up_adjustment   = "${var.autoscaling_scale_up_adjustment}"
+  scale_up_cooldown     = "${var.autoscaling_scale_up_cooldown}"
+}
