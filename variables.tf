@@ -32,6 +32,11 @@ variable "tags" {
   description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
 
+variable "availability_zones" {
+  type        = "list"
+  description = "List of Availability Zones to provision the resources in"
+}
+
 variable "default_backend_image" {
   type        = "string"
   default     = "cloudposse/default-backend:0.1.2"
