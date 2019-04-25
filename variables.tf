@@ -315,8 +315,8 @@ variable "health_check_matcher" {
 
 variable "health_check_interval" {
   type        = "string"
-  default     = "15"
-  description = "The duration in seconds in between health checks"
+  default     = "10"
+  description = "The duration in seconds in between health checks. Supported values are `10` and `30` seconds"
 }
 
 variable "alb_ingress_listener_authenticated_priority" {
