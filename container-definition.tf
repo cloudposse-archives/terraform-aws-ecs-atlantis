@@ -10,7 +10,7 @@ module "container_definition" {
   port_mappings                = "${var.port_mappings}"
 
   log_options = {
-    "awslogs-region"        = "${var.aws_logs_region}"
+    "awslogs-region"        = "${var.region}"
     "awslogs-group"         = "${aws_cloudwatch_log_group.app.name}"
     "awslogs-stream-prefix" = "${var.name}"
   }

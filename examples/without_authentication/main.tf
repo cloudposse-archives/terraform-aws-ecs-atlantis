@@ -63,8 +63,7 @@ module "atlantis" {
   stage     = "${var.stage}"
   name      = "${var.name}"
 
-  region          = "${var.region}"
-  aws_logs_region = "${var.region}"
+  region = "${var.region}"
 
   atlantis_gh_team_whitelist = "${var.atlantis_gh_team_whitelist}"
   atlantis_gh_user           = "${var.atlantis_gh_user}"

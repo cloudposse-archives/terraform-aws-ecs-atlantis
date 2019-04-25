@@ -61,7 +61,6 @@
 | autoscaling_scale_down_cooldown | Period (in seconds) to wait between scale down events | string | `300` | no |
 | autoscaling_scale_up_adjustment | Scaling adjustment to make during scale up event | string | `1` | no |
 | autoscaling_scale_up_cooldown | Period (in seconds) to wait between scale up events | string | `60` | no |
-| aws_logs_region | The region for the AWS Cloudwatch Logs group | string | - | yes |
 | badge_enabled | Generates a publicly-accessible URL for the projects build badge. Available as badge_url attribute when enabled | string | `false` | no |
 | branch | Atlantis branch of the GitHub repository, _e.g._ `master` | string | `master` | no |
 | build_image | Docker image for build environment, _e.g._ `aws/codebuild/docker:docker:17.09.0` | string | `aws/codebuild/docker:17.09.0` | no |

@@ -606,11 +606,6 @@ variable "alb_ingress_healthcheck_path" {
   default     = "/"
 }
 
-variable "aws_logs_region" {
-  type        = "string"
-  description = "The region for the AWS Cloudwatch Logs group"
-}
-
 variable "ecs_alarms_enabled" {
   type        = "string"
   description = "A boolean to enable/disable CloudWatch Alarms for ECS Service metrics"
