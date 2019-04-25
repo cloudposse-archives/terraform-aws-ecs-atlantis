@@ -284,7 +284,7 @@ Available targets:
 | github_webhook_events | A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/) | list | `<list>` | no |
 | health_check_grace_period_seconds | Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 7200. Only valid for services configured to use load balancers | string | `0` | no |
 | health_check_healthy_threshold | The number of consecutive health checks successes required before healthy | string | `2` | no |
-| health_check_interval | The duration in seconds in between health checks. Supported values are `10` and `30` seconds | string | `10` | no |
+| health_check_interval | The duration in seconds in between health checks | string | `15` | no |
 | health_check_matcher | The HTTP response codes to indicate a healthy check | string | `200-399` | no |
 | health_check_timeout | The amount of time to wait in seconds before failing a health check request | string | `10` | no |
 | health_check_unhealthy_threshold | The number of consecutive health check failures required before unhealthy | string | `2` | no |
