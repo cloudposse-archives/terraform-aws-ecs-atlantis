@@ -24,9 +24,9 @@ locals {
       type = "authenticate-cognito"
 
       authenticate_cognito = [{
-        user_pool_arn       = "${var.authentication_cognito_user_pool_arn}"
-        user_pool_client_id = "${var.authentication_cognito_user_pool_client_id}"
-        user_pool_domain    = "${var.authentication_cognito_user_pool_domain}"
+        user_pool_arn       = "${local.authentication_cognito_user_pool_arn}"
+        user_pool_client_id = "${local.authentication_cognito_user_pool_client_id}"
+        user_pool_domain    = "${local.authentication_cognito_user_pool_domain}"
       }]
     }
 
@@ -34,8 +34,8 @@ locals {
       type = "authenticate-oidc"
 
       authenticate_oidc = [{
-        client_id              = "${var.authentication_oidc_client_id}"
-        client_secret          = "${var.authentication_oidc_client_secret}"
+        client_id              = "${local.authentication_oidc_client_id}"
+        client_secret          = "${local.authentication_oidc_client_secret}"
         issuer                 = "${var.authentication_oidc_issuer}"
         authorization_endpoint = "${var.authentication_oidc_authorization_endpoint}"
         token_endpoint         = "${var.authentication_oidc_token_endpoint}"

@@ -5,27 +5,27 @@ data "aws_kms_key" "chamber_kms_key" {
 
 data "aws_ssm_parameter" "atlantis_cognito_user_pool_arn" {
   count = "${local.enabled && var.authentication_type == "COGNITO" && length(var.authentication_cognito_user_pool_arn) == 0 ? 1 : 0}"
-  name  = "${local.atlantis_cognito_user_pool_arn_ssm_name}"
+  name  = "${local.authentication_cognito_user_pool_arn_ssm_name}"
 }
 
 data "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
   count = "${local.enabled && var.authentication_type == "COGNITO" && length(var.authentication_cognito_user_pool_client_id) == 0 ? 1 : 0}"
-  name  = "${local.atlantis_cognito_user_pool_client_id_ssm_name}"
+  name  = "${local.authentication_cognito_user_pool_client_id_ssm_name}"
 }
 
 data "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
   count = "${local.enabled && var.authentication_type == "COGNITO" && length(var.authentication_cognito_user_pool_domain) == 0 ? 1 : 0}"
-  name  = "${local.atlantis_cognito_user_pool_domain_ssm_name}"
+  name  = "${local.authentication_cognito_user_pool_domain_ssm_name}"
 }
 
 data "aws_ssm_parameter" "atlantis_oidc_client_id" {
   count = "${local.enabled && var.authentication_type == "OIDC" && length(var.authentication_oidc_client_id) == 0 ? 1 : 0}"
-  name  = "${local.atlantis_oidc_client_id_ssm_name}"
+  name  = "${local.authentication_oidc_client_id_ssm_name}"
 }
 
 data "aws_ssm_parameter" "atlantis_oidc_client_secret" {
   count = "${local.enabled && var.authentication_type == "OIDC" && length(var.authentication_oidc_client_secret) == 0 ? 1 : 0}"
-  name  = "${local.atlantis_oidc_client_secret_ssm_name}"
+  name  = "${local.authentication_oidc_client_secret_ssm_name}"
 }
 
 resource "aws_ssm_parameter" "atlantis_port" {
@@ -144,8 +144,8 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_arn" {
   type        = "SecureString"
   description = "Atlantis Cognito User Pool ARN"
   key_id      = "${local.kms_key_id}"
-  name        = "${local.atlantis_cognito_user_pool_arn_ssm_name}"
-  value       = "${local.atlantis_cognito_user_pool_arn}"
+  name        = "${local.authentication_cognito_user_pool_arn_ssm_name}"
+  value       = "${local.authentication_cognito_user_pool_arn}"
 }
 
 resource "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
@@ -154,8 +154,8 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
   type        = "SecureString"
   description = "Atlantis Cognito User Pool Client ID"
   key_id      = "${local.kms_key_id}"
-  name        = "${local.atlantis_cognito_user_pool_client_id_ssm_name}"
-  value       = "${local.atlantis_cognito_user_pool_client_id}"
+  name        = "${local.authentication_cognito_user_pool_client_id_ssm_name}"
+  value       = "${local.authentication_cognito_user_pool_client_id}"
 }
 
 resource "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
@@ -164,8 +164,8 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
   type        = "SecureString"
   description = "Atlantis Cognito User Pool Domain"
   key_id      = "${local.kms_key_id}"
-  name        = "${local.atlantis_cognito_user_pool_domain_ssm_name}"
-  value       = "${local.atlantis_cognito_user_pool_domain}"
+  name        = "${local.authentication_cognito_user_pool_domain_ssm_name}"
+  value       = "${local.authentication_cognito_user_pool_domain}"
 }
 
 resource "aws_ssm_parameter" "atlantis_oidc_client_id" {
@@ -174,8 +174,8 @@ resource "aws_ssm_parameter" "atlantis_oidc_client_id" {
   type        = "SecureString"
   description = "Atlantis OIDC Client ID"
   key_id      = "${local.kms_key_id}"
-  name        = "${local.atlantis_oidc_client_id_ssm_name}"
-  value       = "${local.atlantis_oidc_client_id}"
+  name        = "${local.authentication_oidc_client_id_ssm_name}"
+  value       = "${local.authentication_oidc_client_id}"
 }
 
 resource "aws_ssm_parameter" "atlantis_oidc_client_secret" {
@@ -184,6 +184,6 @@ resource "aws_ssm_parameter" "atlantis_oidc_client_secret" {
   type        = "SecureString"
   description = "Atlantis OIDC Client Secret"
   key_id      = "${local.kms_key_id}"
-  name        = "${local.atlantis_oidc_client_secret_ssm_name}"
-  value       = "${local.atlantis_oidc_client_secret}"
+  name        = "${local.authentication_oidc_client_secret_ssm_name}"
+  value       = "${local.authentication_oidc_client_secret}"
 }

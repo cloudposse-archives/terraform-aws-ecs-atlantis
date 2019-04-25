@@ -5,7 +5,7 @@ module "ecs_codepipeline" {
   namespace             = "${var.namespace}"
   stage                 = "${var.stage}"
   attributes            = "${var.attributes}"
-  github_oauth_token    = "${var.github_oauth_token}"
+  github_oauth_token    = "${local.github_oauth_token}"
   github_webhook_events = "${var.github_webhook_events}"
   repo_owner            = "${var.repo_owner}"
   repo_name             = "${var.repo_name}"
