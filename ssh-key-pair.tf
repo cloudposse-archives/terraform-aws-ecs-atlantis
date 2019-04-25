@@ -1,6 +1,6 @@
 module "ssh_key_pair" {
   source               = "git::https://github.com/cloudposse/terraform-aws-ssm-tls-ssh-key-pair.git?ref=tags/0.2.0"
-  enabled              = "${local.enabled}"
+  enabled              = "${var.enabled}"
   namespace            = "${var.namespace}"
   stage                = "${var.stage}"
   name                 = "${var.name}"

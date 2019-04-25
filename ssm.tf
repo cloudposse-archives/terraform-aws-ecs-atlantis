@@ -1,3 +1,8 @@
+data "aws_kms_key" "chamber_kms_key" {
+  count  = "${local.enabled && length(var.kms_key_id) == 0 ? 1 : 0}"
+  key_id = "${local.kms_key_id}"
+}
+
 resource "aws_ssm_parameter" "atlantis_port" {
   count       = "${local.enabled ? 1 : 0}"
   description = "Atlantis server port"

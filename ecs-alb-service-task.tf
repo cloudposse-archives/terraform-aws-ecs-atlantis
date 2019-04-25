@@ -4,7 +4,7 @@ module "ecs_alb_service_task" {
   namespace                         = "${var.namespace}"
   stage                             = "${var.stage}"
   attributes                        = "${var.attributes}"
-  alb_target_group_arn              = "${module.alb_ingress.target_group_arn}"
+  alb_target_group_arn              = "${data.aws_lb_target_group.default.arn}"
   container_definition_json         = "${module.container_definition.json}"
   container_name                    = "${module.default_label.id}"
   desired_count                     = "${var.desired_count}"

@@ -32,20 +32,9 @@ variable "tags" {
   description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
 
-variable "availability_zones" {
-  type        = "list"
-  description = "List of Availability Zones to provision the resources in"
-}
-
-variable "default_backend_image" {
-  type        = "string"
-  default     = "cloudposse/default-backend:0.1.2"
-  description = "ECS default (bootstrap) image"
-}
-
 variable "github_oauth_token" {
   type        = "string"
-  description = "GitHub Oauth token. If not provided the token is looked up from SSM."
+  description = "GitHub Oauth token. If not provided the token is looked up from SSM"
   default     = ""
 }
 
@@ -92,12 +81,6 @@ variable "atlantis_repo_whitelist" {
   type        = "list"
   description = "Whitelist of repositories Atlantis will accept webhooks from"
   default     = []
-}
-
-variable "healthcheck_path" {
-  type        = "string"
-  description = "Healthcheck path"
-  default     = "/healthz"
 }
 
 variable "chamber_format" {
@@ -243,6 +226,7 @@ variable "ssh_public_key_name" {
 variable "vpc_id" {
   type        = "string"
   description = "VPC ID for the ECS Cluster"
+  default     = ""
 }
 
 variable "alb_name" {
@@ -297,12 +281,6 @@ variable "security_group_ids" {
   type        = "list"
   default     = []
   description = "Additional Security Group IDs to allow into ECS Service."
-}
-
-variable "private_subnet_ids" {
-  type        = "list"
-  default     = []
-  description = "The private subnet IDs"
 }
 
 variable "region" {
@@ -520,12 +498,6 @@ variable "port_mappings" {
   }]
 }
 
-variable "host_port" {
-  type        = "string"
-  description = "The port number to bind container_port to on the host"
-  default     = ""
-}
-
 variable "launch_type" {
   type        = "string"
   description = "The ECS launch type (valid options: FARGATE or EC2)"
@@ -554,12 +526,6 @@ variable "health_check_grace_period_seconds" {
   type        = "string"
   description = "Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 7200. Only valid for services configured to use load balancers"
   default     = "0"
-}
-
-variable "alb_target_group_arn" {
-  type        = "string"
-  description = "Pass target group down to module"
-  default     = ""
 }
 
 variable "alb_target_group_alarms_enabled" {
@@ -841,4 +807,10 @@ variable "webhook_filter_json_path" {
 variable "webhook_filter_match_equals" {
   description = "The value to match on (e.g. refs/heads/{Branch})"
   default     = "refs/heads/{Branch}"
+}
+
+variable "target_group_arn" {
+  type        = "string"
+  default     = ""
+  description = "ALB target group ARN. If this is an empty string, a new one will be generated"
 }

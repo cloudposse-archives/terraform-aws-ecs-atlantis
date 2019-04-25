@@ -10,8 +10,8 @@ module "alb_target_group_alarms" {
   insufficient_data_actions      = ["${var.alb_target_group_alarms_insufficient_data_actions}"]
   alb_name                       = "${var.alb_name}"
   alb_arn_suffix                 = "${var.alb_arn_suffix}"
-  target_group_name              = "${module.alb_ingress.target_group_name}"
-  target_group_arn_suffix        = "${module.alb_ingress.target_group_arn_suffix}"
+  target_group_name              = "${data.aws_lb_target_group.default.arn}"
+  target_group_arn_suffix        = "${data.aws_lb_target_group.default.arn_suffix}"
   target_3xx_count_threshold     = "${var.alb_target_group_alarms_3xx_threshold}"
   target_4xx_count_threshold     = "${var.alb_target_group_alarms_4xx_threshold}"
   target_5xx_count_threshold     = "${var.alb_target_group_alarms_5xx_threshold}"

@@ -200,7 +200,6 @@ Available targets:
 | alb_target_group_alarms_ok_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an OK state from any other state. | list | `<list>` | no |
 | alb_target_group_alarms_period | The period (in seconds) to analyze for ALB CloudWatch Alarms | string | `300` | no |
 | alb_target_group_alarms_response_time_threshold | The maximum ALB Target Group response time | string | `0.5` | no |
-| alb_target_group_arn | Pass target group down to module | string | `` | no |
 | alb_zone_id | The ID of the zone in which ALB is provisioned | string | - | yes |
 | atlantis_allow_repo_config | Allow Atlantis to use atlantis.yaml | string | `true` | no |
 | atlantis_gh_team_whitelist | Atlantis GitHub team whitelist | string | `` | no |
@@ -245,7 +244,6 @@ Available targets:
 | container_memory | Atlantis memory per task | string | `512` | no |
 | container_memory_reservation | The amount of RAM (Soft Limit) to allow container to use in MB. This value must be less than container_memory if set | string | `` | no |
 | container_port | The port number on the container bound to assigned host_port | string | `80` | no |
-| default_backend_image | ECS default (bootstrap) image | string | `cloudposse/default-backend:0.1.2` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | deregistration_delay | The amount of time to wait in seconds while deregistering target | string | `15` | no |
 | desired_count | Atlantis desired number of tasks | string | `1` | no |
@@ -276,7 +274,7 @@ Available targets:
 | ecs_security_group_ids | Additional Security Group IDs to allow into ECS Service | list | `<list>` | no |
 | enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | string | `false` | no |
 | environment | The environment variables for the task definition. This is a list of maps | list | `<list>` | no |
-| github_oauth_token | GitHub Oauth token. If not provided the token is looked up from SSM. | string | `` | no |
+| github_oauth_token | GitHub Oauth token. If not provided the token is looked up from SSM | string | `` | no |
 | github_oauth_token_ssm_name | SSM param name to lookup GitHub OAuth token if not provided | string | `` | no |
 | github_webhook_events | A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/) | list | `<list>` | no |
 | health_check_grace_period_seconds | Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 7200. Only valid for services configured to use load balancers | string | `0` | no |
@@ -286,8 +284,6 @@ Available targets:
 | health_check_timeout | The amount of time to wait in seconds before failing a health check request | string | `10` | no |
 | health_check_unhealthy_threshold | The number of consecutive health check failures required before unhealthy | string | `2` | no |
 | healthcheck | A map containing command (string), interval (duration in seconds), retries (1-10, number of times to retry before marking container unhealthy, and startPeriod (0-300, optional grace period to wait, in seconds, before failed healthchecks count toward retries) | map | `<map>` | no |
-| healthcheck_path | Healthcheck path | string | `/healthz` | no |
-| host_port | The port number to bind container_port to on the host | string | `` | no |
 | hostname | Atlantis URL | string | `` | no |
 | kms_key_id | KMS key ID used to encrypt SSM SecureString parameters | string | `` | no |
 | launch_type | The ECS launch type (valid options: FARGATE or EC2) | string | `FARGATE` | no |
@@ -298,7 +294,6 @@ Available targets:
 | policy_arn | Permission to grant to atlantis server | string | `arn:aws:iam::aws:policy/AdministratorAccess` | no |
 | poll_source_changes | Periodically check the location of your source content and run the pipeline if changes are detected | string | `false` | no |
 | port_mappings | The port mappings to configure for the container. This is a list of maps. Each map should contain "containerPort", "hostPort", and "protocol", where "protocol" is one of "tcp" or "udp". If using containers in a task with the awsvpc or host network mode, the hostPort can either be left blank or set to the same value as the containerPort | list | `<list>` | no |
-| private_subnet_ids | The private subnet IDs | list | `<list>` | no |
 | protocol | The protocol used for the port mapping. Options: `tcp` or `udp` | string | `tcp` | no |
 | region | AWS Region for Atlantis deployment | string | `us-west-2` | no |
 | repo_name | GitHub repository name of the atlantis to be built and deployed to ECS. | string | - | yes |
@@ -309,8 +304,9 @@ Available targets:
 | ssh_public_key_name | Atlantis SSH public key name | string | `atlantis_ssh_public_key` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
 | tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
+| target_group_arn | ALB target group ARN. If this is an empty string, a new one will be generated | string | `` | no |
 | target_type | Target type | string | `ip` | no |
-| vpc_id | VPC ID for the ECS Cluster | string | - | yes |
+| vpc_id | VPC ID for the ECS Cluster | string | `` | no |
 | webhook_authentication | The type of authentication to use. One of IP, GITHUB_HMAC, or UNAUTHENTICATED | string | `GITHUB_HMAC` | no |
 | webhook_enabled | Set to false to prevent the module from creating any webhook resources | string | `true` | no |
 | webhook_events | A list of events which should trigger the webhook. | list | `<list>` | no |

@@ -40,6 +40,12 @@ variable "region" {
   default     = "us-west-2"
 }
 
+variable "availability_zones" {
+  type        = "list"
+  description = "List of availability zones to provision the resources in"
+  default     = ["us-west-2a", "us-west-2b"]
+}
+
 variable "certificate_arn" {
   type        = "string"
   description = "SSL certificate ARN for ALB HTTPS endpoints"
