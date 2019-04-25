@@ -542,8 +542,8 @@ variable "environment" {
 
 variable "protocol" {
   type        = "string"
-  description = "The protocol used for the port mapping. Options: `tcp` or `udp`"
-  default     = "tcp"
+  description = "The protocol used for the port mapping. Options: `TCP`, `HTTP`, `HTTPS`, `TLS`"
+  default     = "TCP"
 }
 
 variable "healthcheck" {

@@ -298,7 +298,7 @@ Available targets:
 | policy_arn | Permission to grant to atlantis server | string | `arn:aws:iam::aws:policy/AdministratorAccess` | no |
 | poll_source_changes | Periodically check the location of your source content and run the pipeline if changes are detected | string | `false` | no |
 | port_mappings | The port mappings to configure for the container. This is a list of maps. Each map should contain "containerPort", "hostPort", and "protocol", where "protocol" is one of "tcp" or "udp". If using containers in a task with the awsvpc or host network mode, the hostPort can either be left blank or set to the same value as the containerPort | list | `<list>` | no |
-| protocol | The protocol used for the port mapping. Options: `tcp` or `udp` | string | `tcp` | no |
+| protocol | The protocol used for the port mapping. Options: `TCP`, `HTTP`, `HTTPS`, `TLS` | string | `TCP` | no |
 | region | AWS Region for Atlantis deployment | string | `us-west-2` | no |
 | repo_name | GitHub repository name of the atlantis to be built and deployed to ECS. | string | - | yes |
 | repo_owner | GitHub organization containing the Atlantis repository | string | - | yes |
