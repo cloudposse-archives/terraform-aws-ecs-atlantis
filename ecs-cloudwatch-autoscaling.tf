@@ -1,5 +1,5 @@
 module "autoscaling" {
-  enabled               = "${var.autoscaling_enabled}"
+  enabled               = "${local.enabled && var.autoscaling_enabled == "true" ? "true" : "false"}"
   source                = "git::https://github.com/cloudposse/terraform-aws-ecs-cloudwatch-autoscaling.git?ref=tags/0.1.0"
   name                  = "${var.name}"
   namespace             = "${var.namespace}"

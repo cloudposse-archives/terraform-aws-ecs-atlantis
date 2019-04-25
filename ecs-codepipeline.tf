@@ -1,6 +1,6 @@
 module "ecs_codepipeline" {
-  enabled               = "${var.codepipeline_enabled}"
   source                = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.6.1"
+  enabled               = "${local.enabled && var.codepipeline_enabled == "true" ? "true" : "false"}"
   name                  = "${var.name}"
   namespace             = "${var.namespace}"
   stage                 = "${var.stage}"

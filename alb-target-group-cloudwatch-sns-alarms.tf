@@ -1,5 +1,5 @@
 module "alb_target_group_alarms" {
-  enabled                        = "${var.alb_target_group_alarms_enabled}"
+  enabled                        = "${local.enabled && var.alb_target_group_alarms_enabled == "true" ? "true" : "false"}"
   source                         = "git::https://github.com/cloudposse/terraform-aws-alb-target-group-cloudwatch-sns-alarms.git?ref=tags/0.5.0"
   name                           = "${var.name}"
   namespace                      = "${var.namespace}"

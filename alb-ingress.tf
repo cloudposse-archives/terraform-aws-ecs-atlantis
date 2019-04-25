@@ -1,5 +1,5 @@
 locals {
-  target_group_enabled = "${var.target_group_arn == "" ? "true" : "false"}"
+  target_group_enabled = "${local.enabled && var.target_group_arn == "" ? "true" : "false"}"
   target_group_arn     = "${local.target_group_enabled == "true" ? aws_lb_target_group.default.arn : var.target_group_arn}"
 }
 
@@ -7,7 +7,7 @@ data "aws_lb_target_group" "default" {
   arn = "${local.target_group_arn}"
 }
 
-module "default_label" {
+module "lb_target_group_label" {
   enabled    = "${local.target_group_enabled}"
   source     = "git::https://github.com/cloudposse/terraform-terraform-label.git?ref=tags/0.2.1"
   attributes = "${var.attributes}"
@@ -53,7 +53,7 @@ locals {
 
 resource "aws_lb_target_group" "default" {
   count       = "${local.target_group_enabled == "true" ? 1 : 0}"
-  name        = "${module.default_label.id}"
+  name        = "${module.lb_target_group_label.id}"
   port        = "${var.container_port}"
   protocol    = "${var.protocol}"
   vpc_id      = "${var.vpc_id}"

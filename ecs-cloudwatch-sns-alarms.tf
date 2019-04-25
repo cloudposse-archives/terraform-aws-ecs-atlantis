@@ -1,12 +1,13 @@
 module "ecs_alarms" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-cloudwatch-sns-alarms.git?ref=tags/0.4.0"
+  source  = "git::https://github.com/cloudposse/terraform-aws-ecs-cloudwatch-sns-alarms.git?ref=tags/0.4.0"
+  enabled = "${local.enabled && var.ecs_alarms_enabled == "true" ? "true" : "false"}"
+
   name       = "${var.name}"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   attributes = "${var.attributes}"
   tags       = "${var.tags}"
 
-  enabled      = "${var.ecs_alarms_enabled}"
   cluster_name = "${var.ecs_cluster_name}"
   service_name = "${module.ecs_alb_service_task.service_name}"
 
