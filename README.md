@@ -185,6 +185,7 @@ Available targets:
 | alb_ingress_healthcheck_path | The path of the healthcheck which the ALB checks | string | `/` | no |
 | alb_ingress_listener_authenticated_priority | The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority | string | `100` | no |
 | alb_ingress_listener_unauthenticated_priority | The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority | string | `50` | no |
+| alb_ingress_protocol | The protocol for generated ALB target group (if `target_group_arn` not set) | string | `HTTP` | no |
 | alb_ingress_unauthenticated_hosts | Unauthenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list | `<list>` | no |
 | alb_ingress_unauthenticated_listener_arns | A list of unauthenticated ALB listener ARNs to attach ALB listener rules to | list | `<list>` | no |
 | alb_ingress_unauthenticated_listener_arns_count | The number of unauthenticated ARNs in `alb_ingress_unauthenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed | string | `0` | no |
@@ -283,7 +284,7 @@ Available targets:
 | github_webhook_events | A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/) | list | `<list>` | no |
 | health_check_grace_period_seconds | Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 7200. Only valid for services configured to use load balancers | string | `0` | no |
 | health_check_healthy_threshold | The number of consecutive health checks successes required before healthy | string | `2` | no |
-| health_check_interval | The duration in seconds in between health checks | string | `15` | no |
+| health_check_interval | The duration in seconds in between health checks. Supported values are `10` and `30` seconds | string | `10` | no |
 | health_check_matcher | The HTTP response codes to indicate a healthy check | string | `200-399` | no |
 | health_check_timeout | The amount of time to wait in seconds before failing a health check request | string | `10` | no |
 | health_check_unhealthy_threshold | The number of consecutive health check failures required before unhealthy | string | `2` | no |
@@ -298,7 +299,6 @@ Available targets:
 | policy_arn | Permission to grant to atlantis server | string | `arn:aws:iam::aws:policy/AdministratorAccess` | no |
 | poll_source_changes | Periodically check the location of your source content and run the pipeline if changes are detected | string | `false` | no |
 | port_mappings | The port mappings to configure for the container. This is a list of maps. Each map should contain "containerPort", "hostPort", and "protocol", where "protocol" is one of "tcp" or "udp". If using containers in a task with the awsvpc or host network mode, the hostPort can either be left blank or set to the same value as the containerPort | list | `<list>` | no |
-| protocol | The protocol used for the port mapping. Options: `TCP`, `HTTP`, `HTTPS`, `TLS` | string | `TCP` | no |
 | region | AWS Region for Atlantis deployment | string | `us-west-2` | no |
 | repo_name | GitHub repository name of the atlantis to be built and deployed to ECS. | string | - | yes |
 | repo_owner | GitHub organization containing the Atlantis repository | string | - | yes |
