@@ -63,7 +63,6 @@ resource "aws_lb_target_group" "default" {
 
   health_check {
     path                = "${var.alb_ingress_healthcheck_path}"
-    timeout             = "${var.health_check_timeout}"
     healthy_threshold   = "${var.health_check_healthy_threshold}"
     unhealthy_threshold = "${var.health_check_unhealthy_threshold}"
     interval            = "${var.health_check_interval}"
