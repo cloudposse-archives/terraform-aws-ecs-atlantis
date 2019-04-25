@@ -415,9 +415,21 @@ variable "authentication_cognito_user_pool_arn" {
   default     = ""
 }
 
+variable "authentication_cognito_user_pool_arn_ssm_name" {
+  type        = "string"
+  description = "SSM param name to lookup `authentication_cognito_user_pool_arn` if not provided"
+  default     = ""
+}
+
 variable "authentication_cognito_user_pool_client_id" {
   type        = "string"
   description = "Cognito User Pool Client ID"
+  default     = ""
+}
+
+variable "authentication_cognito_user_pool_client_id_ssm_name" {
+  type        = "string"
+  description = "SSM param name to lookup `authentication_cognito_user_pool_client_id` if not provided"
   default     = ""
 }
 
@@ -433,39 +445,27 @@ variable "authentication_cognito_user_pool_domain_ssm_name" {
   default     = ""
 }
 
-variable "authentication_cognito_user_pool_arn_ssm_name" {
-  type        = "string"
-  description = "SSM param name to lookup `atlantis_cognito_user_pool_arn` if not provided"
-  default     = ""
-}
-
-variable "authentication_cognito_user_pool_client_id_ssm_name" {
-  type        = "string"
-  description = "SSM param name to lookup `atlantis_cognito_user_pool_client_id` if not provided"
-  default     = ""
-}
-
-variable "authentication_oidc_client_id_ssm_name" {
-  type        = "string"
-  description = "SSM param name to lookup `atlantis_oidc_client_id` if not provided"
-  default     = ""
-}
-
-variable "authentication_oidc_client_secret_ssm_name" {
-  type        = "string"
-  description = "SSM param name to lookup `atlantis_oidc_client_secret` if not provided"
-  default     = ""
-}
-
 variable "authentication_oidc_client_id" {
   type        = "string"
   description = "OIDC Client ID"
   default     = ""
 }
 
+variable "authentication_oidc_client_id_ssm_name" {
+  type        = "string"
+  description = "SSM param name to lookup `authentication_oidc_client_id` if not provided"
+  default     = ""
+}
+
 variable "authentication_oidc_client_secret" {
   type        = "string"
   description = "OIDC Client Secret"
+  default     = ""
+}
+
+variable "authentication_oidc_client_secret_ssm_name" {
+  type        = "string"
+  description = "SSM param name to lookup `authentication_oidc_client_secret` if not provided"
   default     = ""
 }
 

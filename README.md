@@ -214,16 +214,16 @@ Available targets:
 | atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with the hostname | string | `https://%s/events` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
 | authentication_cognito_user_pool_arn | Cognito User Pool ARN | string | `` | no |
-| authentication_cognito_user_pool_arn_ssm_name | SSM param name to lookup `atlantis_cognito_user_pool_arn` if not provided | string | `` | no |
+| authentication_cognito_user_pool_arn_ssm_name | SSM param name to lookup `authentication_cognito_user_pool_arn` if not provided | string | `` | no |
 | authentication_cognito_user_pool_client_id | Cognito User Pool Client ID | string | `` | no |
-| authentication_cognito_user_pool_client_id_ssm_name | SSM param name to lookup `atlantis_cognito_user_pool_client_id` if not provided | string | `` | no |
+| authentication_cognito_user_pool_client_id_ssm_name | SSM param name to lookup `authentication_cognito_user_pool_client_id` if not provided | string | `` | no |
 | authentication_cognito_user_pool_domain | Cognito User Pool Domain. The User Pool Domain should be set to the domain prefix (`xxx`) instead of full domain (https://xxx.auth.us-west-2.amazoncognito.com) | string | `` | no |
 | authentication_cognito_user_pool_domain_ssm_name | SSM param name to lookup `authentication_cognito_user_pool_domain` if not provided | string | `` | no |
 | authentication_oidc_authorization_endpoint | OIDC Authorization Endpoint | string | `` | no |
 | authentication_oidc_client_id | OIDC Client ID | string | `` | no |
-| authentication_oidc_client_id_ssm_name | SSM param name to lookup `atlantis_oidc_client_id` if not provided | string | `` | no |
+| authentication_oidc_client_id_ssm_name | SSM param name to lookup `authentication_oidc_client_id` if not provided | string | `` | no |
 | authentication_oidc_client_secret | OIDC Client Secret | string | `` | no |
-| authentication_oidc_client_secret_ssm_name | SSM param name to lookup `atlantis_oidc_client_secret` if not provided | string | `` | no |
+| authentication_oidc_client_secret_ssm_name | SSM param name to lookup `authentication_oidc_client_secret` if not provided | string | `` | no |
 | authentication_oidc_issuer | OIDC Issuer | string | `` | no |
 | authentication_oidc_token_endpoint | OIDC Token Endpoint | string | `` | no |
 | authentication_oidc_user_info_endpoint | OIDC User Info Endpoint | string | `` | no |
