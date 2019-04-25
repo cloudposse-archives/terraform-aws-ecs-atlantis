@@ -540,10 +540,10 @@ variable "environment" {
   default     = []
 }
 
-variable "protocol" {
+variable "alb_ingress_protocol" {
   type        = "string"
-  description = "The protocol used for the port mapping. Options: `TCP`, `HTTP`, `HTTPS`, `TLS`"
-  default     = "TCP"
+  default     = "HTTP"
+  description = "The protocol for generated ALB target group (if `target_group_arn` not set)"
 }
 
 variable "healthcheck" {

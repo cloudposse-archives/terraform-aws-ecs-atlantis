@@ -55,7 +55,7 @@ resource "aws_lb_target_group" "default" {
   count       = "${local.target_group_enabled == "true" ? 1 : 0}"
   name        = "${module.lb_target_group_label.id}"
   port        = "${var.container_port}"
-  protocol    = "${var.protocol}"
+  protocol    = "${var.alb_ingress_protocol}"
   vpc_id      = "${var.vpc_id}"
   target_type = "${var.target_type}"
 
@@ -63,6 +63,7 @@ resource "aws_lb_target_group" "default" {
 
   health_check {
     path                = "${var.alb_ingress_healthcheck_path}"
+    timeout             = "${var.health_check_timeout}"
     healthy_threshold   = "${var.health_check_healthy_threshold}"
     unhealthy_threshold = "${var.health_check_unhealthy_threshold}"
     interval            = "${var.health_check_interval}"
