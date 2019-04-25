@@ -93,13 +93,24 @@ resource "aws_lb_listener_rule" "unauthenticated_paths" {
   }
 }
 
-resource "aws_lb_listener_rule" "authenticated_paths" {
-  count        = "${length(var.alb_ingress_authenticated_paths) > 0 && length(var.alb_ingress_authenticated_hosts) == 0 ? var.alb_ingress_authenticated_listener_arns_count : 0}"
+resource "aws_lb_listener_rule" "authenticated_paths_oidc" {
+  count        = "${var.authentication_type == "OIDC" && length(var.alb_ingress_authenticated_paths) > 0 && length(var.alb_ingress_authenticated_hosts) == 0 ? var.alb_ingress_authenticated_listener_arns_count : 0}"
   listener_arn = "${var.alb_ingress_authenticated_listener_arns[count.index]}"
   priority     = "${var.alb_ingress_listener_authenticated_priority + count.index}"
 
   action = [
-    "${local.authentication_action}",
+    {
+      type = "authenticate-oidc"
+
+      authenticate_oidc {
+        client_id              = "${local.authentication_oidc_client_id}"
+        client_secret          = "${local.authentication_oidc_client_secret}"
+        issuer                 = "${var.authentication_oidc_issuer}"
+        authorization_endpoint = "${var.authentication_oidc_authorization_endpoint}"
+        token_endpoint         = "${var.authentication_oidc_token_endpoint}"
+        user_info_endpoint     = "${var.authentication_oidc_user_info_endpoint}"
+      }
+    },
     {
       type             = "forward"
       target_group_arn = "${local.target_group_arn}"
