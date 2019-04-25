@@ -3,6 +3,31 @@ data "aws_kms_key" "chamber_kms_key" {
   key_id = "${local.kms_key_id}"
 }
 
+data "aws_ssm_parameter" "atlantis_cognito_user_pool_arn" {
+  count = "${var.authentication_type == "COGNITO" && length(var.authentication_cognito_user_pool_arn) == 0 ? 1 : 0}"
+  name  = "${local.atlantis_cognito_user_pool_arn_ssm_name}"
+}
+
+data "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
+  count = "${var.authentication_type == "COGNITO" && length(var.authentication_cognito_user_pool_client_id) == 0 ? 1 : 0}"
+  name  = "${local.atlantis_cognito_user_pool_client_id_ssm_name}"
+}
+
+data "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
+  count = "${var.authentication_type == "COGNITO" && length(var.authentication_cognito_user_pool_domain) == 0 ? 1 : 0}"
+  name  = "${local.atlantis_cognito_user_pool_domain_ssm_name}"
+}
+
+data "aws_ssm_parameter" "atlantis_oidc_client_id" {
+  count = "${var.authentication_type == "OIDC" && length(var.authentication_oidc_client_id) == 0 ? 1 : 0}"
+  name  = "${local.atlantis_oidc_client_id_ssm_name}"
+}
+
+data "aws_ssm_parameter" "atlantis_oidc_client_secret" {
+  count = "${var.authentication_type == "OIDC" && length(var.authentication_oidc_client_secret) == 0 ? 1 : 0}"
+  name  = "${local.atlantis_oidc_client_secret_ssm_name}"
+}
+
 resource "aws_ssm_parameter" "atlantis_port" {
   count       = "${local.enabled ? 1 : 0}"
   description = "Atlantis server port"
@@ -111,4 +136,54 @@ resource "aws_ssm_parameter" "atlantis_gh_token" {
   overwrite   = "${var.overwrite_ssm_parameter}"
   type        = "SecureString"
   value       = "${local.github_oauth_token}"
+}
+
+resource "aws_ssm_parameter" "atlantis_cognito_user_pool_arn" {
+  count       = "${var.authentication_type == "COGNITO" ? 1 : 0}"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+  type        = "SecureString"
+  description = "Atlantis Cognito User Pool ARN"
+  key_id      = "${local.kms_key_id}"
+  name        = "${local.atlantis_cognito_user_pool_arn_ssm_name}"
+  value       = "${local.atlantis_cognito_user_pool_arn}"
+}
+
+resource "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
+  count       = "${var.authentication_type == "COGNITO" ? 1 : 0}"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+  type        = "SecureString"
+  description = "Atlantis Cognito User Pool Client ID"
+  key_id      = "${local.kms_key_id}"
+  name        = "${local.atlantis_cognito_user_pool_client_id_ssm_name}"
+  value       = "${local.atlantis_cognito_user_pool_client_id}"
+}
+
+resource "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
+  count       = "${var.authentication_type == "COGNITO" ? 1 : 0}"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+  type        = "SecureString"
+  description = "Atlantis Cognito User Pool Domain"
+  key_id      = "${local.kms_key_id}"
+  name        = "${local.atlantis_cognito_user_pool_domain_ssm_name}"
+  value       = "${local.atlantis_cognito_user_pool_domain}"
+}
+
+resource "aws_ssm_parameter" "atlantis_oidc_client_id" {
+  count       = "${var.authentication_type == "OIDC" ? 1 : 0}"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+  type        = "SecureString"
+  description = "Atlantis OIDC Client ID"
+  key_id      = "${local.kms_key_id}"
+  name        = "${local.atlantis_oidc_client_id_ssm_name}"
+  value       = "${local.atlantis_oidc_client_id}"
+}
+
+resource "aws_ssm_parameter" "atlantis_oidc_client_secret" {
+  count       = "${var.authentication_type == "OIDC" ? 1 : 0}"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+  type        = "SecureString"
+  description = "Atlantis OIDC Client Secret"
+  key_id      = "${local.kms_key_id}"
+  name        = "${local.atlantis_oidc_client_secret_ssm_name}"
+  value       = "${local.atlantis_oidc_client_secret}"
 }
