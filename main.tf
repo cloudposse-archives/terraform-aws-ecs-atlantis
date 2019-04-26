@@ -7,12 +7,12 @@ terraform {
 # Data
 #--------------------------------------------------------------
 data "aws_ssm_parameter" "atlantis_gh_token" {
-  count = "${local.enabled && length(var.github_oauth_token) > 0 ? 0 : 1}"
+  count = "${local.enabled && length(var.github_oauth_token) == 0 ? 1 : 0}"
   name  = "${local.github_oauth_token_ssm_name}"
 }
 
 data "aws_kms_key" "chamber_kms_key" {
-  count  = "${local.enabled && length(var.kms_key_id) > 0 ? 0 : 1}"
+  count  = "${local.enabled && length(var.kms_key_id) == 0 ? 1 : 0}"
   key_id = "${local.kms_key_id}"
 }
 
@@ -56,7 +56,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.17.0"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.18.0"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"

@@ -213,7 +213,7 @@ Available targets:
 | authentication_oidc_issuer | OIDC Issuer | string | `` | no |
 | authentication_oidc_token_endpoint | OIDC Token Endpoint | string | `` | no |
 | authentication_oidc_user_info_endpoint | OIDC User Info Endpoint | string | `` | no |
-| authentication_type | Authentication type. Supported values are `COGNITO`, `OIDC`, `NONE` | string | `NONE` | no |
+| authentication_type | Authentication type. Supported values are `COGNITO` and `OIDC` | string | `` | no |
 | autoscaling_max_capacity | Atlantis maximum tasks to run | string | `1` | no |
 | autoscaling_min_capacity | Atlantis minimum tasks to run | string | `1` | no |
 | branch | Atlantis branch of the GitHub repository, _e.g._ `master` | string | `master` | no |
