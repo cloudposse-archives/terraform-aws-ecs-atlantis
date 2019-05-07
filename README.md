@@ -193,13 +193,12 @@ Available targets:
 | alb_target_group_alarms_insufficient_data_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT_DATA state from any other state. | list | `<list>` | no |
 | alb_target_group_alarms_ok_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an OK state from any other state. | list | `<list>` | no |
 | alb_zone_id | The ID of the zone in which ALB is provisioned | string | - | yes |
-| atlantis_allow_repo_config | Allow Atlantis to use atlantis.yaml | string | `true` | no |
 | atlantis_gh_team_whitelist | Atlantis GitHub team whitelist | string | `` | no |
 | atlantis_gh_user | Atlantis GitHub user | string | - | yes |
 | atlantis_gh_webhook_secret | Atlantis GitHub webhook secret | string | `` | no |
 | atlantis_log_level | Atlantis log level | string | `info` | no |
 | atlantis_port | Atlantis container port | string | `4141` | no |
-| atlantis_repo_config | Path to atlantis config file | string | `atlantis.yaml` | no |
+| atlantis_repo_config | Path to atlantis server-side repo config file (https://www.runatlantis.io/docs/server-side-repo-config.html) | string | `atlantis-repo-config.yaml` | no |
 | atlantis_repo_whitelist | Whitelist of repositories Atlantis will accept webhooks from | list | `<list>` | no |
 | atlantis_wake_word | Wake world for Atlantis | string | `atlantis` | no |
 | atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with the hostname | string | `https://%s/events` | no |

@@ -79,8 +79,8 @@ variable "repo_owner" {
 
 variable "atlantis_repo_config" {
   type        = "string"
-  description = "Path to atlantis config file"
-  default     = "atlantis.yaml"
+  description = "Path to atlantis server-side repo config file (https://www.runatlantis.io/docs/server-side-repo-config.html)"
+  default     = "atlantis-repo-config.yaml"
 }
 
 variable "atlantis_repo_whitelist" {
@@ -120,12 +120,6 @@ variable "hostname" {
   type        = "string"
   description = "Atlantis URL"
   default     = ""
-}
-
-variable "atlantis_allow_repo_config" {
-  type        = "string"
-  description = "Allow Atlantis to use atlantis.yaml"
-  default     = "true"
 }
 
 variable "atlantis_gh_user" {
