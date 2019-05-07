@@ -195,15 +195,6 @@ resource "aws_ssm_parameter" "atlantis_atlantis_url" {
   value       = "${local.atlantis_url}"
 }
 
-resource "aws_ssm_parameter" "atlantis_allow_repo_config" {
-  count       = "${local.enabled ? 1 : 0}"
-  description = "allow Atlantis to use atlantis.yaml"
-  name        = "${format(var.chamber_format, var.chamber_service, "atlantis_allow_repo_config")}"
-  overwrite   = "${var.overwrite_ssm_parameter}"
-  type        = "String"
-  value       = "${var.atlantis_allow_repo_config}"
-}
-
 resource "aws_ssm_parameter" "atlantis_gh_user" {
   count       = "${local.enabled ? 1 : 0}"
   description = "Atlantis GitHub user"
