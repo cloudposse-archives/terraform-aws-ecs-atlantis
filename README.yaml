@@ -35,10 +35,10 @@ badges:
     url: "https://slack.cloudposse.com"
 
 related:
-  - name: "terraform-aws-ecs-webapp"
+  - name: "terraform-aws-ecs-web-app"
     description: "Terraform module that implements a web app on ECS and supports autoscaling, CI/CD, monitoring, ALB integration, and much more"
     url: "https://github.com/cloudposse/terraform-aws-ecs-web-app"
-  - name: "terraform-aws-ecs-web-app"
+  - name: "terraform-aws-alb"
     description: "Terraform module to provision a standard ALB for HTTP/HTTP traffic"
     url: "https://github.com/cloudposse/terraform-aws-alb"
   - name: "terraform-aws-alb-ingress"
@@ -62,8 +62,6 @@ related:
   - name: "terraform-aws-lb-s3-bucket"
     description: "Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs."
     url: "https://github.com/cloudposse/terraform-aws-lb-s3-bucket"
-
-
 
 
 # Short description of this project
@@ -193,39 +191,13 @@ references:
     description: "Official home of the Atlantis project"
     url: "https://runatlantis.io"
 
-related:
-  - name: "terraform-aws-ecs-web-app"
-    description: "Terraform module that implements a web app on ECS and supporting AWS resources"
-    url: "https://github.com/cloudposse/terraform-aws-ecs-web-app"
-  - name: "terraform-aws-alb"
-    description: "Terraform module to provision a standard ALB for HTTP/HTTP traffic"
-    url: "https://github.com/cloudposse/terraform-aws-alb"
-  - name: "terraform-aws-alb-ingress"
-    description: "Terraform module to provision an HTTP style ingress rule based on hostname and path for an ALB"
-    url: "https://github.com/cloudposse/terraform-aws-alb-ingress"
-  - name: "terraform-aws-codebuild"
-    description: "Terraform Module to easily leverage AWS CodeBuild for Continuous Integration"
-    url: "https://github.com/cloudposse/terraform-aws-codebuild"
-  - name: "terraform-aws-ecr"
-    description: "Terraform Module to manage Docker Container Registries on AWS ECR"
-    url: "https://github.com/cloudposse/terraform-aws-ecr"
-  - name: "terraform-aws-ecs-alb-service-task"
-    description: "Terraform module which implements an ECS service which exposes a web service via ALB."
-    url: "https://github.com/cloudposse/terraform-aws-ecs-alb-service-task"
-  - name: "terraform-aws-ecs-codepipeline"
-    description: "Terraform Module for CI/CD with AWS Code Pipeline and Code Build for ECS"
-    url: "https://github.com/cloudposse/terraform-aws-ecs-codepipeline"
-  - name: "terraform-aws-ecs-container-definition"
-    description: "Terraform module to generate well-formed JSON documents that are passed to the aws_ecs_task_definition Terraform resource"
-    url: "https://github.com/cloudposse/terraform-aws-ecs-container-definition"
-  - name: "terraform-aws-lb-s3-bucket"
-    description: "Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs."
-    url: "https://github.com/cloudposse/terraform-aws-lb-s3-bucket"
-
-
-
-
 # Contributors to this project
 contributors:
   - name: "Josh Myers"
     github: "joshmyers"
+  - name: "Erik Osterman"
+    github: "osterman"
+  - name: "Andriy Knysh"
+    github: "aknysh"
+  - name: "Igor Rodionov"
+    github: "goruha"
