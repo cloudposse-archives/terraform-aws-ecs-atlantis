@@ -45,7 +45,7 @@ module "ssh_key_pair" {
 }
 
 module "webhooks" {
-  source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.1.1"
+  source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.3.0"
   github_token        = "${local.github_oauth_token}"
   webhook_secret      = "${local.atlantis_gh_webhook_secret}"
   webhook_url         = "${local.atlantis_url}"
@@ -56,7 +56,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.18.0"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.19.0"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"

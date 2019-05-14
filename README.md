@@ -278,7 +278,7 @@ Are you using this project or any of our other projects? Consider [leaving a tes
 
 Check out these related projects.
 
-- [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app) - Terraform module that implements a web app on ECS and supporting AWS resources
+- [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app) - Terraform module that implements a web app on ECS and supports autoscaling, CI/CD, monitoring, ALB integration, and much more
 - [terraform-aws-alb](https://github.com/cloudposse/terraform-aws-alb) - Terraform module to provision a standard ALB for HTTP/HTTP traffic
 - [terraform-aws-alb-ingress](https://github.com/cloudposse/terraform-aws-alb-ingress) - Terraform module to provision an HTTP style ingress rule based on hostname and path for an ALB
 - [terraform-aws-codebuild](https://github.com/cloudposse/terraform-aws-codebuild) - Terraform Module to easily leverage AWS CodeBuild for Continuous Integration
@@ -415,11 +415,17 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
-|  [![Josh Myers][joshmyers_avatar]][joshmyers_homepage]<br/>[Josh Myers][joshmyers_homepage] |
-|---|
+|  [![Josh Myers][joshmyers_avatar]][joshmyers_homepage]<br/>[Josh Myers][joshmyers_homepage] | [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] |
+|---|---|---|---|
 
   [joshmyers_homepage]: https://github.com/joshmyers
   [joshmyers_avatar]: https://github.com/joshmyers.png?size=150
+  [osterman_homepage]: https://github.com/osterman
+  [osterman_avatar]: https://github.com/osterman.png?size=150
+  [aknysh_homepage]: https://github.com/aknysh
+  [aknysh_avatar]: https://github.com/aknysh.png?size=150
+  [goruha_homepage]: https://github.com/goruha
+  [goruha_avatar]: https://github.com/goruha.png?size=150
 
 
 
