@@ -21,7 +21,7 @@ data "aws_kms_key" "chamber_kms_key" {
 locals {
   enabled                     = "${var.enabled == "true" ? true : false}"
   atlantis_gh_webhook_secret  = "${length(var.atlantis_gh_webhook_secret) > 0 ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)}"
-  atlantis_url                = "${format(var.atlantis_webhook_format, local.hostname)}"
+  atlantis_webhook_url        = "${format(var.atlantis_webhook_format, local.hostname)}"
   attributes                  = "${concat(list(var.short_name), var.attributes)}"
   default_hostname            = "${join("", aws_route53_record.default.*.fqdn)}"
   github_oauth_token          = "${length(join("", data.aws_ssm_parameter.atlantis_gh_token.*.value)) > 0 ? join("", data.aws_ssm_parameter.atlantis_gh_token.*.value) : var.github_oauth_token}"
@@ -48,7 +48,7 @@ module "webhooks" {
   source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.3.0"
   github_token        = "${local.github_oauth_token}"
   webhook_secret      = "${local.atlantis_gh_webhook_secret}"
-  webhook_url         = "${local.atlantis_url}"
+  webhook_url         = "${local.atlantis_webhook_url}"
   enabled             = "${local.enabled}"
   github_organization = "${var.repo_owner}"
   github_repositories = ["${var.repo_name}"]
@@ -192,7 +192,7 @@ resource "aws_ssm_parameter" "atlantis_atlantis_url" {
   name        = "${format(var.chamber_format, var.chamber_service, "atlantis_atlantis_url")}"
   overwrite   = "${var.overwrite_ssm_parameter}"
   type        = "String"
-  value       = "${local.atlantis_url}"
+  value       = "${local.hostname}"
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_user" {

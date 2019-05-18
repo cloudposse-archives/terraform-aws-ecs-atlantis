@@ -88,5 +88,6 @@
 |------|-------------|
 | atlantis_ssh_public_key | Atlantis SSH Public Key |
 | atlantis_url | The URL endpoint for the atlantis server |
+| atlantis_webhook_url | atlantis webhook URL |
 | badge_url | The URL of the build badge when `badge_enabled` is enabled |
 

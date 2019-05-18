@@ -10,5 +10,10 @@ output "badge_url" {
 
 output "atlantis_url" {
   description = "The URL endpoint for the atlantis server"
-  value       = "${local.atlantis_url}"
+  value       = "${local.hostname}"
+}
+
+output "atlantis_webhook_url" {
+  description = "atlantis webhook URL"
+  value       = "${local.atlantis_webhook_url}"
 }
