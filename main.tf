@@ -22,6 +22,7 @@ locals {
   enabled                     = "${var.enabled == "true" ? true : false}"
   atlantis_gh_webhook_secret  = "${length(var.atlantis_gh_webhook_secret) > 0 ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)}"
   atlantis_webhook_url        = "${format(var.atlantis_webhook_format, local.hostname)}"
+  atlantis_url                = "${format(var.atlantis_url_format, local.hostname)}"
   attributes                  = "${concat(list(var.short_name), var.attributes)}"
   default_hostname            = "${join("", aws_route53_record.default.*.fqdn)}"
   github_oauth_token          = "${length(join("", data.aws_ssm_parameter.atlantis_gh_token.*.value)) > 0 ? join("", data.aws_ssm_parameter.atlantis_gh_token.*.value) : var.github_oauth_token}"
@@ -188,11 +189,11 @@ resource "aws_ssm_parameter" "atlantis_port" {
 
 resource "aws_ssm_parameter" "atlantis_atlantis_url" {
   count       = "${local.enabled ? 1 : 0}"
-  description = "URL to reach Atlantis e.g. for webhooks"
+  description = "Atlantis URL"
   name        = "${format(var.chamber_format, var.chamber_service, "atlantis_atlantis_url")}"
   overwrite   = "${var.overwrite_ssm_parameter}"
   type        = "String"
-  value       = "${local.hostname}"
+  value       = "${local.atlantis_url}"
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_user" {

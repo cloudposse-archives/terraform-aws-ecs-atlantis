@@ -200,6 +200,7 @@ Available targets:
 | atlantis_port | Atlantis container port | string | `4141` | no |
 | atlantis_repo_config | Path to atlantis server-side repo config file (https://www.runatlantis.io/docs/server-side-repo-config.html) | string | `atlantis-repo-config.yaml` | no |
 | atlantis_repo_whitelist | Whitelist of repositories Atlantis will accept webhooks from | list | `<list>` | no |
+| atlantis_url_format | Template for the Atlantis URL which is populated with the hostname | string | `https://%s` | no |
 | atlantis_wake_word | Wake world for Atlantis | string | `atlantis` | no |
 | atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with the hostname | string | `https://%s/events` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
