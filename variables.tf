@@ -163,6 +163,12 @@ variable "atlantis_webhook_format" {
   description = "Template for the Atlantis webhook URL which is populated with the hostname"
 }
 
+variable "atlantis_url_format" {
+  type        = "string"
+  default     = "https://%s"
+  description = "Template for the Atlantis URL which is populated with the hostname"
+}
+
 variable "autoscaling_min_capacity" {
   type        = "string"
   description = "Atlantis minimum tasks to run"
