@@ -46,8 +46,8 @@ module "ssh_key_pair" {
 }
 
 module "webhooks" {
-  source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.3.0"
-  github_token        = "${local.github_oauth_token}"
+  source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.4.0"
+  github_token        = "${var.github_webhooks_token}"
   webhook_secret      = "${local.atlantis_gh_webhook_secret}"
   webhook_url         = "${local.atlantis_webhook_url}"
   enabled             = "${local.enabled}"
@@ -57,7 +57,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.19.0"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.21.0"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
@@ -110,12 +110,15 @@ module "web_app" {
 
   alb_ingress_healthcheck_path = "${var.healthcheck_path}"
 
-  github_oauth_token = "${local.github_oauth_token}"
-  repo_owner         = "${var.repo_owner}"
-  repo_name          = "${var.repo_name}"
-  branch             = "${var.branch}"
-  build_timeout      = "${var.build_timeout}"
-  badge_enabled      = "false"
+  github_oauth_token    = "${local.github_oauth_token}"
+  github_webhooks_token = "${var.github_webhooks_token}"
+  repo_owner            = "${var.repo_owner}"
+  repo_name             = "${var.repo_name}"
+  branch                = "${var.branch}"
+  build_timeout         = "${var.build_timeout}"
+  badge_enabled         = "false"
+
+  codepipeline_s3_bucket_force_destroy = "${var.codepipeline_s3_bucket_force_destroy}"
 
   alb_target_group_alarms_enabled                 = "${local.enabled}"
   alb_target_group_alarms_3xx_threshold           = "25"

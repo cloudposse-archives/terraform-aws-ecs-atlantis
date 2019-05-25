@@ -111,20 +111,42 @@ introduction: |-
 
   ### GitHub Repo Scopes
 
-  We suggest creating a personal access token for a GitHub bot user with the following scopes:
+  This module accepts two GitHub tokens:
 
-    - `repo`
-      * `repo:status`
-      * `repo_deployment`
-      * `public_repo`
-      * `repo:invite`
-    - `admin:repo_hook`
-      * `write:repo_hook`
-      * `read:repo_hook`
+  1. `github_oauth_token` with permissions to pull private repos. Used by CodePipeline to clone repos before the build, and by the atlantis server to clone repos and comment on Pull Requests.
 
-  ![GitHub Repo Scopes](docs/github-repo-scopes.png)
+      The token needs the following OAuth scopes:
 
-  **IMPORTANT:** Do not commit this `github_oauth_token` to source control (e.g. via `terraform.tvfars`).
+      - `repo`
+        * `repo:status`
+        * `repo_deployment`
+        * `public_repo`
+        * `repo:invite`
+
+  2. `github_webhooks_token` with permissions to create GitHub webhooks.
+      Only used by [Terraform GitHub Provider](https://www.terraform.io/docs/providers/github/index.html) when provisioning the module.
+      It must be provided either in the `github_webhooks_token` variable, or it can also be sourced from the `GITHUB_TOKEN` environment variable.
+
+      The token needs the following OAuth scopes:
+
+        - `admin:repo_hook`
+          * `write:repo_hook`
+          * `read:repo_hook`
+
+  We suggest the following steps when creating the tokens and provisioning the module:
+
+  1. Create a GitHub bot user
+  2. Create the two Personal Access Tokens and add them to the bot
+  3. In `github.com/<org>/<repo>/settings/collaboration`, create a Team for the bot and add the bot user to it
+  4. Give `Admin` permissions to the Team (select it from the dropdown). We need it temporalily to provision GitHub webhooks on the repo
+  5. Provision the module with Terraform.
+    [Terraform GitHub Provider](https://www.terraform.io/docs/providers/github/index.html) will use the `github_webhooks_token` to create webhooks on the repo
+  6. Go to `github.com/<org>/<repo>/settings/hooks` and make sure that two webhooks have been created: one for the CodePipeline with `Releases` events,
+    the other is for the `atlantis` server with `Issue comments`, `Pull request reviews`, `Pull requests`, `Pull request review comments` and `Pushes` events
+  7. **IMPORTANT:** Remove the `Admin` permissions and add `Read` permissions for the bot Team.
+    The CodePipeline and `atlantis` server will use the `github_oauth_token` to clone repos, which does not require escalated privileges
+
+  **IMPORTANT:** Do not commit the tokens to source control (_e.g._ via `terraform.tvfars`).
 
 # How to use this project
 usage: |-
@@ -136,7 +158,11 @@ usage: |-
   - [with Cognito authentication](examples/with_cognito_authentication) - complete example with Cognito authentication
 
 
-  **NOTE:** if no `github_oauth_token` is set, this module attempts to look one up from SSM.
+  **NOTE:**
+
+    If no `github_oauth_token` is set, the module attempts to look one up from SSM.
+
+    If no `github_webhooks_token` is set, [Terraform GitHub Provider](https://www.terraform.io/docs/providers/github/index.html) attempts to look one up in the `GITHUB_TOKEN` environment variable.
 
   ```
   module "atlantis" {
