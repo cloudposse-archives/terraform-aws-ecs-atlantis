@@ -51,6 +51,7 @@
 | build_timeout | How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed. | string | `5` | no |
 | chamber_format | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
 | chamber_service | SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default. | string | `atlantis` | no |
+| codepipeline_s3_bucket_force_destroy | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | string | `false` | no |
 | container_cpu | Atlantis CPUs per task | string | `256` | no |
 | container_memory | Atlantis memory per task | string | `512` | no |
 | default_backend_image | ECS default (bootstrap) image | string | `cloudposse/default-backend:0.1.2` | no |
@@ -61,6 +62,7 @@
 | enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | string | `false` | no |
 | github_oauth_token | GitHub Oauth token. If not provided the token is looked up from SSM. | string | `` | no |
 | github_oauth_token_ssm_name | SSM param name to lookup GitHub OAuth token if not provided | string | `` | no |
+| github_webhooks_token | GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable | string | `` | no |
 | healthcheck_path | Healthcheck path | string | `/healthz` | no |
 | hostname | Atlantis URL | string | `` | no |
 | kms_key_id | KMS key ID used to encrypt SSM SecureString parameters | string | `` | no |

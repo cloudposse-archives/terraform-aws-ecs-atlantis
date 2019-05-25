@@ -90,20 +90,42 @@ What this module does not provision:
 
 ### GitHub Repo Scopes
 
-We suggest creating a personal access token for a GitHub bot user with the following scopes:
+This module accepts two GitHub tokens:
 
-  - `repo`
-    * `repo:status`
-    * `repo_deployment`
-    * `public_repo`
-    * `repo:invite`
-  - `admin:repo_hook`
-    * `write:repo_hook`
-    * `read:repo_hook`
+1. `github_oauth_token` with permissions to pull private repos. Used by CodePipeline to clone repos before the build, and by the atlantis server to clone repos and comment on Pull Requests.
 
-![GitHub Repo Scopes](docs/github-repo-scopes.png)
+    The token needs the following OAuth scopes:
 
-**IMPORTANT:** Do not commit this `github_oauth_token` to source control (e.g. via `terraform.tvfars`).
+    - `repo`
+      * `repo:status`
+      * `repo_deployment`
+      * `public_repo`
+      * `repo:invite`
+
+2. `github_webhooks_token` with permissions to create GitHub webhooks.
+    Only used by [Terraform GitHub Provider](https://www.terraform.io/docs/providers/github/index.html) when provisioning the module.
+    It must be provided either in the `github_webhooks_token` variable, or it can also be sourced from the `GITHUB_TOKEN` environment variable.
+
+    The token needs the following OAuth scopes:
+
+      - `admin:repo_hook`
+        * `write:repo_hook`
+        * `read:repo_hook`
+
+We suggest the following steps when creating the tokens and provisioning the module:
+
+1. Create a GitHub bot user
+2. Create the two Personal Access Tokens and add them to the bot
+3. In `github.com/<org>/<repo>/settings/collaboration`, create a Team for the bot and add the bot user to it
+4. Give `Admin` permissions to the Team (select it from the dropdown). We need it temporalily to provision GitHub webhooks on the repo
+5. Provision the module with Terraform.
+  [Terraform GitHub Provider](https://www.terraform.io/docs/providers/github/index.html) will use the `github_webhooks_token` to create webhooks on the repo
+6. Go to `github.com/<org>/<repo>/settings/hooks` and make sure that two webhooks have been created: one for the CodePipeline with `Releases` events,
+  the other is for the `atlantis` server with `Issue comments`, `Pull request reviews`, `Pull requests`, `Pull request review comments` and `Pushes` events
+7. **IMPORTANT:** Remove the `Admin` permissions and add `Read` permissions for the bot Team.
+  The CodePipeline and `atlantis` server will use the `github_oauth_token` to clone repos, which does not require escalated privileges
+
+**IMPORTANT:** Do not commit the tokens to source control (_e.g._ via `terraform.tvfars`).
 
 ## Usage
 
@@ -120,7 +142,11 @@ Module usage examples:
 - [with Cognito authentication](examples/with_cognito_authentication) - complete example with Cognito authentication
 
 
-**NOTE:** if no `github_oauth_token` is set, this module attempts to look one up from SSM.
+**NOTE:**
+
+  If no `github_oauth_token` is set, the module attempts to look one up from SSM.
+
+  If no `github_webhooks_token` is set, [Terraform GitHub Provider](https://www.terraform.io/docs/providers/github/index.html) attempts to look one up in the `GITHUB_TOKEN` environment variable.
 
 ```
 module "atlantis" {
@@ -225,6 +251,7 @@ Available targets:
 | build_timeout | How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed. | string | `5` | no |
 | chamber_format | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
 | chamber_service | SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default. | string | `atlantis` | no |
+| codepipeline_s3_bucket_force_destroy | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | string | `false` | no |
 | container_cpu | Atlantis CPUs per task | string | `256` | no |
 | container_memory | Atlantis memory per task | string | `512` | no |
 | default_backend_image | ECS default (bootstrap) image | string | `cloudposse/default-backend:0.1.2` | no |
@@ -235,6 +262,7 @@ Available targets:
 | enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | string | `false` | no |
 | github_oauth_token | GitHub Oauth token. If not provided the token is looked up from SSM. | string | `` | no |
 | github_oauth_token_ssm_name | SSM param name to lookup GitHub OAuth token if not provided | string | `` | no |
+| github_webhooks_token | GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable | string | `` | no |
 | healthcheck_path | Healthcheck path | string | `/healthz` | no |
 | hostname | Atlantis URL | string | `` | no |
 | kms_key_id | KMS key ID used to encrypt SSM SecureString parameters | string | `` | no |
