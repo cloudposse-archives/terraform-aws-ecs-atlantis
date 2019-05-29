@@ -11,6 +11,11 @@ data "aws_ssm_parameter" "atlantis_gh_token" {
   name  = "${local.github_oauth_token_ssm_name}"
 }
 
+data "aws_ssm_parameter" "github_webhooks_token" {
+  count = "${local.enabled && length(var.github_webhooks_token) == 0 ? 1 : 0}"
+  name  = "${local.github_webhooks_token_ssm_name}"
+}
+
 data "aws_kms_key" "chamber_kms_key" {
   count  = "${local.enabled && length(var.kms_key_id) == 0 ? 1 : 0}"
   key_id = "${local.kms_key_id}"
@@ -19,16 +24,23 @@ data "aws_kms_key" "chamber_kms_key" {
 # Locals
 #--------------------------------------------------------------
 locals {
-  enabled                     = "${var.enabled == "true" ? true : false}"
-  atlantis_gh_webhook_secret  = "${length(var.atlantis_gh_webhook_secret) > 0 ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)}"
-  atlantis_webhook_url        = "${format(var.atlantis_webhook_format, local.hostname)}"
-  atlantis_url                = "${format(var.atlantis_url_format, local.hostname)}"
-  attributes                  = "${concat(list(var.short_name), var.attributes)}"
-  default_hostname            = "${join("", aws_route53_record.default.*.fqdn)}"
+  enabled                    = "${var.enabled == "true" ? true : false}"
+  atlantis_gh_webhook_secret = "${length(var.atlantis_gh_webhook_secret) > 0 ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)}"
+  atlantis_webhook_url       = "${format(var.atlantis_webhook_format, local.hostname)}"
+  atlantis_url               = "${format(var.atlantis_url_format, local.hostname)}"
+  attributes                 = "${concat(list(var.short_name), var.attributes)}"
+  default_hostname           = "${join("", aws_route53_record.default.*.fqdn)}"
+  hostname                   = "${length(var.hostname) > 0 ? var.hostname : local.default_hostname}"
+  kms_key_id                 = "${length(var.kms_key_id) > 0 ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)}"
+}
+
+# GitHub tokens
+locals {
   github_oauth_token          = "${length(join("", data.aws_ssm_parameter.atlantis_gh_token.*.value)) > 0 ? join("", data.aws_ssm_parameter.atlantis_gh_token.*.value) : var.github_oauth_token}"
   github_oauth_token_ssm_name = "${length(var.github_oauth_token_ssm_name) > 0 ? var.github_oauth_token_ssm_name : format(var.chamber_format, var.chamber_service, "atlantis_gh_token")}"
-  hostname                    = "${length(var.hostname) > 0 ? var.hostname : local.default_hostname}"
-  kms_key_id                  = "${length(var.kms_key_id) > 0 ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)}"
+
+  github_webhooks_token          = "${length(join("", data.aws_ssm_parameter.github_webhooks_token.*.value)) > 0 ? join("", data.aws_ssm_parameter.github_webhooks_token.*.value) : var.github_webhooks_token}"
+  github_webhooks_token_ssm_name = "${length(var.github_webhooks_token_ssm_name) > 0 ? var.github_webhooks_token_ssm_name : format(var.chamber_format, var.chamber_service, "github_webhooks_token")}"
 }
 
 # Modules
@@ -111,7 +123,7 @@ module "web_app" {
   alb_ingress_healthcheck_path = "${var.healthcheck_path}"
 
   github_oauth_token    = "${local.github_oauth_token}"
-  github_webhooks_token = "${var.github_webhooks_token}"
+  github_webhooks_token = "${local.github_webhooks_token}"
   repo_owner            = "${var.repo_owner}"
   repo_name             = "${var.repo_name}"
   branch                = "${var.branch}"
@@ -280,6 +292,16 @@ resource "aws_ssm_parameter" "atlantis_gh_token" {
   overwrite   = "${var.overwrite_ssm_parameter}"
   type        = "SecureString"
   value       = "${local.github_oauth_token}"
+}
+
+resource "aws_ssm_parameter" "github_webhooks_token" {
+  count       = "${local.enabled ? 1 : 0}"
+  description = "GitHub OAuth token with permission to create webhooks"
+  key_id      = "${join("", data.aws_kms_key.chamber_kms_key.*.id)}"
+  name        = "${local.github_webhooks_token_ssm_name}"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+  type        = "SecureString"
+  value       = "${local.github_webhooks_token}"
 }
 
 resource "aws_security_group_rule" "egress_http" {

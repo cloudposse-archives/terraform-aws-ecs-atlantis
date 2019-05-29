@@ -40,19 +40,25 @@ variable "default_backend_image" {
 
 variable "github_oauth_token" {
   type        = "string"
-  description = "GitHub Oauth token. If not provided the token is looked up from SSM."
+  description = "GitHub Oauth token. If not provided the token is looked up from SSM"
   default     = ""
 }
 
 variable "github_webhooks_token" {
   type        = "string"
-  description = "GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable"
+  description = "GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM"
   default     = ""
 }
 
 variable "github_oauth_token_ssm_name" {
   type        = "string"
-  description = "SSM param name to lookup GitHub OAuth token if not provided"
+  description = "SSM param name to lookup `github_oauth_token` if not provided"
+  default     = ""
+}
+
+variable "github_webhooks_token_ssm_name" {
+  type        = "string"
+  description = "SSM param name to lookup `github_webhooks_token` if not provided"
   default     = ""
 }
 
