@@ -59,7 +59,7 @@ module "ssh_key_pair" {
 
 module "webhooks" {
   source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.4.0"
-  github_token        = "${var.github_webhooks_token}"
+  github_token        = "${local.github_webhooks_token}"
   webhook_secret      = "${local.atlantis_gh_webhook_secret}"
   webhook_url         = "${local.atlantis_webhook_url}"
   enabled             = "${local.enabled}"
