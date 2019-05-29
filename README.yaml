@@ -111,7 +111,7 @@ introduction: |-
 
   ### GitHub Repo Scopes
 
-  This module accepts two GitHub tokens:
+  This module accepts two GitHub OAuth tokens:
 
   1. `github_oauth_token` with permissions to pull private repos. Used by CodePipeline to clone repos before the build, and by the atlantis server to clone repos and comment on Pull Requests.
 
@@ -125,7 +125,6 @@ introduction: |-
 
   2. `github_webhooks_token` with permissions to create GitHub webhooks.
       Only used by [Terraform GitHub Provider](https://www.terraform.io/docs/providers/github/index.html) when provisioning the module.
-      It must be provided either in the `github_webhooks_token` variable, or it can also be sourced from the `GITHUB_TOKEN` environment variable.
 
       The token needs the following OAuth scopes:
 
@@ -147,6 +146,15 @@ introduction: |-
     The CodePipeline and `atlantis` server will use the `github_oauth_token` to clone repos, which does not require escalated privileges
 
   **IMPORTANT:** Do not commit the tokens to source control (_e.g._ via `terraform.tvfars`).
+
+  **NOTE:** If the two tokens are not provided (left empty), they will be looked up from SSM Parameter Store.
+  You can write `atlantis atlantis_gh` and `github_webhooks_token` to SSM Parameter Store before provisioning the module.
+  For example, by using [chamber](https://github.com/segmentio/chamber):
+
+  ```sh
+    chamber write atlantis atlantis_gh_token "....."
+    chamber write atlantis github_webhooks_token "....."
+  ```
 
 # How to use this project
 usage: |-
