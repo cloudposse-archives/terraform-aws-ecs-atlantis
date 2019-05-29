@@ -90,7 +90,7 @@ What this module does not provision:
 
 ### GitHub Repo Scopes
 
-This module accepts two GitHub tokens:
+This module accepts two GitHub OAuth tokens:
 
 1. `github_oauth_token` with permissions to pull private repos. Used by CodePipeline to clone repos before the build, and by the atlantis server to clone repos and comment on Pull Requests.
 
@@ -104,7 +104,6 @@ This module accepts two GitHub tokens:
 
 2. `github_webhooks_token` with permissions to create GitHub webhooks.
     Only used by [Terraform GitHub Provider](https://www.terraform.io/docs/providers/github/index.html) when provisioning the module.
-    It must be provided either in the `github_webhooks_token` variable, or it can also be sourced from the `GITHUB_TOKEN` environment variable.
 
     The token needs the following OAuth scopes:
 
@@ -126,6 +125,15 @@ We suggest the following steps when creating the tokens and provisioning the mod
   The CodePipeline and `atlantis` server will use the `github_oauth_token` to clone repos, which does not require escalated privileges
 
 **IMPORTANT:** Do not commit the tokens to source control (_e.g._ via `terraform.tvfars`).
+
+**NOTE:** If the two tokens are not provided (left empty), they will be looked up from SSM Parameter Store.
+You can write `atlantis atlantis_gh` and `github_webhooks_token` to SSM Parameter Store before provisioning the module.
+For example, by using [chamber](https://github.com/segmentio/chamber):
+
+```sh
+  chamber write atlantis atlantis_gh_token "....."
+  chamber write atlantis github_webhooks_token "....."
+```
 
 ## Usage
 
@@ -261,8 +269,9 @@ Available targets:
 | ecs_cluster_name | Name of the ECS cluster to deploy Atlantis | string | - | yes |
 | enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | string | `false` | no |
 | github_oauth_token | GitHub Oauth token. If not provided the token is looked up from SSM | string | `` | no |
-| github_oauth_token_ssm_name | SSM param name to lookup GitHub OAuth token if not provided | string | `` | no |
+| github_oauth_token_ssm_name | SSM param name to lookup `github_oauth_token` if not provided | string | `` | no |
 | github_webhooks_token | GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM | string | `` | no |
+| github_webhooks_token_ssm_name | SSM param name to lookup `github_webhooks_token` if not provided | string | `` | no |
 | healthcheck_path | Healthcheck path | string | `/healthz` | no |
 | hostname | Atlantis URL | string | `` | no |
 | kms_key_id | KMS key ID used to encrypt SSM SecureString parameters | string | `` | no |

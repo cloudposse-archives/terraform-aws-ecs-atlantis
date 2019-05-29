@@ -61,8 +61,9 @@
 | ecs_cluster_name | Name of the ECS cluster to deploy Atlantis | string | - | yes |
 | enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | string | `false` | no |
 | github_oauth_token | GitHub Oauth token. If not provided the token is looked up from SSM | string | `` | no |
-| github_oauth_token_ssm_name | SSM param name to lookup GitHub OAuth token if not provided | string | `` | no |
+| github_oauth_token_ssm_name | SSM param name to lookup `github_oauth_token` if not provided | string | `` | no |
 | github_webhooks_token | GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM | string | `` | no |
+| github_webhooks_token_ssm_name | SSM param name to lookup `github_webhooks_token` if not provided | string | `` | no |
 | healthcheck_path | Healthcheck path | string | `/healthz` | no |
 | hostname | Atlantis URL | string | `` | no |
 | kms_key_id | KMS key ID used to encrypt SSM SecureString parameters | string | `` | no |
