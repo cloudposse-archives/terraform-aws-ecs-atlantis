@@ -8,7 +8,7 @@ provider "aws" {
 # Terraform
 #--------------------------------------------------------------
 terraform {
-  required_version = ">= 0.10.7"
+  required_version = "~> 0.11.0"
 }
 
 # Data
