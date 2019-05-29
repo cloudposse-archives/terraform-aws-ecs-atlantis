@@ -40,7 +40,7 @@ variable "default_backend_image" {
 
 variable "github_oauth_token" {
   type        = "string"
-  description = "GitHub Oauth token. If not provided the token is looked up from SSM"
+  description = "GitHub OAuth token. If not provided the token is looked up from SSM"
   default     = ""
 }
 
