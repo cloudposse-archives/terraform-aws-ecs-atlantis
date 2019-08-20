@@ -267,6 +267,11 @@ variable "alb_arn_suffix" {
   description = "The ARN suffix of the ALB"
 }
 
+variable "alb_security_group" {
+  type        = "string"
+  description = "Security group of the ALB"
+}
+
 variable "alb_target_group_alarms_alarm_actions" {
   type        = "list"
   description = "A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an ALARM state from any other state."
