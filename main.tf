@@ -76,7 +76,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.22.0"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=fix-alb-access"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
@@ -148,6 +148,7 @@ module "web_app" {
   alb_target_group_alarms_evaluation_periods      = "1"
   alb_name                                        = "${var.alb_name}"
   alb_arn_suffix                                  = "${var.alb_arn_suffix}"
+  alb_security_group                              = "${var.alb_security_group}"
 
   alb_target_group_alarms_alarm_actions             = ["${var.alb_target_group_alarms_alarm_actions}"]
   alb_target_group_alarms_ok_actions                = ["${var.alb_target_group_alarms_ok_actions}"]
