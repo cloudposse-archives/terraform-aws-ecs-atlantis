@@ -76,7 +76,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=fix-alb-access"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=fix-security-groups"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
