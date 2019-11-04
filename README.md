@@ -3,7 +3,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-ecs-atlantis [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-ecs-atlantis.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-ecs-atlantis) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-atlantis.svg)](https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-ecs-atlantis [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-ecs-atlantis?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5dc082b14d7990012e651a3b) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-atlantis.svg)](https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 ![terraform-aws-ecs-atlantis](docs/logo.png)
@@ -143,7 +143,11 @@ Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest re
 
 
 
-Module usage examples:
+For a complete example, see [examples/complete](examples/complete).
+
+For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest) (which tests and deploys the example on AWS), see [test](test).
+
+Other examples:
 
 - [without authentication](examples/without_authentication) - complete example without authentication
 - [with Google OIDC authentication](examples/with_google_oidc_authentication) - complete example with Google OIDC authentication
@@ -159,31 +163,31 @@ Module usage examples:
 ```
 module "atlantis" {
   source    = "git::https://github.com/cloudposse/terraform-aws-ecs-atlantis.git?ref=master"
-  enabled   = "true"
-  name      = "${var.name}"
-  namespace = "${var.namespace}"
-  region    = "${var.region}"
-  stage     = "${var.stage}"
+  enabled   = true
+  name      = var.name
+  namespace = var.namespace
+  region    = var.region
+  stage     = var.stage
 
   atlantis_gh_team_whitelist = "admins:*,engineering:plan"
   atlantis_gh_user           = "atlantis_bot"
   atlantis_repo_whitelist    = ["github.com/testing.example.co/*"]
 
-  alb_arn_suffix    = "${module.alb.alb_arn_suffix}"
-  alb_dns_name      = "${module.alb.alb_dns_name}"
-  alb_name          = "${module.alb.alb_name}"
-  alb_zone_id       = "${module.alb.alb_zone_id}"
+  alb_arn_suffix    = module.alb.alb_arn_suffix
+  alb_dns_name      = module.alb.alb_dns_name
+  alb_name          = module.alb.alb_name
+  alb_zone_id       = module.alb.alb_zone_id
 
-  domain_name        = "${var.domain_name}"
-  ecs_cluster_arn    = "${aws_ecs_cluster.default.arn}"
-  ecs_cluster_name   = "${aws_ecs_cluster.default.name}"
+  domain_name        = var.domain_name
+  ecs_cluster_arn    = aws_ecs_cluster.default.arn
+  ecs_cluster_name   = aws_ecs_cluster.default.name
   repo_name          = "testing.example.co"
   repo_owner         = "example_org"
-  private_subnet_ids = ["${module.subnets.private_subnet_ids}"]
-  security_group_ids = ["${module.vpc.vpc_default_security_group_id}"]
-  vpc_id             = "${module.vpc.vpc_id}"
+  private_subnet_ids = [module.subnets.private_subnet_ids]
+  security_group_ids = [module.vpc.vpc_default_security_group_id]
+  vpc_id             = module.vpc.vpc_id
 
-  alb_ingress_unauthenticated_listener_arns       = ["${module.alb.listener_arns}"]
+  alb_ingress_unauthenticated_listener_arns       = [module.alb.listener_arns]
   alb_ingress_unauthenticated_listener_arns_count = 2
   alb_ingress_unauthenticated_paths               = ["/*"]
   alb_ingress_listener_unauthenticated_priority   = "100"
@@ -212,21 +216,21 @@ Available targets:
 |------|-------------|:----:|:-----:|:-----:|
 | alb_arn_suffix | The ARN suffix of the ALB | string | - | yes |
 | alb_dns_name | DNS name of ALB | string | - | yes |
-| alb_ingress_authenticated_hosts | Authenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list | `<list>` | no |
-| alb_ingress_authenticated_listener_arns | A list of authenticated ALB listener ARNs to attach ALB listener rules to | list | `<list>` | no |
+| alb_ingress_authenticated_hosts | Authenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list(string) | `<list>` | no |
+| alb_ingress_authenticated_listener_arns | A list of authenticated ALB listener ARNs to attach ALB listener rules to | list(string) | `<list>` | no |
 | alb_ingress_authenticated_listener_arns_count | The number of authenticated ARNs in `alb_ingress_authenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed | string | `0` | no |
-| alb_ingress_authenticated_paths | Authenticated path pattern to match (a maximum of 1 can be defined) | list | `<list>` | no |
+| alb_ingress_authenticated_paths | Authenticated path pattern to match (a maximum of 1 can be defined) | list(string) | `<list>` | no |
 | alb_ingress_listener_authenticated_priority | The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority | string | `100` | no |
 | alb_ingress_listener_unauthenticated_priority | The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority | string | `50` | no |
-| alb_ingress_unauthenticated_hosts | Unauthenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list | `<list>` | no |
-| alb_ingress_unauthenticated_listener_arns | A list of unauthenticated ALB listener ARNs to attach ALB listener rules to | list | `<list>` | no |
+| alb_ingress_unauthenticated_hosts | Unauthenticated hosts to match in Hosts header (a maximum of 1 can be defined) | list(string) | `<list>` | no |
+| alb_ingress_unauthenticated_listener_arns | A list of unauthenticated ALB listener ARNs to attach ALB listener rules to | list(string) | `<list>` | no |
 | alb_ingress_unauthenticated_listener_arns_count | The number of unauthenticated ARNs in `alb_ingress_unauthenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed | string | `0` | no |
-| alb_ingress_unauthenticated_paths | Unauthenticated path pattern to match (a maximum of 1 can be defined) | list | `<list>` | no |
+| alb_ingress_unauthenticated_paths | Unauthenticated path pattern to match (a maximum of 1 can be defined) | list(string) | `<list>` | no |
 | alb_name | The Name of the ALB | string | - | yes |
 | alb_security_group | Security group of the ALB | string | - | yes |
-| alb_target_group_alarms_alarm_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an ALARM state from any other state. | list | `<list>` | no |
-| alb_target_group_alarms_insufficient_data_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT_DATA state from any other state. | list | `<list>` | no |
-| alb_target_group_alarms_ok_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an OK state from any other state. | list | `<list>` | no |
+| alb_target_group_alarms_alarm_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an ALARM state from any other state. | list(string) | `<list>` | no |
+| alb_target_group_alarms_insufficient_data_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT_DATA state from any other state. | list(string) | `<list>` | no |
+| alb_target_group_alarms_ok_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an OK state from any other state. | list(string) | `<list>` | no |
 | alb_zone_id | The ID of the zone in which ALB is provisioned | string | - | yes |
 | atlantis_gh_team_whitelist | Atlantis GitHub team whitelist | string | `` | no |
 | atlantis_gh_user | Atlantis GitHub user | string | - | yes |
@@ -234,11 +238,11 @@ Available targets:
 | atlantis_log_level | Atlantis log level | string | `info` | no |
 | atlantis_port | Atlantis container port | string | `4141` | no |
 | atlantis_repo_config | Path to atlantis server-side repo config file (https://www.runatlantis.io/docs/server-side-repo-config.html) | string | `atlantis-repo-config.yaml` | no |
-| atlantis_repo_whitelist | Whitelist of repositories Atlantis will accept webhooks from | list | `<list>` | no |
+| atlantis_repo_whitelist | Whitelist of repositories Atlantis will accept webhooks from | list(string) | `<list>` | no |
 | atlantis_url_format | Template for the Atlantis URL which is populated with the hostname | string | `https://%s` | no |
 | atlantis_wake_word | Wake world for Atlantis | string | `atlantis` | no |
 | atlantis_webhook_format | Template for the Atlantis webhook URL which is populated with the hostname | string | `https://%s/events` | no |
-| attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
+| attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
 | authentication_cognito_user_pool_arn | Cognito User Pool ARN | string | `` | no |
 | authentication_cognito_user_pool_arn_ssm_name | SSM param name to lookup `authentication_cognito_user_pool_arn` if not provided | string | `` | no |
 | authentication_cognito_user_pool_client_id | Cognito User Pool Client ID | string | `` | no |
@@ -281,18 +285,18 @@ Available targets:
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
 | parent_zone_id | The zone ID where the DNS record for the `short_name` will be written | string | `` | no |
 | policy_arn | Permission to grant to atlantis server | string | `arn:aws:iam::aws:policy/AdministratorAccess` | no |
-| private_subnet_ids | The private subnet IDs | list | `<list>` | no |
+| private_subnet_ids | The private subnet IDs | list(string) | `<list>` | no |
 | region | AWS Region for Atlantis deployment | string | `us-west-2` | no |
 | repo_name | GitHub repository name of the atlantis to be built and deployed to ECS. | string | - | yes |
 | repo_owner | GitHub organization containing the Atlantis repository | string | - | yes |
-| security_group_ids | Additional Security Group IDs to allow into ECS Service. | list | `<list>` | no |
+| security_group_ids | Additional Security Group IDs to allow into ECS Service. | list(string) | `<list>` | no |
 | short_name | Alantis Short DNS name (E.g. `atlantis`) | string | `atlantis` | no |
 | ssh_private_key_name | Atlantis SSH private key name | string | `atlantis_ssh_private_key` | no |
 | ssh_public_key_name | Atlantis SSH public key name | string | `atlantis_ssh_public_key` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
-| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
+| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map(string) | `<map>` | no |
 | vpc_id | VPC ID for the ECS Cluster | string | - | yes |
-| webhook_events | A list of events which should trigger the webhook. | list | `<list>` | no |
+| webhook_events | A list of events which should trigger the webhook. | list(string) | `<list>` | no |
 | webhook_secret_length | GitHub webhook secret length | string | `32` | no |
 
 ## Outputs
@@ -459,13 +463,13 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 |---|---|---|---|
 
   [joshmyers_homepage]: https://github.com/joshmyers
-  [joshmyers_avatar]: https://github.com/joshmyers.png?size=150
+  [joshmyers_avatar]: https://img.cloudposse.com/150x150/https://github.com/joshmyers.png
   [osterman_homepage]: https://github.com/osterman
-  [osterman_avatar]: https://github.com/osterman.png?size=150
+  [osterman_avatar]: https://img.cloudposse.com/150x150/https://github.com/osterman.png
   [aknysh_homepage]: https://github.com/aknysh
-  [aknysh_avatar]: https://github.com/aknysh.png?size=150
+  [aknysh_avatar]: https://img.cloudposse.com/150x150/https://github.com/aknysh.png
   [goruha_homepage]: https://github.com/goruha
-  [goruha_avatar]: https://github.com/goruha.png?size=150
+  [goruha_avatar]: https://img.cloudposse.com/150x150/https://github.com/goruha.png
 
 
 
