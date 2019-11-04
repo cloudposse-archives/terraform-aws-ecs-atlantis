@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.8.1"
+  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.3.4"
   namespace  = var.namespace
   stage      = var.stage
   name       = var.name
@@ -18,21 +18,20 @@ locals {
 }
 
 module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.16.1"
-  availability_zones   = local.availability_zones
-  namespace            = var.namespace
-  stage                = var.stage
-  name                 = var.name
-  region               = var.region
-  vpc_id               = module.vpc.vpc_id
-  igw_id               = module.vpc.igw_id
-  cidr_block           = module.vpc.vpc_cidr_block
-  nat_gateway_enabled  = true
-  nat_instance_enabled = false
+  source              = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.8.0"
+  availability_zones  = local.availability_zones
+  namespace           = var.namespace
+  stage               = var.stage
+  name                = var.name
+  region              = var.region
+  vpc_id              = module.vpc.vpc_id
+  igw_id              = module.vpc.igw_id
+  cidr_block          = module.vpc.vpc_cidr_block
+  nat_gateway_enabled = "true"
 }
 
 module "alb" {
-  source                    = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.7.0"
+  source                    = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.2.6"
   name                      = var.name
   namespace                 = var.namespace
   stage                     = var.stage
@@ -42,15 +41,15 @@ module "alb" {
   subnet_ids                = [module.subnets.public_subnet_ids]
   security_group_ids        = [module.vpc.vpc_default_security_group_id]
   access_logs_region        = var.region
-  https_enabled             = true
+  https_enabled             = "true"
   http_ingress_cidr_blocks  = ["0.0.0.0/0"]
   https_ingress_cidr_blocks = ["0.0.0.0/0"]
   certificate_arn           = var.certificate_arn
-  health_check_interval     = 60
+  health_check_interval     = "60"
 }
 
-module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+module "ecs_cluster_label" {
+  source     = "git::https://github.com/cloudposse/terraform-terraform-label.git?ref=tags/0.2.1"
   name       = var.name
   namespace  = var.namespace
   stage      = var.stage
@@ -61,97 +60,53 @@ module "label" {
 
 # ECS Cluster (needed even if using FARGATE launch type)
 resource "aws_ecs_cluster" "default" {
-  name = module.label.id
+  name = module.ecs_cluster_label.id
 }
 
-resource "aws_cloudwatch_log_group" "app" {
-  name = module.label.id
-  tags = module.label.tags
-}
+module "atlantis" {
+  source    = "../.."
+  enabled   = "true"
+  name      = var.name
+  namespace = var.namespace
+  region    = var.region
+  stage     = var.stage
 
-module "web_app" {
-  source     = "../../"
-  namespace  = var.namespace
-  stage      = var.stage
-  name       = var.name
-  attributes = compact(concat(var.attributes, ["app"]))
+  atlantis_gh_team_whitelist = var.atlantis_gh_team_whitelist
+  atlantis_gh_user           = var.atlantis_gh_user
+  atlantis_repo_whitelist    = [var.atlantis_repo_whitelist]
 
-  region      = var.region
-  launch_type = "FARGATE"
-  vpc_id      = module.vpc.vpc_id
+  alb_arn_suffix     = module.alb.alb_arn_suffix
+  alb_dns_name       = module.alb.alb_dns_name
+  alb_name           = module.alb.alb_name
+  alb_zone_id        = module.alb.alb_zone_id
+  alb_security_group = module.alb.security_group_id
 
-  environment = [
-    {
-      name  = "LAUNCH_TYPE"
-      value = "FARGATE"
-    },
-    {
-      name  = "VPC_ID"
-      value = module.vpc.vpc_id
-    }
-  ]
+  container_cpu    = var.atlantis_container_cpu
+  container_memory = var.atlantis_container_memory
 
-  desired_count    = 1
-  container_image  = var.default_container_image
-  container_cpu    = 256
-  container_memory = 512
-  container_port   = 80
-  build_timeout    = 10
+  branch             = var.atlantis_branch
+  parent_zone_id     = var.parent_zone_id
+  ecs_cluster_arn    = aws_ecs_cluster.default.arn
+  ecs_cluster_name   = aws_ecs_cluster.default.name
+  repo_name          = var.atlantis_repo_name
+  repo_owner         = var.atlantis_repo_owner
+  private_subnet_ids = [module.subnets.private_subnet_ids]
+  security_group_ids = [module.vpc.vpc_default_security_group_id]
+  vpc_id             = module.vpc.vpc_id
 
-  log_configuration = {
-    logDriver = "awslogs"
-    options = {
-      "awslogs-region"        = var.region
-      "awslogs-group"         = aws_cloudwatch_log_group.app.name
-      "awslogs-stream-prefix" = var.name
-    }
-    secretOptions = null
-  }
-
-  codepipeline_enabled = false
-  webhook_enabled      = false
-  badge_enabled        = false
-  ecs_alarms_enabled   = false
-  autoscaling_enabled  = false
-
-  autoscaling_dimension             = "cpu"
-  autoscaling_min_capacity          = 1
-  autoscaling_max_capacity          = 2
-  autoscaling_scale_up_adjustment   = 1
-  autoscaling_scale_up_cooldown     = 60
-  autoscaling_scale_down_adjustment = -1
-  autoscaling_scale_down_cooldown   = 300
-
-  aws_logs_region        = var.region
-  ecs_cluster_arn        = aws_ecs_cluster.default.arn
-  ecs_cluster_name       = aws_ecs_cluster.default.name
-  ecs_security_group_ids = [module.vpc.vpc_default_security_group_id]
-  ecs_private_subnet_ids = module.subnets.private_subnet_ids
-
-  alb_security_group                              = "xxxxxxxx"
-  alb_target_group_alarms_enabled                 = true
-  alb_target_group_alarms_3xx_threshold           = 25
-  alb_target_group_alarms_4xx_threshold           = 25
-  alb_target_group_alarms_5xx_threshold           = 25
-  alb_target_group_alarms_response_time_threshold = 0.5
-  alb_target_group_alarms_period                  = 300
-  alb_target_group_alarms_evaluation_periods      = 1
-
-  alb_arn_suffix = module.alb.alb_arn_suffix
-
-  alb_ingress_healthcheck_path = "/"
-
-  # NOTE: Cognito and OIDC authentication only supported on HTTPS endpoints; here we provide `https_listener_arn` from ALB
-  alb_ingress_authenticated_listener_arns       = module.alb.https_listener_arn
+  alb_ingress_authenticated_listener_arns       = [module.alb.https_listener_arn]
   alb_ingress_authenticated_listener_arns_count = 1
+
+  alb_ingress_unauthenticated_listener_arns       = [module.alb.listener_arns]
+  alb_ingress_unauthenticated_listener_arns_count = 2
 
   # Unauthenticated paths (with higher priority than the authenticated paths)
   alb_ingress_unauthenticated_paths             = ["/events"]
-  alb_ingress_listener_unauthenticated_priority = 50
+  alb_ingress_listener_unauthenticated_priority = "50"
 
   # Authenticated paths
   alb_ingress_authenticated_paths             = ["/*"]
-  alb_ingress_listener_authenticated_priority = 100
+  alb_ingress_listener_authenticated_priority = "100"
 
   authentication_type                        = "COGNITO"
   authentication_cognito_user_pool_arn       = var.cognito_user_pool_arn
