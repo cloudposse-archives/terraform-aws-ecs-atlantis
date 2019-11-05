@@ -86,6 +86,12 @@ variable "enabled" {
   description = "Whether to create the resources. Set to `false` to prevent the module from creating any resources"
 }
 
+variable "codepipeline_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable AWS Codepipeline and ECR"
+  default     = false
+}
+
 variable "build_timeout" {
   type        = number
   default     = 10
@@ -120,6 +126,12 @@ variable "atlantis_repo_whitelist" {
   default     = []
 }
 
+variable "autoscaling_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable Autoscaling policy for ECS Service"
+  default     = false
+}
+
 variable "healthcheck_path" {
   type        = string
   description = "Healthcheck path"
@@ -146,7 +158,7 @@ variable "desired_count" {
 
 variable "short_name" {
   type        = string
-  description = "Alantis Short DNS name (E.g. `atlantis`)"
+  description = "Alantis short DNS name (e.g. `atlantis`)"
   default     = "atlantis"
 }
 
@@ -281,11 +293,6 @@ variable "vpc_id" {
   description = "VPC ID for the ECS Cluster"
 }
 
-variable "alb_name" {
-  type        = string
-  description = "The Name of the ALB"
-}
-
 variable "alb_arn_suffix" {
   type        = string
   description = "The ARN suffix of the ALB"
@@ -311,6 +318,54 @@ variable "alb_target_group_alarms_ok_actions" {
 variable "alb_target_group_alarms_insufficient_data_actions" {
   type        = list(string)
   description = "A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT_DATA state from any other state."
+  default     = []
+}
+
+variable "ecs_alarms_cpu_utilization_high_alarm_actions" {
+  type        = list(string)
+  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High Alarm action"
+  default     = []
+}
+
+variable "ecs_alarms_cpu_utilization_high_ok_actions" {
+  type        = list(string)
+  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High OK action"
+  default     = []
+}
+
+variable "ecs_alarms_cpu_utilization_low_alarm_actions" {
+  type        = list(string)
+  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization Low Alarm action"
+  default     = []
+}
+
+variable "ecs_alarms_cpu_utilization_low_ok_actions" {
+  type        = list(string)
+  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization Low OK action"
+  default     = []
+}
+
+variable "ecs_alarms_memory_utilization_high_alarm_actions" {
+  type        = list(string)
+  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization High Alarm action"
+  default     = []
+}
+
+variable "ecs_alarms_memory_utilization_high_ok_actions" {
+  type        = list(string)
+  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization High OK action"
+  default     = []
+}
+
+variable "ecs_alarms_memory_utilization_low_alarm_actions" {
+  type        = list(string)
+  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low Alarm action"
+  default     = []
+}
+
+variable "ecs_alarms_memory_utilization_low_ok_actions" {
+  type        = list(string)
+  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low OK action"
   default     = []
 }
 
@@ -506,4 +561,16 @@ variable "authentication_oidc_client_secret_ssm_name" {
   type        = string
   description = "SSM param name to lookup `authentication_oidc_client_secret` if not provided"
   default     = ""
+}
+
+variable "alb_target_group_alarms_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable CloudWatch Alarms for ALB Target metrics"
+  default     = false
+}
+
+variable "ecs_alarms_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable CloudWatch Alarms for ECS Service metrics"
+  default     = false
 }

@@ -11,7 +11,7 @@ data "aws_ssm_parameter" "github_webhooks_token" {
 }
 
 data "aws_kms_key" "chamber_kms_key" {
-  count  = var.enabled && var.kms_key_id == "" ? 1 : 0
+  count  = var.enabled ? 1 : 0
   key_id = local.kms_key_id
 }
 
@@ -22,7 +22,6 @@ locals {
   atlantis_webhook_url       = format(var.atlantis_webhook_format, local.hostname)
   atlantis_url               = format(var.atlantis_url_format, local.hostname)
   atlantis_gh_webhook_secret = var.atlantis_gh_webhook_secret != "" ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)
-  attributes                 = concat([var.short_name], var.attributes)
   default_hostname           = join("", aws_route53_record.default.*.fqdn)
   kms_key_id                 = var.kms_key_id != "" ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)
 }
@@ -44,10 +43,11 @@ module "ssh_key_pair" {
   namespace            = var.namespace
   stage                = var.stage
   name                 = var.name
-  attributes           = local.attributes
+  attributes           = var.attributes
   ssh_private_key_name = var.ssh_private_key_name
   ssh_public_key_name  = var.ssh_public_key_name
   ssm_path_prefix      = var.chamber_service
+  kms_key_id           = local.kms_key_id
 }
 
 module "webhooks" {
@@ -66,7 +66,7 @@ module "ecs_web_app" {
   namespace  = var.namespace
   stage      = var.stage
   name       = var.name
-  attributes = local.attributes
+  attributes = var.attributes
 
   region      = var.region
   vpc_id      = var.vpc_id
@@ -88,8 +88,6 @@ module "ecs_web_app" {
   container_cpu    = var.container_cpu
   container_memory = var.container_memory
 
-  codepipeline_enabled = var.enabled
-
   container_port = var.atlantis_port
 
   port_mappings = [
@@ -102,7 +100,7 @@ module "ecs_web_app" {
 
   desired_count = var.desired_count
 
-  autoscaling_enabled               = var.enabled
+  autoscaling_enabled               = var.autoscaling_enabled
   autoscaling_dimension             = "cpu"
   autoscaling_min_capacity          = var.autoscaling_min_capacity
   autoscaling_max_capacity          = var.autoscaling_max_capacity
@@ -112,7 +110,6 @@ module "ecs_web_app" {
   autoscaling_scale_down_cooldown   = 300
 
   aws_logs_region        = var.region
-  ecs_alarms_enabled     = var.enabled
   ecs_cluster_arn        = var.ecs_cluster_arn
   ecs_cluster_name       = var.ecs_cluster_name
   ecs_security_group_ids = var.security_group_ids
@@ -128,16 +125,17 @@ module "ecs_web_app" {
   build_timeout         = var.build_timeout
   badge_enabled         = false
 
+  codepipeline_enabled                 = var.codepipeline_enabled
   codepipeline_s3_bucket_force_destroy = var.codepipeline_s3_bucket_force_destroy
 
-  alb_target_group_alarms_enabled                 = var.enabled
+  ecs_alarms_enabled                              = var.ecs_alarms_enabled
+  alb_target_group_alarms_enabled                 = var.alb_target_group_alarms_enabled
   alb_target_group_alarms_3xx_threshold           = 25
   alb_target_group_alarms_4xx_threshold           = 25
   alb_target_group_alarms_5xx_threshold           = 25
   alb_target_group_alarms_response_time_threshold = 0.5
   alb_target_group_alarms_period                  = 300
   alb_target_group_alarms_evaluation_periods      = 1
-  alb_name                                        = var.alb_name
   alb_arn_suffix                                  = var.alb_arn_suffix
   alb_security_group                              = var.alb_security_group
 

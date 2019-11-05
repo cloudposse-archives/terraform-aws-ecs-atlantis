@@ -65,8 +65,29 @@ resource "aws_ecs_cluster" "default" {
   tags = module.label.tags
 }
 
+resource "aws_sns_topic" "sns_topic" {
+  name         = module.label.id
+  display_name = "Test terraform-aws-ecs-atlantis"
+  tags         = module.label.tags
+}
+
+module "kms_key" {
+  source                  = "git::https://github.com/cloudposse/terraform-aws-kms-key.git?ref=tags/0.3.0"
+  enabled                 = var.enabled
+  namespace               = var.namespace
+  stage                   = var.stage
+  name                    = var.name
+  attributes              = var.attributes
+  delimiter               = var.delimiter
+  tags                    = var.tags
+  description             = "Test terraform-aws-ecs-atlantis KMS key"
+  deletion_window_in_days = 7
+  enable_key_rotation     = false
+}
+
 module "atlantis" {
   source     = "../.."
+  enabled    = var.enabled
   namespace  = var.namespace
   stage      = var.stage
   name       = var.name
@@ -77,9 +98,9 @@ module "atlantis" {
   region               = var.region
   vpc_id               = module.vpc.vpc_id
   policy_arn           = var.policy_arn
-  kms_key_id           = var.kms_key_id
   ssh_private_key_name = var.ssh_private_key_name
   ssh_public_key_name  = var.ssh_public_key_name
+  kms_key_id           = module.kms_key.key_id
 
   atlantis_gh_user           = var.atlantis_gh_user
   atlantis_gh_team_whitelist = var.atlantis_gh_team_whitelist
@@ -128,7 +149,6 @@ module "atlantis" {
   launch_type        = var.launch_type
 
   // ALB
-  alb_name                                        = module.alb.alb_name
   alb_zone_id                                     = module.alb.alb_zone_id
   alb_arn_suffix                                  = module.alb.alb_arn_suffix
   alb_dns_name                                    = module.alb.alb_dns_name
@@ -137,6 +157,7 @@ module "atlantis" {
   alb_ingress_unauthenticated_listener_arns_count = 1
 
   // CodePipeline
+  codepipeline_enabled                 = var.codepipeline_enabled
   github_oauth_token                   = var.github_oauth_token
   github_webhooks_token                = var.github_webhooks_token
   repo_owner                           = var.repo_owner
@@ -149,6 +170,22 @@ module "atlantis" {
   codepipeline_s3_bucket_force_destroy = var.codepipeline_s3_bucket_force_destroy
 
   // Autoscaling
+  autoscaling_enabled      = var.autoscaling_enabled
   autoscaling_min_capacity = var.autoscaling_min_capacity
   autoscaling_max_capacity = var.autoscaling_max_capacity
+
+  // Alarms
+  alb_target_group_alarms_enabled                   = var.alb_target_group_alarms_enabled
+  ecs_alarms_enabled                                = var.ecs_alarms_enabled
+  alb_target_group_alarms_alarm_actions             = [aws_sns_topic.sns_topic.arn]
+  alb_target_group_alarms_ok_actions                = [aws_sns_topic.sns_topic.arn]
+  alb_target_group_alarms_insufficient_data_actions = [aws_sns_topic.sns_topic.arn]
+  ecs_alarms_cpu_utilization_high_alarm_actions     = [aws_sns_topic.sns_topic.arn]
+  ecs_alarms_cpu_utilization_high_ok_actions        = [aws_sns_topic.sns_topic.arn]
+  ecs_alarms_cpu_utilization_low_alarm_actions      = [aws_sns_topic.sns_topic.arn]
+  ecs_alarms_cpu_utilization_low_ok_actions         = [aws_sns_topic.sns_topic.arn]
+  ecs_alarms_memory_utilization_high_alarm_actions  = [aws_sns_topic.sns_topic.arn]
+  ecs_alarms_memory_utilization_high_ok_actions     = [aws_sns_topic.sns_topic.arn]
+  ecs_alarms_memory_utilization_low_alarm_actions   = [aws_sns_topic.sns_topic.arn]
+  ecs_alarms_memory_utilization_low_ok_actions      = [aws_sns_topic.sns_topic.arn]
 }

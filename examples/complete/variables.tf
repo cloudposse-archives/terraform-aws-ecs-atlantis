@@ -63,13 +63,17 @@ variable "default_backend_image" {
 variable "github_oauth_token" {
   type        = string
   description = "GitHub OAuth token. If not provided the token is looked up from SSM"
-  default     = ""
 }
 
 variable "github_webhooks_token" {
   type        = string
   description = "GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM"
-  default     = ""
+}
+
+variable "codepipeline_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable AWS Codepipeline and ECR"
+  default     = true
 }
 
 variable "codepipeline_s3_bucket_force_destroy" {
@@ -82,6 +86,12 @@ variable "enabled" {
   type        = bool
   default     = true
   description = "Whether to create the resources. Set to `false` to prevent the module from creating any resources"
+}
+
+variable "autoscaling_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable Autoscaling policy for ECS Service"
+  default     = true
 }
 
 variable "build_timeout" {
@@ -132,7 +142,7 @@ variable "desired_count" {
 
 variable "short_name" {
   type        = string
-  description = "Alantis Short DNS name (E.g. `atlantis`)"
+  description = "Alantis short DNS name (e.g. `atlantis`)"
   default     = "atlantis"
 }
 
@@ -211,12 +221,6 @@ variable "policy_arn" {
   type        = string
   default     = "arn:aws:iam::aws:policy/AdministratorAccess"
   description = "Permission to grant to atlantis server"
-}
-
-variable "kms_key_id" {
-  type        = string
-  default     = ""
-  description = "KMS key ID used to encrypt SSM SecureString parameters"
 }
 
 variable "webhook_enabled" {
@@ -362,4 +366,16 @@ variable "authentication_oidc_user_info_endpoint" {
   type        = string
   description = "OIDC User Info Endpoint"
   default     = ""
+}
+
+variable "alb_target_group_alarms_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable CloudWatch Alarms for ALB Target metrics"
+  default     = true
+}
+
+variable "ecs_alarms_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable CloudWatch Alarms for ECS Service metrics"
+  default     = false
 }

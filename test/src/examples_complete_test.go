@@ -51,22 +51,22 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	albName := terraform.Output(t, terraformOptions, "alb_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app", albName)
+	assert.Equal(t, "eg-test-ecs-atlantis", albName)
 
 	// Run `terraform output` to get the value of an output variable
 	albHttpListenerArn := terraform.Output(t, terraformOptions, "alb_http_listener_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, albHttpListenerArn, "listener/app/eg-test-ecs-web-app")
+	assert.Contains(t, albHttpListenerArn, "listener/app/eg-test-ecs-atlantis")
 
 	// Run `terraform output` to get the value of an output variable
 	albIngressTargetGroupName := terraform.Output(t, terraformOptions, "alb_ingress_target_group_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app", albIngressTargetGroupName)
+	assert.Equal(t, "eg-test-ecs-atlantis", albIngressTargetGroupName)
 
 	// Run `terraform output` to get the value of an output variable
 	albAccessLogsBucketId := terraform.Output(t, terraformOptions, "alb_access_logs_bucket_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-alb-access-logs", albAccessLogsBucketId)
+	assert.Equal(t, "eg-test-ecs-atlantis-alb-access-logs", albAccessLogsBucketId)
 
 	// Run `terraform output` to get the value of an output variable
 	containerDefinitionJsonMap := terraform.OutputRequired(t, terraformOptions, "container_definition_json_map")
@@ -74,8 +74,8 @@ func TestExamplesComplete(t *testing.T) {
 	var jsonObject map[string]interface{}
 	err := json.Unmarshal([]byte(containerDefinitionJsonMap), &jsonObject)
 	assert.NoError(t, err)
-	assert.Equal(t, "eg-test-ecs-web-app", jsonObject["name"])
-	assert.Equal(t, "cloudposse/default-backend", jsonObject["image"])
+	assert.Equal(t, "eg-test-ecs-atlantis", jsonObject["name"])
+	assert.Equal(t, "cloudposse/default-backend:0.1.2", jsonObject["image"])
 	assert.Equal(t, 512, int((jsonObject["memory"]).(float64)))
 	assert.Equal(t, 128, int((jsonObject["memoryReservation"]).(float64)))
 	assert.Equal(t, 256, int((jsonObject["cpu"]).(float64)))
@@ -85,100 +85,110 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	codebuildCacheBucketName := terraform.Output(t, terraformOptions, "codebuild_cache_bucket_name")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, codebuildCacheBucketName, "eg-test-ecs-web-app-build")
+	assert.Contains(t, codebuildCacheBucketName, "eg-test-ecs-atlantis-build")
 
 	// Run `terraform output` to get the value of an output variable
 	codebuildProjectName := terraform.Output(t, terraformOptions, "codebuild_project_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-build", codebuildProjectName)
+	assert.Equal(t, "eg-test-ecs-atlantis-build", codebuildProjectName)
 
 	// Run `terraform output` to get the value of an output variable
 	codebuildRoleId := terraform.Output(t, terraformOptions, "codebuild_role_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-build", codebuildRoleId)
+	assert.Equal(t, "eg-test-ecs-atlantis-build", codebuildRoleId)
 
 	// Run `terraform output` to get the value of an output variable
 	codepipelineId := terraform.Output(t, terraformOptions, "codepipeline_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-codepipeline", codepipelineId)
+	assert.Equal(t, "eg-test-ecs-atlantis-codepipeline", codepipelineId)
 
 	// Run `terraform output` to get the value of an output variable
 	ecrRepositoryName := terraform.Output(t, terraformOptions, "ecr_repository_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-ecr", ecrRepositoryName)
+	assert.Equal(t, "eg-test-ecs-atlantis-ecr", ecrRepositoryName)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsTaskRoleName := terraform.Output(t, terraformOptions, "ecs_task_role_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-task", ecsTaskRoleName)
+	assert.Equal(t, "eg-test-ecs-atlantis-task", ecsTaskRoleName)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsTaskExecRoleName := terraform.Output(t, terraformOptions, "ecs_task_exec_role_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-exec", ecsTaskExecRoleName)
+	assert.Equal(t, "eg-test-ecs-atlantis-exec", ecsTaskExecRoleName)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsServiceName := terraform.Output(t, terraformOptions, "ecs_service_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app", ecsServiceName)
+	assert.Equal(t, "eg-test-ecs-atlantis", ecsServiceName)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsExecRolePolicyName := terraform.Output(t, terraformOptions, "ecs_exec_role_policy_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-exec", ecsExecRolePolicyName)
+	assert.Equal(t, "eg-test-ecs-atlantis-exec", ecsExecRolePolicyName)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsCloudwatchAutoscalingScaleDownPolicyArn := terraform.Output(t, terraformOptions, "ecs_cloudwatch_autoscaling_scale_down_policy_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, ecsCloudwatchAutoscalingScaleDownPolicyArn, "policyName/eg-test-ecs-web-app-down")
+	assert.Contains(t, ecsCloudwatchAutoscalingScaleDownPolicyArn, "policyName/eg-test-ecs-atlantis-down")
 
 	// Run `terraform output` to get the value of an output variable
 	ecsCloudwatchAutoscalingScaleUpPolicyArn := terraform.Output(t, terraformOptions, "ecs_cloudwatch_autoscaling_scale_up_policy_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, ecsCloudwatchAutoscalingScaleUpPolicyArn, "policyName/eg-test-ecs-web-app-up")
+	assert.Contains(t, ecsCloudwatchAutoscalingScaleUpPolicyArn, "policyName/eg-test-ecs-atlantis-up")
 
 	// Run `terraform output` to get the value of an output variable
 	ecsAlarmsCpuUtilizationHighCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "ecs_alarms_cpu_utilization_high_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-cpu-utilization-high", ecsAlarmsCpuUtilizationHighCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-cpu-utilization-high", ecsAlarmsCpuUtilizationHighCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsAlarmsCpuUtilizationLowCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "ecs_alarms_cpu_utilization_low_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-cpu-utilization-low", ecsAlarmsCpuUtilizationLowCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-cpu-utilization-low", ecsAlarmsCpuUtilizationLowCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsAlarmsMemoryUtilizationHighCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "ecs_alarms_memory_utilization_high_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-memory-utilization-high", ecsAlarmsMemoryUtilizationHighCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-memory-utilization-high", ecsAlarmsMemoryUtilizationHighCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsAlarmsMemoryUtilizationLowCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "ecs_alarms_memory_utilization_low_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-memory-utilization-low", ecsAlarmsMemoryUtilizationLowCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-memory-utilization-low", ecsAlarmsMemoryUtilizationLowCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	httpcodeElb5xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_elb_5xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-elb-5xx-count-high", httpcodeElb5xxCountCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-elb-5xx-count-high", httpcodeElb5xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	httpcodeTarget3xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_target_3xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-3xx-count-high", httpcodeTarget3xxCountCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-3xx-count-high", httpcodeTarget3xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	httpcodeTarget4xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_target_4xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-4xx-count-high", httpcodeTarget4xxCountCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-4xx-count-high", httpcodeTarget4xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	httpcodeTarget5xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_target_5xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-5xx-count-high", httpcodeTarget5xxCountCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-5xx-count-high", httpcodeTarget5xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	targetResponseTimeAverageCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "target_response_time_average_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-web-app-target-response-high", targetResponseTimeAverageCloudwatchMetricAlarmId)
+	assert.Equal(t, "eg-test-ecs-atlantis-target-response-high", targetResponseTimeAverageCloudwatchMetricAlarmId)
+
+	// Run `terraform output` to get the value of an output variable
+	atlantisUrl := terraform.Output(t, terraformOptions, "atlantis_url")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "https://atlantis-test.testing.cloudposse.co", atlantisUrl)
+
+	// Run `terraform output` to get the value of an output variable
+	atlantisWebhookUrl := terraform.Output(t, terraformOptions, "atlantis_webhook_url")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "https://atlantis-test.testing.cloudposse.co/events", atlantisWebhookUrl)
 }
