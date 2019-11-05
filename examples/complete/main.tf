@@ -51,8 +51,8 @@ module "alb" {
   subnet_ids                              = module.subnets.public_subnet_ids
   internal                                = false
   http_enabled                            = true
-  access_logs_enabled                     = false
   alb_access_logs_s3_bucket_force_destroy = true
+  access_logs_enabled                     = true
   access_logs_region                      = var.region
   cross_zone_load_balancing_enabled       = true
   http2_enabled                           = true
