@@ -74,7 +74,7 @@ resource "aws_ecs_cluster" "default" {
 
 module "atlantis" {
   source    = "../.."
-  enabled   = "true"
+  enabled   = true
   name      = var.name
   namespace = var.namespace
   region    = var.region
@@ -111,11 +111,11 @@ module "atlantis" {
 
   # Unauthenticated paths (with higher priority than the authenticated paths)
   alb_ingress_unauthenticated_paths             = ["/events"]
-  alb_ingress_listener_unauthenticated_priority = "50"
+  alb_ingress_listener_unauthenticated_priority = 50
 
   # Authenticated paths
   alb_ingress_authenticated_paths             = ["/*"]
-  alb_ingress_listener_authenticated_priority = "100"
+  alb_ingress_listener_authenticated_priority = 100
 
   authentication_type                        = "COGNITO"
   authentication_cognito_user_pool_arn       = var.cognito_user_pool_arn

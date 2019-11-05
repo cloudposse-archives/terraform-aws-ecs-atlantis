@@ -1,11 +1,11 @@
 provider "aws" {
-  region = "${var.region}"
+  region = var.region
 }
 
 data "aws_availability_zones" "available" {}
 
 locals {
-  availability_zones = "${slice(data.aws_availability_zones.available.names, 0, 2)}"
+  availability_zones = slice(data.aws_availability_zones.available.names, 0, 2)
 }
 
 module "vpc" {
@@ -68,14 +68,14 @@ module "ecs_cluster_label" {
 
 # ECS Cluster (needed even if using FARGATE launch type)
 resource "aws_ecs_cluster" "default" {
-  name = "${module.ecs_cluster_label.id}"
+  name = module.ecs_cluster_label.id
 }
 
 module "atlantis" {
   source    = "../.."
-  enabled   = "true"
-  name      = "${var.name}"
-  namespace = "${var.namespace}"
+  enabled   = true
+  name      = var.name
+  namespace = var.namespace
   region    = "${var.region}"
   stage     = "${var.stage}"
 
