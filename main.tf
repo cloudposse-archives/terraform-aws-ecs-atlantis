@@ -68,8 +68,9 @@ module "ecs_web_app" {
   name       = var.name
   attributes = local.attributes
 
-  region = var.region
-  vpc_id = var.vpc_id
+  region      = var.region
+  vpc_id      = var.vpc_id
+  launch_type = var.launch_type
 
   environment = [
     {

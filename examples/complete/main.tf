@@ -65,13 +65,7 @@ resource "aws_ecs_cluster" "default" {
   tags = module.label.tags
 }
 
-resource "aws_sns_topic" "sns_topic" {
-  name         = module.label.id
-  display_name = "Test terraform-aws-ecs-web-app"
-  tags         = module.label.tags
-}
-
-module "ecs_web_app" {
+module "atlantis" {
   source     = "../.."
   namespace  = var.namespace
   stage      = var.stage
@@ -80,18 +74,32 @@ module "ecs_web_app" {
   delimiter  = var.delimiter
   tags       = var.tags
 
-  region = var.region
-  vpc_id = module.vpc.vpc_id
+  region               = var.region
+  vpc_id               = module.vpc.vpc_id
+  policy_arn           = var.policy_arn
+  kms_key_id           = var.kms_key_id
+  ssh_private_key_name = var.ssh_private_key_name
+  ssh_public_key_name  = var.ssh_public_key_name
+
+  atlantis_gh_user           = var.atlantis_gh_user
+  atlantis_gh_team_whitelist = var.atlantis_gh_team_whitelist
+  atlantis_gh_webhook_secret = var.atlantis_gh_webhook_secret
+  atlantis_log_level         = var.atlantis_log_level
+  atlantis_repo_config       = var.atlantis_repo_config
+  atlantis_repo_whitelist    = var.atlantis_repo_whitelist
+  atlantis_port              = var.atlantis_port
+  atlantis_webhook_format    = var.atlantis_webhook_format
+  atlantis_url_format        = var.atlantis_url_format
+
+  default_backend_image = var.default_backend_image
+  healthcheck_path      = var.healthcheck_path
+  short_name            = var.short_name
+  hostname              = var.hostname
+  parent_zone_id        = var.parent_zone_id
 
   // Container
-  container_image              = var.container_image
-  container_cpu                = var.container_cpu
-  container_memory             = var.container_memory
-  container_memory_reservation = var.container_memory_reservation
-  port_mappings                = var.container_port_mappings
-  log_driver                   = var.log_driver
-  aws_logs_region              = var.region
-  healthcheck                  = var.healthcheck
+  container_cpu    = var.container_cpu
+  container_memory = var.container_memory
 
   // Authentication
   authentication_type                           = var.authentication_type
@@ -112,86 +120,35 @@ module "ecs_web_app" {
   authentication_oidc_user_info_endpoint        = var.authentication_oidc_user_info_endpoint
 
   // ECS
-  ecs_private_subnet_ids            = module.subnets.private_subnet_ids
-  ecs_cluster_arn                   = aws_ecs_cluster.default.arn
-  ecs_cluster_name                  = aws_ecs_cluster.default.name
-  ecs_security_group_ids            = var.ecs_security_group_ids
-  health_check_grace_period_seconds = var.health_check_grace_period_seconds
-  desired_count                     = var.desired_count
-  launch_type                       = var.launch_type
-  container_port                    = var.container_port
+  private_subnet_ids = module.subnets.private_subnet_ids
+  ecs_cluster_arn    = aws_ecs_cluster.default.arn
+  ecs_cluster_name   = aws_ecs_cluster.default.name
+  security_group_ids = var.security_group_ids
+  desired_count      = var.desired_count
+  launch_type        = var.launch_type
 
   // ALB
+  alb_name                                        = module.alb.alb_name
+  alb_zone_id                                     = module.alb.alb_zone_id
   alb_arn_suffix                                  = module.alb.alb_arn_suffix
+  alb_dns_name                                    = module.alb.alb_dns_name
   alb_security_group                              = module.alb.security_group_id
   alb_ingress_unauthenticated_listener_arns       = [module.alb.http_listener_arn]
   alb_ingress_unauthenticated_listener_arns_count = 1
-  alb_ingress_healthcheck_path                    = var.alb_ingress_healthcheck_path
 
   // CodePipeline
-  codepipeline_enabled                 = var.codepipeline_enabled
-  badge_enabled                        = var.codepipeline_badge_enabled
-  github_oauth_token                   = var.codepipeline_github_oauth_token
-  github_webhooks_token                = var.codepipeline_github_webhooks_token
-  github_webhook_events                = var.codepipeline_github_webhook_events
-  repo_owner                           = var.codepipeline_repo_owner
-  repo_name                            = var.codepipeline_repo_name
-  branch                               = var.codepipeline_branch
-  build_image                          = var.codepipeline_build_image
-  build_timeout                        = var.codepipeline_build_timeout
-  buildspec                            = var.codepipeline_buildspec
-  poll_source_changes                  = var.poll_source_changes
+  github_oauth_token                   = var.github_oauth_token
+  github_webhooks_token                = var.github_webhooks_token
+  repo_owner                           = var.repo_owner
+  repo_name                            = var.repo_name
+  branch                               = var.branch
+  build_timeout                        = var.build_timeout
   webhook_enabled                      = var.webhook_enabled
-  webhook_target_action                = var.webhook_target_action
-  webhook_authentication               = var.webhook_authentication
-  webhook_filter_json_path             = var.webhook_filter_json_path
-  webhook_filter_match_equals          = var.webhook_filter_match_equals
+  webhook_secret_length                = var.webhook_secret_length
+  webhook_events                       = var.webhook_events
   codepipeline_s3_bucket_force_destroy = var.codepipeline_s3_bucket_force_destroy
-  environment                          = var.environment
-  secrets                              = var.secrets
 
   // Autoscaling
-  autoscaling_enabled               = var.autoscaling_enabled
-  autoscaling_dimension             = var.autoscaling_dimension
-  autoscaling_min_capacity          = var.autoscaling_min_capacity
-  autoscaling_max_capacity          = var.autoscaling_max_capacity
-  autoscaling_scale_up_adjustment   = var.autoscaling_scale_up_adjustment
-  autoscaling_scale_up_cooldown     = var.autoscaling_scale_up_cooldown
-  autoscaling_scale_down_adjustment = var.autoscaling_scale_down_adjustment
-  autoscaling_scale_down_cooldown   = var.autoscaling_scale_down_cooldown
-
-  // ECS alarms
-  ecs_alarms_enabled                                    = var.ecs_alarms_enabled
-  ecs_alarms_cpu_utilization_high_threshold             = var.ecs_alarms_cpu_utilization_high_threshold
-  ecs_alarms_cpu_utilization_high_evaluation_periods    = var.ecs_alarms_cpu_utilization_high_evaluation_periods
-  ecs_alarms_cpu_utilization_high_period                = var.ecs_alarms_cpu_utilization_high_period
-  ecs_alarms_cpu_utilization_low_threshold              = var.ecs_alarms_cpu_utilization_low_threshold
-  ecs_alarms_cpu_utilization_low_evaluation_periods     = var.ecs_alarms_cpu_utilization_low_evaluation_periods
-  ecs_alarms_cpu_utilization_low_period                 = var.ecs_alarms_cpu_utilization_low_period
-  ecs_alarms_memory_utilization_high_threshold          = var.ecs_alarms_memory_utilization_high_threshold
-  ecs_alarms_memory_utilization_high_evaluation_periods = var.ecs_alarms_memory_utilization_high_evaluation_periods
-  ecs_alarms_memory_utilization_high_period             = var.ecs_alarms_memory_utilization_high_period
-  ecs_alarms_memory_utilization_low_threshold           = var.ecs_alarms_memory_utilization_low_threshold
-  ecs_alarms_memory_utilization_low_evaluation_periods  = var.ecs_alarms_memory_utilization_low_evaluation_periods
-  ecs_alarms_memory_utilization_low_period              = var.ecs_alarms_memory_utilization_low_period
-  ecs_alarms_cpu_utilization_high_alarm_actions         = [aws_sns_topic.sns_topic.arn]
-  ecs_alarms_cpu_utilization_high_ok_actions            = [aws_sns_topic.sns_topic.arn]
-  ecs_alarms_cpu_utilization_low_alarm_actions          = [aws_sns_topic.sns_topic.arn]
-  ecs_alarms_cpu_utilization_low_ok_actions             = [aws_sns_topic.sns_topic.arn]
-  ecs_alarms_memory_utilization_high_alarm_actions      = [aws_sns_topic.sns_topic.arn]
-  ecs_alarms_memory_utilization_high_ok_actions         = [aws_sns_topic.sns_topic.arn]
-  ecs_alarms_memory_utilization_low_alarm_actions       = [aws_sns_topic.sns_topic.arn]
-  ecs_alarms_memory_utilization_low_ok_actions          = [aws_sns_topic.sns_topic.arn]
-
-  // ALB and Target Group alarms
-  alb_target_group_alarms_enabled                   = var.alb_target_group_alarms_enabled
-  alb_target_group_alarms_evaluation_periods        = var.alb_target_group_alarms_evaluation_periods
-  alb_target_group_alarms_period                    = var.alb_target_group_alarms_period
-  alb_target_group_alarms_3xx_threshold             = var.alb_target_group_alarms_3xx_threshold
-  alb_target_group_alarms_4xx_threshold             = var.alb_target_group_alarms_4xx_threshold
-  alb_target_group_alarms_5xx_threshold             = var.alb_target_group_alarms_5xx_threshold
-  alb_target_group_alarms_response_time_threshold   = var.alb_target_group_alarms_response_time_threshold
-  alb_target_group_alarms_alarm_actions             = [aws_sns_topic.sns_topic.arn]
-  alb_target_group_alarms_ok_actions                = [aws_sns_topic.sns_topic.arn]
-  alb_target_group_alarms_insufficient_data_actions = [aws_sns_topic.sns_topic.arn]
+  autoscaling_min_capacity = var.autoscaling_min_capacity
+  autoscaling_max_capacity = var.autoscaling_max_capacity
 }

@@ -68,6 +68,7 @@
 | healthcheck_path | Healthcheck path | string | `/healthz` | no |
 | hostname | Atlantis URL | string | `` | no |
 | kms_key_id | KMS key ID used to encrypt SSM SecureString parameters | string | `` | no |
+| launch_type | The ECS launch type (valid options: FARGATE or EC2) | string | `FARGATE` | no |
 | name | Name of the application | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | `` | no |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | bool | `true` | no |

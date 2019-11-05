@@ -38,6 +38,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "launch_type" {
+  type        = string
+  description = "The ECS launch type (valid options: FARGATE or EC2)"
+  default     = "FARGATE"
+}
+
 variable "default_backend_image" {
   type        = string
   default     = "cloudposse/default-backend:0.1.2"
