@@ -354,7 +354,7 @@ resource "aws_iam_role_policy_attachment" "default" {
 }
 
 locals {
-  authentication_cognito_user_pool_arn = join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_arn.*.value) != "" ? join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_arn.*.value) : var.authentication_cognito_user_pool_arn
+  authentication_cognito_user_pool_arn = var.authentication_cognito_user_pool_arn != "" ? var.authentication_cognito_user_pool_arn : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_arn.*.value)
 
   authentication_cognito_user_pool_arn_ssm_name = var.authentication_cognito_user_pool_arn_ssm_name != "" ? var.authentication_cognito_user_pool_arn_ssm_name : format(
     var.chamber_format,
@@ -362,7 +362,7 @@ locals {
     "atlantis_cognito_user_pool_arn"
   )
 
-  authentication_cognito_user_pool_client_id = join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_client_id.*.value) != "" ? join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_client_id.*.value) : var.authentication_cognito_user_pool_client_id
+  authentication_cognito_user_pool_client_id = var.authentication_cognito_user_pool_client_id != "" ? var.authentication_cognito_user_pool_client_id : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_client_id.*.value)
 
   authentication_cognito_user_pool_client_id_ssm_name = var.authentication_cognito_user_pool_client_id_ssm_name != "" ? var.authentication_cognito_user_pool_client_id_ssm_name : format(
     var.chamber_format,
@@ -370,7 +370,7 @@ locals {
     "atlantis_cognito_user_pool_client_id"
   )
 
-  authentication_cognito_user_pool_domain = join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_domain.*.value) != "" ? join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_domain.*.value) : var.authentication_cognito_user_pool_domain
+  authentication_cognito_user_pool_domain = var.authentication_cognito_user_pool_domain != "" ? var.authentication_cognito_user_pool_domain : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_domain.*.value)
 
   authentication_cognito_user_pool_domain_ssm_name = var.authentication_cognito_user_pool_domain_ssm_name != "" ? var.authentication_cognito_user_pool_domain_ssm_name : format(
     var.chamber_format,
@@ -378,7 +378,7 @@ locals {
     "atlantis_cognito_user_pool_domain"
   )
 
-  authentication_oidc_client_id = join("", data.aws_ssm_parameter.atlantis_oidc_client_id.*.value) != "" ? join("", data.aws_ssm_parameter.atlantis_oidc_client_id.*.value) : var.authentication_oidc_client_id
+  authentication_oidc_client_id = var.authentication_oidc_client_id != "" ? var.authentication_oidc_client_id : join("", data.aws_ssm_parameter.atlantis_oidc_client_id.*.value)
 
   authentication_oidc_client_id_ssm_name = var.authentication_oidc_client_id_ssm_name != "" ? var.authentication_oidc_client_id_ssm_name : format(
     var.chamber_format,
@@ -386,7 +386,7 @@ locals {
     "atlantis_oidc_client_id"
   )
 
-  authentication_oidc_client_secret = join("", data.aws_ssm_parameter.atlantis_oidc_client_secret.*.value) != "" ? join("", data.aws_ssm_parameter.atlantis_oidc_client_secret.*.value) : var.authentication_oidc_client_secret
+  authentication_oidc_client_secret = var.authentication_oidc_client_secret != "" ? var.authentication_oidc_client_secret : join("", data.aws_ssm_parameter.atlantis_oidc_client_secret.*.value)
 
   authentication_oidc_client_secret_ssm_name = var.authentication_oidc_client_secret_ssm_name != "" ? var.authentication_oidc_client_secret_ssm_name : format(
     var.chamber_format,

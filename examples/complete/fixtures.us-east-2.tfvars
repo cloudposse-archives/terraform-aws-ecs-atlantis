@@ -38,10 +38,6 @@ github_oauth_token = "test"
 
 github_webhooks_token = "test"
 
-github_oauth_token_ssm_name = "test"
-
-github_webhooks_token_ssm_name = "test"
-
 atlantis_gh_user = "test"
 
 atlantis_gh_team_whitelist = "dev:plan,ops:*"
@@ -66,6 +62,8 @@ ecs_alarms_enabled = true
 
 parent_zone_id = "Z3SO0TKDDQ0RGG"
 
-short_name = "atlantis-test"
+short_name = "ecs-atlantis-test"
 
 default_backend_image = "cloudposse/default-backend:0.1.2"
+
+chamber_service = "ecs-atlantis-test"

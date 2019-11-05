@@ -101,6 +101,7 @@ module "atlantis" {
   ssh_private_key_name = var.ssh_private_key_name
   ssh_public_key_name  = var.ssh_public_key_name
   kms_key_id           = module.kms_key.key_id
+  chamber_service      = var.chamber_service
 
   atlantis_gh_user           = var.atlantis_gh_user
   atlantis_gh_team_whitelist = var.atlantis_gh_team_whitelist
@@ -160,8 +161,6 @@ module "atlantis" {
   codepipeline_enabled                 = var.codepipeline_enabled
   github_oauth_token                   = var.github_oauth_token
   github_webhooks_token                = var.github_webhooks_token
-  github_oauth_token_ssm_name          = var.github_oauth_token_ssm_name
-  github_webhooks_token_ssm_name       = var.github_webhooks_token_ssm_name
   repo_owner                           = var.repo_owner
   repo_name                            = var.repo_name
   branch                               = var.branch

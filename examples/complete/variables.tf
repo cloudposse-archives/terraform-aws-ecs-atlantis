@@ -88,6 +88,12 @@ variable "enabled" {
   description = "Whether to create the resources. Set to `false` to prevent the module from creating any resources"
 }
 
+variable "chamber_service" {
+  type        = string
+  default     = "atlantis"
+  description = "SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default."
+}
+
 variable "autoscaling_enabled" {
   type        = bool
   description = "A boolean to enable/disable Autoscaling policy for ECS Service"
@@ -258,18 +264,6 @@ variable "ssh_public_key_name" {
   type        = string
   default     = "atlantis_ssh_public_key"
   description = "Atlantis SSH public key name"
-}
-
-variable "github_oauth_token_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `github_oauth_token` if not provided"
-  default     = ""
-}
-
-variable "github_webhooks_token_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `github_webhooks_token` if not provided"
-  default     = ""
 }
 
 variable "security_group_ids" {
