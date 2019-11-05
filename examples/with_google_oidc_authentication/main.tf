@@ -2,49 +2,58 @@ provider "aws" {
   region = "${var.region}"
 }
 
-module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.8.1"
-  namespace  = "${var.namespace}"
-  stage      = "${var.stage}"
-  name       = "${var.name}"
-  cidr_block = "172.16.0.0/16"
-}
-
 data "aws_availability_zones" "available" {}
 
 locals {
   availability_zones = "${slice(data.aws_availability_zones.available.names, 0, 2)}"
 }
 
+module "vpc" {
+  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.8.1"
+  namespace  = var.namespace
+  stage      = var.stage
+  name       = var.name
+  delimiter  = var.delimiter
+  attributes = var.attributes
+  cidr_block = "172.16.0.0/16"
+  tags       = var.tags
+}
+
 module "subnets" {
-  source              = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.16.1"
-  availability_zones  = "${local.availability_zones}"
-  namespace           = "${var.namespace}"
-  stage               = "${var.stage}"
-  name                = "${var.name}"
-  region              = "${var.region}"
-  vpc_id              = "${module.vpc.vpc_id}"
-  igw_id              = "${module.vpc.igw_id}"
-  cidr_block          = "${module.vpc.vpc_cidr_block}"
-  nat_gateway_enabled = "true"
+  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.16.1"
+  availability_zones   = local.availability_zones
+  namespace            = var.namespace
+  stage                = var.stage
+  name                 = var.name
+  attributes           = var.attributes
+  delimiter            = var.delimiter
+  vpc_id               = module.vpc.vpc_id
+  igw_id               = module.vpc.igw_id
+  cidr_block           = module.vpc.vpc_cidr_block
+  nat_gateway_enabled  = true
+  nat_instance_enabled = false
+  tags                 = var.tags
 }
 
 module "alb" {
-  source                    = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.7.0"
-  name                      = "${var.name}"
-  namespace                 = "${var.namespace}"
-  stage                     = "${var.stage}"
-  attributes                = compact(concat(var.attributes, list("alb")))
-  vpc_id                    = module.vpc.vpc_id
-  ip_address_type           = "ipv4"
-  subnet_ids                = ["${module.subnets.public_subnet_ids}"]
-  security_group_ids        = ["${module.vpc.vpc_default_security_group_id}"]
-  access_logs_region        = "${var.region}"
-  https_enabled             = "true"
-  http_ingress_cidr_blocks  = ["0.0.0.0/0"]
-  https_ingress_cidr_blocks = ["0.0.0.0/0"]
-  certificate_arn           = "${var.certificate_arn}"
-  health_check_interval     = "60"
+  source                                  = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.7.0"
+  namespace                               = var.namespace
+  stage                                   = var.stage
+  name                                    = var.name
+  attributes                              = var.attributes
+  delimiter                               = var.delimiter
+  vpc_id                                  = module.vpc.vpc_id
+  security_group_ids                      = [module.vpc.vpc_default_security_group_id]
+  subnet_ids                              = module.subnets.public_subnet_ids
+  internal                                = false
+  http_enabled                            = true
+  alb_access_logs_s3_bucket_force_destroy = true
+  access_logs_enabled                     = true
+  access_logs_region                      = var.region
+  cross_zone_load_balancing_enabled       = true
+  http2_enabled                           = true
+  deletion_protection_enabled             = false
+  tags                                    = var.tags
 }
 
 module "ecs_cluster_label" {

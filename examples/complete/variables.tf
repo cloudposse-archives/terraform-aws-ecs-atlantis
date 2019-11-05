@@ -260,6 +260,18 @@ variable "ssh_public_key_name" {
   description = "Atlantis SSH public key name"
 }
 
+variable "github_oauth_token_ssm_name" {
+  type        = string
+  description = "SSM param name to lookup `github_oauth_token` if not provided"
+  default     = ""
+}
+
+variable "github_webhooks_token_ssm_name" {
+  type        = string
+  description = "SSM param name to lookup `github_webhooks_token` if not provided"
+  default     = ""
+}
+
 variable "security_group_ids" {
   type        = list(string)
   default     = []
