@@ -226,7 +226,7 @@ variable "policy_arn" {
 variable "webhook_enabled" {
   type        = bool
   description = "Set to false to prevent the module from creating any webhook resources"
-  default     = true
+  default     = false
 }
 
 variable "webhook_secret_length" {

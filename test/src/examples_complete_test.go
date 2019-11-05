@@ -31,7 +31,7 @@ func TestExamplesComplete(t *testing.T) {
 	terraformOptions.Targets = nil
 
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
-	terraform.Apply(t, terraformOptions)
+	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the value of an output variable
 	vpcCidr := terraform.Output(t, terraformOptions, "vpc_cidr")
