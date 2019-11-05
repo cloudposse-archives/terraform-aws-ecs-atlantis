@@ -34,8 +34,6 @@ func TestExamplesComplete(t *testing.T) {
 			terraform.Destroy(t, terraformOptions)
 			assert.Fail(t, fmt.Sprintf("Panicked: %v", r))
 		} else {
-			terraformOptions.Targets = targets
-			terraform.Destroy(t, terraformOptions)
 			terraformOptions.Targets = nil
 			terraform.Destroy(t, terraformOptions)
 		}
