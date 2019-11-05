@@ -28,9 +28,10 @@ locals {
 
 # GitHub tokens
 locals {
-  github_oauth_token          = join("", data.aws_ssm_parameter.atlantis_gh_token.*.value) != "" ? join("", data.aws_ssm_parameter.atlantis_gh_token.*.value) : var.github_oauth_token
+  github_oauth_token          = var.github_oauth_token != "" ? var.github_oauth_token : join("", data.aws_ssm_parameter.atlantis_gh_token.*.value)
   github_oauth_token_ssm_name = var.github_oauth_token_ssm_name != "" ? var.github_oauth_token_ssm_name : format(var.chamber_format, var.chamber_service, "atlantis_gh_token")
-  github_webhooks_token       = join("", data.aws_ssm_parameter.github_webhooks_token.*.value) != "" ? join("", data.aws_ssm_parameter.github_webhooks_token.*.value) : var.github_webhooks_token
+
+  github_webhooks_token = var.github_webhooks_token != "" ? var.github_webhooks_token : join("", data.aws_ssm_parameter.github_webhooks_token.*.value)
   github_webhooks_token_ssm_name = var.github_webhooks_token_ssm_name != "" ? var.github_webhooks_token_ssm_name : format(var.chamber_format, var.chamber_service, "github_webhooks_token"
   )
 }
@@ -79,11 +80,6 @@ module "ecs_web_app" {
     }
   ]
 
-  webhook_enabled             = var.webhook_enabled
-  github_webhook_events       = ["release"]
-  webhook_filter_json_path    = "$.action"
-  webhook_filter_match_equals = "published"
-
   container_image  = var.default_backend_image
   container_cpu    = var.container_cpu
   container_memory = var.container_memory
@@ -117,13 +113,19 @@ module "ecs_web_app" {
 
   alb_ingress_healthcheck_path = var.healthcheck_path
 
+  webhook_enabled             = var.webhook_enabled
+  github_webhook_events       = ["release"]
+  webhook_filter_json_path    = "$.action"
+  webhook_filter_match_equals = "published"
+
   github_oauth_token    = local.github_oauth_token
-  github_webhooks_token = var.github_webhooks_token
-  repo_owner            = var.repo_owner
-  repo_name             = var.repo_name
-  branch                = var.branch
-  build_timeout         = var.build_timeout
-  badge_enabled         = false
+  github_webhooks_token = local.github_webhooks_token
+
+  repo_owner    = var.repo_owner
+  repo_name     = var.repo_name
+  branch        = var.branch
+  build_timeout = var.build_timeout
+  badge_enabled = false
 
   codepipeline_enabled                 = var.codepipeline_enabled
   codepipeline_s3_bucket_force_destroy = var.codepipeline_s3_bucket_force_destroy
