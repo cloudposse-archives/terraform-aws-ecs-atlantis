@@ -1,35 +1,41 @@
+variable "region" {
+  type        = string
+  description = "AWS Region for S3 bucket"
+}
+
 variable "namespace" {
   type        = string
   description = "Namespace (e.g. `eg` or `cp`)"
+  default     = ""
 }
 
 variable "stage" {
   type        = string
   description = "Stage (e.g. `prod`, `dev`, `staging`)"
+  default     = ""
 }
 
 variable "name" {
   type        = string
-  description = "Application or solution name (e.g. `app`)"
-  default     = "ecs"
+  description = "Name of the application"
 }
 
 variable "delimiter" {
   type        = string
   default     = "-"
-  description = "Delimiter to be used between `namespace`, `stage`, `name` and `attributes`"
+  description = "Delimiter between `namespace`, `stage`, `name` and `attributes`"
 }
 
 variable "attributes" {
   type        = list(string)
+  description = "Additional attributes (_e.g._ \"1\")"
   default     = []
-  description = "Additional attributes (e.g. `1`)"
 }
 
 variable "tags" {
   type        = map(string)
+  description = "Additional tags (_e.g._ { BusinessUnit : ABC })"
   default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
 
 variable "default_backend_image" {
@@ -63,18 +69,20 @@ variable "github_webhooks_token_ssm_name" {
 }
 
 variable "codepipeline_s3_bucket_force_destroy" {
+  type        = bool
   description = "A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error"
   default     = false
 }
 
 variable "enabled" {
-  type        = string
-  default     = "false"
+  type        = bool
+  default     = false
   description = "Whether to create the resources. Set to `false` to prevent the module from creating any resources"
 }
 
 variable "build_timeout" {
-  default     = 5
+  type        = number
+  default     = 10
   description = "How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed."
 }
 
@@ -113,22 +121,25 @@ variable "healthcheck_path" {
 }
 
 variable "chamber_format" {
+  type        = string
   default     = "/%s/%s"
   description = "Format to store parameters in SSM, for consumption with chamber"
 }
 
 variable "chamber_service" {
+  type        = string
   default     = "atlantis"
   description = "SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default."
 }
 
 variable "desired_count" {
-  type        = string
+  type        = number
   description = "Atlantis desired number of tasks"
-  default     = "1"
+  default     = 1
 }
 
 variable "short_name" {
+  type        = string
   description = "Alantis Short DNS name (E.g. `atlantis`)"
   default     = "atlantis"
 }
@@ -163,14 +174,14 @@ variable "atlantis_log_level" {
 }
 
 variable "atlantis_port" {
-  type        = string
+  type        = number
   description = "Atlantis container port"
-  default     = "4141"
+  default     = 4141
 }
 
 variable "atlantis_wake_word" {
   type        = string
-  description = "Wake world for Atlantis"
+  description = "Wake world for atlantis"
   default     = "atlantis"
 }
 
@@ -187,27 +198,27 @@ variable "atlantis_url_format" {
 }
 
 variable "autoscaling_min_capacity" {
-  type        = string
+  type        = number
   description = "Atlantis minimum tasks to run"
-  default     = "1"
+  default     = 1
 }
 
 variable "autoscaling_max_capacity" {
-  type        = string
+  type        = number
   description = "Atlantis maximum tasks to run"
-  default     = "1"
+  default     = 1
 }
 
 variable "container_cpu" {
-  type        = string
+  type        = number
   description = "Atlantis CPUs per task"
-  default     = "256"
+  default     = 256
 }
 
 variable "container_memory" {
-  type        = string
+  type        = number
   description = "Atlantis memory per task"
-  default     = "512"
+  default     = 512
 }
 
 variable "policy_arn" {
@@ -222,7 +233,14 @@ variable "kms_key_id" {
   description = "KMS key ID used to encrypt SSM SecureString parameters"
 }
 
+variable "webhook_enabled" {
+  type        = bool
+  description = "Set to false to prevent the module from creating any webhook resources"
+  default     = true
+}
+
 variable "webhook_secret_length" {
+  type        = number
   default     = 32
   description = "GitHub webhook secret length"
 }
@@ -322,12 +340,6 @@ variable "private_subnet_ids" {
   description = "The private subnet IDs"
 }
 
-variable "region" {
-  type        = string
-  description = "AWS Region for Atlantis deployment"
-  default     = "us-west-2"
-}
-
 variable "parent_zone_id" {
   type        = string
   description = "The zone ID where the DNS record for the `short_name` will be written"
@@ -335,20 +347,20 @@ variable "parent_zone_id" {
 }
 
 variable "overwrite_ssm_parameter" {
-  type        = string
-  default     = "true"
+  type        = bool
+  default     = true
   description = "Whether to overwrite an existing SSM parameter"
 }
 
 variable "alb_ingress_listener_unauthenticated_priority" {
-  type        = string
-  default     = "50"
+  type        = number
+  default     = 50
   description = "The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority"
 }
 
 variable "alb_ingress_listener_authenticated_priority" {
-  type        = string
-  default     = "100"
+  type        = number
+  default     = 100
   description = "The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority"
 }
 
@@ -383,8 +395,8 @@ variable "alb_ingress_unauthenticated_listener_arns" {
 }
 
 variable "alb_ingress_unauthenticated_listener_arns_count" {
-  type        = string
-  default     = "0"
+  type        = number
+  default     = 0
   description = "The number of unauthenticated ARNs in `alb_ingress_unauthenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed"
 }
 
@@ -395,8 +407,8 @@ variable "alb_ingress_authenticated_listener_arns" {
 }
 
 variable "alb_ingress_authenticated_listener_arns_count" {
-  type        = string
-  default     = "0"
+  type        = number
+  default     = 0
   description = "The number of authenticated ARNs in `alb_ingress_authenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed"
 }
 

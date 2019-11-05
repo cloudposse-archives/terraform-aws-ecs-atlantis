@@ -18,12 +18,12 @@ data "aws_kms_key" "chamber_kms_key" {
 # Locals
 #--------------------------------------------------------------
 locals {
-  atlantis_gh_webhook_secret = var.atlantis_gh_webhook_secret != "" ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)
+  hostname                   = var.hostname != "" ? var.hostname : local.default_hostname
   atlantis_webhook_url       = format(var.atlantis_webhook_format, local.hostname)
   atlantis_url               = format(var.atlantis_url_format, local.hostname)
+  atlantis_gh_webhook_secret = var.atlantis_gh_webhook_secret != "" ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)
   attributes                 = concat([var.short_name], var.attributes)
   default_hostname           = join("", aws_route53_record.default.*.fqdn)
-  hostname                   = var.hostname != "" ? var.hostname : local.default_hostname
   kms_key_id                 = var.kms_key_id != "" ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)
 }
 
@@ -52,7 +52,7 @@ module "ssh_key_pair" {
 
 module "webhooks" {
   source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.5.0"
-  enabled             = var.enabled
+  enabled             = var.enabled && var.webhook_enabled
   github_token        = local.github_webhooks_token
   webhook_secret      = local.atlantis_gh_webhook_secret
   webhook_url         = local.atlantis_webhook_url
@@ -61,7 +61,7 @@ module "webhooks" {
   events              = var.webhook_events
 }
 
-module "web_app" {
+module "ecs_web_app" {
   source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.24.0"
   namespace  = var.namespace
   stage      = var.stage
@@ -78,6 +78,7 @@ module "web_app" {
     }
   ]
 
+  webhook_enabled             = var.webhook_enabled
   github_webhook_events       = ["release"]
   webhook_filter_json_path    = "$.action"
   webhook_filter_match_equals = "published"
@@ -180,7 +181,7 @@ resource "aws_route53_record" "default" {
   alias {
     name                   = var.alb_dns_name
     zone_id                = var.alb_zone_id
-    evaluate_target_health = "false"
+    evaluate_target_health = false
   }
 }
 
@@ -242,7 +243,7 @@ resource "aws_ssm_parameter" "atlantis_iam_role_arn" {
   name        = format(var.chamber_format, var.chamber_service, "atlantis_iam_role_arn")
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
-  value       = module.web_app.ecs_task_role_arn
+  value       = module.ecs_web_app.ecs_task_role_arn
 }
 
 resource "aws_ssm_parameter" "atlantis_log_level" {
@@ -306,7 +307,7 @@ resource "aws_security_group_rule" "egress_http" {
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 80
   protocol          = "tcp"
-  security_group_id = module.web_app.ecs_service_security_group_id
+  security_group_id = module.ecs_web_app.ecs_service_security_group_id
   to_port           = 80
   type              = "egress"
 }
@@ -316,7 +317,7 @@ resource "aws_security_group_rule" "egress_https" {
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 443
   protocol          = "tcp"
-  security_group_id = module.web_app.ecs_service_security_group_id
+  security_group_id = module.ecs_web_app.ecs_service_security_group_id
   to_port           = 443
   type              = "egress"
 }
@@ -326,7 +327,7 @@ resource "aws_security_group_rule" "egress_udp_dns" {
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 53
   protocol          = "udp"
-  security_group_id = module.web_app.ecs_service_security_group_id
+  security_group_id = module.ecs_web_app.ecs_service_security_group_id
   to_port           = 53
   type              = "egress"
 }
@@ -336,14 +337,14 @@ resource "aws_security_group_rule" "egress_tcp_dns" {
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 53
   protocol          = "tcp"
-  security_group_id = module.web_app.ecs_service_security_group_id
+  security_group_id = module.ecs_web_app.ecs_service_security_group_id
   to_port           = 53
   type              = "egress"
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
   count      = var.enabled ? 1 : 0
-  role       = module.web_app.ecs_task_role_name
+  role       = module.ecs_web_app.ecs_task_role_name
   policy_arn = var.policy_arn
 
   lifecycle {
