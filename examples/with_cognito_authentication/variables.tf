@@ -37,7 +37,7 @@ variable "tags" {
 variable "region" {
   type        = string
   description = "AWS Region"
-  default     = "us-west-2"
+  default     = "us-east-2"
 }
 
 variable "certificate_arn" {

@@ -37,7 +37,7 @@ variable "tags" {
 variable "region" {
   type        = "string"
   description = "AWS Region"
-  default     = "us-west-2"
+  default     = "us-east-2"
 }
 
 variable "certificate_arn" {
@@ -92,15 +92,15 @@ variable "atlantis_branch" {
 }
 
 variable "atlantis_container_cpu" {
-  type        = "string"
+  type        = number
   description = "The vCPU setting to control cpu limits of container. (If FARGATE launch type is used below, this must be a supported vCPU size from the table here: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html)"
-  default     = "256"
+  default     = 256
 }
 
 variable "atlantis_container_memory" {
-  type        = "string"
+  type        = number
   description = "The amount of RAM to allow container to use in MB. (If FARGATE launch type is used below, this must be a supported Memory size from the table here: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html)"
-  default     = "512"
+  default     = 512
 }
 
 variable "parent_zone_id" {
