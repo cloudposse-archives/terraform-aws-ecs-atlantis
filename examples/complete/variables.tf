@@ -3,6 +3,16 @@ variable "region" {
   description = "AWS Region for S3 bucket"
 }
 
+variable "availability_zones" {
+  type        = list(string)
+  description = "List of availability zones"
+}
+
+variable "vpc_cidr_block" {
+  type        = string
+  description = "VPC CIDR block"
+}
+
 variable "namespace" {
   type        = string
   description = "Namespace (e.g. `eg` or `cp`)"
@@ -53,25 +63,17 @@ variable "default_backend_image" {
 variable "github_oauth_token" {
   type        = string
   description = "GitHub OAuth token. If not provided the token is looked up from SSM"
-  default     = ""
 }
 
 variable "github_webhooks_token" {
   type        = string
   description = "GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM"
-  default     = ""
 }
 
-variable "github_oauth_token_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `github_oauth_token` if not provided"
-  default     = ""
-}
-
-variable "github_webhooks_token_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `github_webhooks_token` if not provided"
-  default     = ""
+variable "codepipeline_enabled" {
+  type        = bool
+  description = "A boolean to enable/disable AWS Codepipeline and ECR"
+  default     = true
 }
 
 variable "codepipeline_s3_bucket_force_destroy" {
@@ -82,19 +84,25 @@ variable "codepipeline_s3_bucket_force_destroy" {
 
 variable "enabled" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether to create the resources. Set to `false` to prevent the module from creating any resources"
 }
 
-variable "codepipeline_enabled" {
+variable "chamber_service" {
+  type        = string
+  default     = "atlantis"
+  description = "SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default."
+}
+
+variable "autoscaling_enabled" {
   type        = bool
-  description = "A boolean to enable/disable AWS Codepipeline and ECR"
-  default     = false
+  description = "A boolean to enable/disable Autoscaling policy for ECS Service"
+  default     = true
 }
 
 variable "build_timeout" {
   type        = number
-  default     = 10
+  default     = 20
   description = "How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed."
 }
 
@@ -126,28 +134,10 @@ variable "atlantis_repo_whitelist" {
   default     = []
 }
 
-variable "autoscaling_enabled" {
-  type        = bool
-  description = "A boolean to enable/disable Autoscaling policy for ECS Service"
-  default     = false
-}
-
 variable "healthcheck_path" {
   type        = string
   description = "Healthcheck path"
   default     = "/healthz"
-}
-
-variable "chamber_format" {
-  type        = string
-  default     = "/%s/%s"
-  description = "Format to store parameters in SSM, for consumption with chamber"
-}
-
-variable "chamber_service" {
-  type        = string
-  default     = "atlantis"
-  description = "SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default."
 }
 
 variable "desired_count" {
@@ -197,12 +187,6 @@ variable "atlantis_port" {
   default     = 4141
 }
 
-variable "atlantis_wake_word" {
-  type        = string
-  description = "Wake world for atlantis"
-  default     = "atlantis"
-}
-
 variable "atlantis_webhook_format" {
   type        = string
   default     = "https://%s/events"
@@ -245,16 +229,10 @@ variable "policy_arn" {
   description = "Permission to grant to atlantis server"
 }
 
-variable "kms_key_id" {
-  type        = string
-  default     = ""
-  description = "KMS key ID used to encrypt SSM SecureString parameters"
-}
-
 variable "webhook_enabled" {
   type        = bool
   description = "Set to false to prevent the module from creating any webhook resources"
-  default     = true
+  default     = false
 }
 
 variable "webhook_secret_length" {
@@ -288,129 +266,16 @@ variable "ssh_public_key_name" {
   description = "Atlantis SSH public key name"
 }
 
-variable "vpc_id" {
-  type        = string
-  description = "VPC ID for the ECS Cluster"
-}
-
-variable "alb_arn_suffix" {
-  type        = string
-  description = "The ARN suffix of the ALB"
-}
-
-variable "alb_security_group" {
-  type        = string
-  description = "Security group of the ALB"
-}
-
-variable "alb_target_group_alarms_alarm_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an ALARM state from any other state."
-  default     = []
-}
-
-variable "alb_target_group_alarms_ok_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an OK state from any other state."
-  default     = []
-}
-
-variable "alb_target_group_alarms_insufficient_data_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT_DATA state from any other state."
-  default     = []
-}
-
-variable "ecs_alarms_cpu_utilization_high_alarm_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High Alarm action"
-  default     = []
-}
-
-variable "ecs_alarms_cpu_utilization_high_ok_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High OK action"
-  default     = []
-}
-
-variable "ecs_alarms_cpu_utilization_low_alarm_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization Low Alarm action"
-  default     = []
-}
-
-variable "ecs_alarms_cpu_utilization_low_ok_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization Low OK action"
-  default     = []
-}
-
-variable "ecs_alarms_memory_utilization_high_alarm_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization High Alarm action"
-  default     = []
-}
-
-variable "ecs_alarms_memory_utilization_high_ok_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization High OK action"
-  default     = []
-}
-
-variable "ecs_alarms_memory_utilization_low_alarm_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low Alarm action"
-  default     = []
-}
-
-variable "ecs_alarms_memory_utilization_low_ok_actions" {
-  type        = list(string)
-  description = "A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low OK action"
-  default     = []
-}
-
-variable "alb_dns_name" {
-  type        = string
-  description = "DNS name of ALB"
-}
-
-variable "alb_zone_id" {
-  type        = string
-  description = "The ID of the zone in which ALB is provisioned"
-}
-
-variable "ecs_cluster_name" {
-  type        = string
-  description = "Name of the ECS cluster to deploy Atlantis"
-}
-
-variable "ecs_cluster_arn" {
-  type        = string
-  description = "ARN of the ECS cluster to deploy Atlantis"
-}
-
 variable "security_group_ids" {
   type        = list(string)
   default     = []
   description = "Additional Security Group IDs to allow into ECS Service."
 }
 
-variable "private_subnet_ids" {
-  type        = list(string)
-  default     = []
-  description = "The private subnet IDs"
-}
-
 variable "parent_zone_id" {
   type        = string
   description = "The zone ID where the DNS record for the `short_name` will be written"
   default     = ""
-}
-
-variable "overwrite_ssm_parameter" {
-  type        = bool
-  default     = true
-  description = "Whether to overwrite an existing SSM parameter"
 }
 
 variable "alb_ingress_listener_unauthenticated_priority" {
@@ -447,30 +312,6 @@ variable "alb_ingress_authenticated_paths" {
   type        = list(string)
   default     = ["/*"]
   description = "Authenticated path pattern to match (a maximum of 1 can be defined)"
-}
-
-variable "alb_ingress_unauthenticated_listener_arns" {
-  type        = list(string)
-  default     = []
-  description = "A list of unauthenticated ALB listener ARNs to attach ALB listener rules to"
-}
-
-variable "alb_ingress_unauthenticated_listener_arns_count" {
-  type        = number
-  default     = 0
-  description = "The number of unauthenticated ARNs in `alb_ingress_unauthenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed"
-}
-
-variable "alb_ingress_authenticated_listener_arns" {
-  type        = list(string)
-  default     = []
-  description = "A list of authenticated ALB listener ARNs to attach ALB listener rules to"
-}
-
-variable "alb_ingress_authenticated_listener_arns_count" {
-  type        = number
-  default     = 0
-  description = "The number of authenticated ARNs in `alb_ingress_authenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed"
 }
 
 variable "authentication_type" {
@@ -533,40 +374,10 @@ variable "authentication_oidc_user_info_endpoint" {
   default     = ""
 }
 
-variable "authentication_cognito_user_pool_arn_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `authentication_cognito_user_pool_arn` if not provided"
-  default     = ""
-}
-
-variable "authentication_cognito_user_pool_client_id_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `authentication_cognito_user_pool_client_id` if not provided"
-  default     = ""
-}
-
-variable "authentication_cognito_user_pool_domain_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `authentication_cognito_user_pool_domain` if not provided"
-  default     = ""
-}
-
-variable "authentication_oidc_client_id_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `authentication_oidc_client_id` if not provided"
-  default     = ""
-}
-
-variable "authentication_oidc_client_secret_ssm_name" {
-  type        = string
-  description = "SSM param name to lookup `authentication_oidc_client_secret` if not provided"
-  default     = ""
-}
-
 variable "alb_target_group_alarms_enabled" {
   type        = bool
   description = "A boolean to enable/disable CloudWatch Alarms for ALB Target metrics"
-  default     = false
+  default     = true
 }
 
 variable "ecs_alarms_enabled" {
