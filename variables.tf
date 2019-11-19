@@ -44,12 +44,6 @@ variable "github_oauth_token" {
   default     = ""
 }
 
-variable "github_webhooks_token" {
-  type        = "string"
-  description = "GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM"
-  default     = ""
-}
-
 variable "github_oauth_token_ssm_name" {
   type        = "string"
   description = "SSM param name to lookup `github_oauth_token` if not provided"

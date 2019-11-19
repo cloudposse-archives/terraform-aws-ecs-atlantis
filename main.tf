@@ -76,7 +76,7 @@ module "webhooks" {
 }
 
 module "web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.23.0"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=0.11/extract-provider"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
@@ -130,7 +130,6 @@ module "web_app" {
   alb_ingress_healthcheck_path = "${var.healthcheck_path}"
 
   github_oauth_token    = "${local.github_oauth_token}"
-  github_webhooks_token = "${local.github_webhooks_token}"
   repo_owner            = "${var.repo_owner}"
   repo_name             = "${var.repo_name}"
   branch                = "${var.branch}"
