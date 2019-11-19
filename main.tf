@@ -18,11 +18,6 @@ data "aws_ssm_parameter" "atlantis_gh_token" {
   name  = "${local.github_oauth_token_ssm_name}"
 }
 
-data "aws_ssm_parameter" "github_webhooks_token" {
-  count = "${local.enabled && length(var.github_webhooks_token) == 0 ? 1 : 0}"
-  name  = "${local.github_webhooks_token_ssm_name}"
-}
-
 data "aws_kms_key" "chamber_kms_key" {
   count  = "${local.enabled && length(var.kms_key_id) == 0 ? 1 : 0}"
   key_id = "${local.kms_key_id}"
@@ -45,9 +40,6 @@ locals {
 locals {
   github_oauth_token          = "${length(join("", data.aws_ssm_parameter.atlantis_gh_token.*.value)) > 0 ? join("", data.aws_ssm_parameter.atlantis_gh_token.*.value) : var.github_oauth_token}"
   github_oauth_token_ssm_name = "${length(var.github_oauth_token_ssm_name) > 0 ? var.github_oauth_token_ssm_name : format(var.chamber_format, var.chamber_service, "atlantis_gh_token")}"
-
-  github_webhooks_token          = "${length(join("", data.aws_ssm_parameter.github_webhooks_token.*.value)) > 0 ? join("", data.aws_ssm_parameter.github_webhooks_token.*.value) : var.github_webhooks_token}"
-  github_webhooks_token_ssm_name = "${length(var.github_webhooks_token_ssm_name) > 0 ? var.github_webhooks_token_ssm_name : format(var.chamber_format, var.chamber_service, "github_webhooks_token")}"
 }
 
 # Modules
@@ -65,12 +57,10 @@ module "ssh_key_pair" {
 }
 
 module "webhooks" {
-  source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.4.0"
-  github_token        = "${local.github_webhooks_token}"
+  source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=0.11/extract-provider"
   webhook_secret      = "${local.atlantis_gh_webhook_secret}"
   webhook_url         = "${local.atlantis_webhook_url}"
   enabled             = "${local.enabled}"
-  github_organization = "${var.repo_owner}"
   github_repositories = ["${var.repo_name}"]
   events              = ["${var.webhook_events}"]
 }
@@ -299,16 +289,6 @@ resource "aws_ssm_parameter" "atlantis_gh_token" {
   overwrite   = "${var.overwrite_ssm_parameter}"
   type        = "SecureString"
   value       = "${local.github_oauth_token}"
-}
-
-resource "aws_ssm_parameter" "github_webhooks_token" {
-  count       = "${local.enabled ? 1 : 0}"
-  description = "GitHub OAuth token with permission to create webhooks"
-  key_id      = "${join("", data.aws_kms_key.chamber_kms_key.*.id)}"
-  name        = "${local.github_webhooks_token_ssm_name}"
-  overwrite   = "${var.overwrite_ssm_parameter}"
-  type        = "SecureString"
-  value       = "${local.github_webhooks_token}"
 }
 
 resource "aws_security_group_rule" "egress_http" {
