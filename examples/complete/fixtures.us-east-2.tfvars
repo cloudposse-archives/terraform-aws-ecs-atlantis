@@ -36,6 +36,8 @@ webhook_enabled = false
 
 github_oauth_token = "test"
 
+github_webhooks_token = "test"
+
 atlantis_gh_user = "test"
 
 atlantis_gh_team_whitelist = "dev:plan,ops:*"

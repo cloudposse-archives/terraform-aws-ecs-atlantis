@@ -51,16 +51,21 @@ module "ssh_key_pair" {
   kms_key_id           = local.kms_key_id
 }
 
-module "webhooks" {
-  source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.8.0"
-  enabled             = var.enabled && var.webhook_enabled
-  github_token        = local.github_webhooks_token
-  webhook_secret      = local.atlantis_gh_webhook_secret
-  webhook_url         = local.atlantis_webhook_url
-  github_organization = var.repo_owner
-  github_repositories = [var.repo_name]
-  events              = var.webhook_events
+module "github_webhooks" {
+  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.8.0"
+  enabled              = var.enabled && var.webhook_enabled ? true : false
+  github_anonymous     = var.github_anonymous
+  github_organization  = var.repo_owner
+  github_repositories  = [var.repo_name]
+  github_token         = var.github_webhooks_token
+  webhook_url          = local.webhook_url
+  webhook_secret       = local.webhook_secret
+  webhook_content_type = "json"
+  events               = var.github_webhook_events
 }
+
+
+
 
 module "ecs_web_app" {
   source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.31.0"
