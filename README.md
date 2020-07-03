@@ -42,7 +42,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-ecs-atlantis [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-ecs-atlantis?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5dc082b14d7990012e651a3b) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-atlantis.svg)](https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-ecs-atlantis [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-atlantis.svg)](https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 ![terraform-aws-ecs-atlantis](docs/logo.png)
