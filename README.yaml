@@ -1,75 +1,57 @@
----
-#
-# This is the canonical configuration for the `README.md`
-# Run `make readme` to rebuild the `README.md`
-#
-
-# Name of this project
 name: terraform-aws-ecs-atlantis
-
-# Logo for this project
 logo: docs/logo.png
-
-# License of this project
-license: "APACHE2"
-
-# Canonical GitHub repo
+license: APACHE2
 github_repo: cloudposse/terraform-aws-ecs-atlantis
-
-# Screenshots
 screenshots:
-  - name: "demo"
-    description: "Example of a Pull Request comment from running `terraform plan` using `atlantis`"
-    url: "docs/example.png"
-
-# Badges to display
+- name: demo
+  description: Example of a Pull Request comment from running `terraform plan` using
+    `atlantis`
+  url: docs/example.png
 badges:
-  - name: "Codefresh Build Status"
-    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-ecs-atlantis?type=cf-1"
-    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5dc082b14d7990012e651a3b"
-  - name: "Latest Release"
-    image: "https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-atlantis.svg"
-    url: "https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases/latest"
-  - name: "Slack Community"
-    image: "https://slack.cloudposse.com/badge.svg"
-    url: "https://slack.cloudposse.com"
-
+- name: Latest Release
+  image: https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-atlantis.svg
+  url: https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases/latest
+- name: Slack Community
+  image: https://slack.cloudposse.com/badge.svg
+  url: https://slack.cloudposse.com
 related:
-  - name: "terraform-aws-ecs-web-app"
-    description: "Terraform module that implements a web app on ECS and supports autoscaling, CI/CD, monitoring, ALB integration, and much more"
-    url: "https://github.com/cloudposse/terraform-aws-ecs-web-app"
-  - name: "terraform-aws-alb"
-    description: "Terraform module to provision a standard ALB for HTTP/HTTP traffic"
-    url: "https://github.com/cloudposse/terraform-aws-alb"
-  - name: "terraform-aws-alb-ingress"
-    description: "Terraform module to provision an HTTP style ingress rule based on hostname and path for an ALB"
-    url: "https://github.com/cloudposse/terraform-aws-alb-ingress"
-  - name: "terraform-aws-codebuild"
-    description: "Terraform Module to easily leverage AWS CodeBuild for Continuous Integration"
-    url: "https://github.com/cloudposse/terraform-aws-codebuild"
-  - name: "terraform-aws-ecr"
-    description: "Terraform Module to manage Docker Container Registries on AWS ECR"
-    url: "https://github.com/cloudposse/terraform-aws-ecr"
-  - name: "terraform-aws-ecs-alb-service-task"
-    description: "Terraform module which implements an ECS service which exposes a web service via ALB."
-    url: "https://github.com/cloudposse/terraform-aws-ecs-alb-service-task"
-  - name: "terraform-aws-ecs-codepipeline"
-    description: "Terraform Module for CI/CD with AWS Code Pipeline and Code Build for ECS"
-    url: "https://github.com/cloudposse/terraform-aws-ecs-codepipeline"
-  - name: "terraform-aws-ecs-container-definition"
-    description: "Terraform module to generate well-formed JSON documents that are passed to the aws_ecs_task_definition Terraform resource"
-    url: "https://github.com/cloudposse/terraform-aws-ecs-container-definition"
-  - name: "terraform-aws-lb-s3-bucket"
-    description: "Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs."
-    url: "https://github.com/cloudposse/terraform-aws-lb-s3-bucket"
-
-
-# Short description of this project
-description: |-
+- name: terraform-aws-ecs-web-app
+  description: Terraform module that implements a web app on ECS and supports autoscaling,
+    CI/CD, monitoring, ALB integration, and much more
+  url: https://github.com/cloudposse/terraform-aws-ecs-web-app
+- name: terraform-aws-alb
+  description: Terraform module to provision a standard ALB for HTTP/HTTP traffic
+  url: https://github.com/cloudposse/terraform-aws-alb
+- name: terraform-aws-alb-ingress
+  description: Terraform module to provision an HTTP style ingress rule based on hostname
+    and path for an ALB
+  url: https://github.com/cloudposse/terraform-aws-alb-ingress
+- name: terraform-aws-codebuild
+  description: Terraform Module to easily leverage AWS CodeBuild for Continuous Integration
+  url: https://github.com/cloudposse/terraform-aws-codebuild
+- name: terraform-aws-ecr
+  description: Terraform Module to manage Docker Container Registries on AWS ECR
+  url: https://github.com/cloudposse/terraform-aws-ecr
+- name: terraform-aws-ecs-alb-service-task
+  description: Terraform module which implements an ECS service which exposes a web
+    service via ALB.
+  url: https://github.com/cloudposse/terraform-aws-ecs-alb-service-task
+- name: terraform-aws-ecs-codepipeline
+  description: Terraform Module for CI/CD with AWS Code Pipeline and Code Build for
+    ECS
+  url: https://github.com/cloudposse/terraform-aws-ecs-codepipeline
+- name: terraform-aws-ecs-container-definition
+  description: Terraform module to generate well-formed JSON documents that are passed
+    to the aws_ecs_task_definition Terraform resource
+  url: https://github.com/cloudposse/terraform-aws-ecs-container-definition
+- name: terraform-aws-lb-s3-bucket
+  description: Terraform module to provision an S3 bucket with built in IAM policy
+    to allow AWS Load Balancers to ship access logs.
+  url: https://github.com/cloudposse/terraform-aws-lb-s3-bucket
+description: |2-
 
   A Terraform module for deploying [Atlantis](https://runatlantis.io) to an AWS ECS cluster.
-
-introduction: |-
+introduction: |2-
 
   Atlantis enables GitOps workflows so that teams can collaborate on operations using Pull Requests.
 
@@ -155,9 +137,7 @@ introduction: |-
     chamber write atlantis atlantis_gh_token "....."
     chamber write atlantis github_webhooks_token "....."
   ```
-
-# How to use this project
-usage: |-
+usage: |2-
 
   For a complete example, see [examples/complete](examples/complete).
 
@@ -369,32 +349,19 @@ usage: |-
       ecs_alarms_memory_utilization_low_ok_actions      = [aws_sns_topic.sns_topic.arn]
     }
   ```
-
-# Example usage
-#examples: |-
-#  Example goes here...
-
-# How to get started quickly
-#quickstart: |-
-#  Here's how to get started...
-
-# Other files to include in this README from the project folder
 include:
-  - "docs/targets.md"
-  - "docs/terraform.md"
-
+- docs/targets.md
+- docs/terraform.md
 references:
-  - name: "atlantis"
-    description: "Official home of the Atlantis project"
-    url: "https://runatlantis.io"
-
-# Contributors to this project
+- name: atlantis
+  description: Official home of the Atlantis project
+  url: https://runatlantis.io
 contributors:
-  - name: "Josh Myers"
-    github: "joshmyers"
-  - name: "Erik Osterman"
-    github: "osterman"
-  - name: "Andriy Knysh"
-    github: "aknysh"
-  - name: "Igor Rodionov"
-    github: "goruha"
+- name: Josh Myers
+  github: joshmyers
+- name: Erik Osterman
+  github: osterman
+- name: Andriy Knysh
+  github: aknysh
+- name: Igor Rodionov
+  github: goruha
