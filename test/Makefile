@@ -4,6 +4,9 @@ TEST_HARNESS_PATH = $(realpath .test-harness)
 BATS_ARGS ?= --tap
 BATS_LOG ?= test.log
 
+# Expose GitHub Token as github_webhooks_token variable so that SSM does not fail
+export TF_VAR_github_webhooks_token ?= $(GITHUB_TOKEN)
+
 # Define a macro to run the tests
 define RUN_TESTS
 @echo "Running tests in $(1)"
