@@ -68,6 +68,7 @@ variable "github_oauth_token" {
 variable "github_webhooks_token" {
   type        = string
   description = "GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM"
+  default     = ""
 }
 
 variable "codepipeline_enabled" {
