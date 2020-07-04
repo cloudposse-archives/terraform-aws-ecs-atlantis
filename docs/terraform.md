@@ -89,6 +89,7 @@
 | ecs\_cluster\_arn | ARN of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
 | ecs\_cluster\_name | Name of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
 | enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | `bool` | `false` | no |
+| github\_anonymous | Github Anonymous API (if `true`, token must not be set as GITHUB\_TOKEN or `github_token`) | `bool` | `false` | no |
 | github\_oauth\_token | GitHub OAuth token. If not provided the token is looked up from SSM | `string` | `""` | no |
 | github\_oauth\_token\_ssm\_name | SSM param name to lookup `github_oauth_token` if not provided | `string` | `""` | no |
 | github\_webhooks\_token | GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM | `string` | `""` | no |
@@ -141,8 +142,8 @@
 | container\_definition\_json | JSON encoded list of container definitions for use with other terraform resources such as aws\_ecs\_task\_definition |
 | container\_definition\_json\_map | JSON encoded container definitions for use with other terraform resources such as aws\_ecs\_task\_definition |
 | ecr\_registry\_id | Registry ID |
-| ecr\_registry\_url | Registry URL |
-| ecr\_repository\_name | Registry name |
+| ecr\_repository\_name | Repository name |
+| ecr\_repository\_url | Repository URL |
 | ecs\_alarms\_cpu\_utilization\_high\_cloudwatch\_metric\_alarm\_arn | ECS CPU utilization high CloudWatch metric alarm ARN |
 | ecs\_alarms\_cpu\_utilization\_high\_cloudwatch\_metric\_alarm\_id | ECS CPU utilization high CloudWatch metric alarm ID |
 | ecs\_alarms\_cpu\_utilization\_low\_cloudwatch\_metric\_alarm\_arn | ECS CPU utilization low CloudWatch metric alarm ARN |
