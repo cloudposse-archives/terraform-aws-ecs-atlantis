@@ -57,9 +57,9 @@ module "github_webhooks" {
   github_anonymous     = var.github_anonymous
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]
-  github_token        = local.github_webhooks_token
-  webhook_secret      = local.atlantis_gh_webhook_secret
-  webhook_url         = local.atlantis_webhook_url
+  github_token         = local.github_webhooks_token
+  webhook_secret       = local.atlantis_gh_webhook_secret
+  webhook_url          = local.atlantis_webhook_url
   webhook_content_type = "json"
   events               = var.webhook_events
 }
