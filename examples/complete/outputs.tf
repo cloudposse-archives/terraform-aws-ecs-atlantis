@@ -83,14 +83,14 @@ output "ecr_registry_id" {
   description = "Registry ID"
 }
 
-output "ecr_registry_url" {
-  value       = module.atlantis.ecr_registry_url
-  description = "Registry URL"
+output "ecr_repository_url" {
+  value       = module.atlantis.ecr_repository_url
+  description = "Repository URL"
 }
 
 output "ecr_repository_name" {
   value       = module.atlantis.ecr_repository_name
-  description = "Registry name"
+  description = "Repository name"
 }
 
 output "alb_ingress_target_group_name" {

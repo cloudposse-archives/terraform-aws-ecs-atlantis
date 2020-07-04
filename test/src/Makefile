@@ -8,6 +8,8 @@ PATH 	:= $(PATH):$(GOBIN)
 export TF_DATA_DIR ?= $(CURDIR)/.terraform
 export TF_CLI_ARGS_init ?= -get-plugins=true
 export GOPATH
+# Expose GitHub Token as github_webhooks_token variable so that SSM does not fail
+export TF_VAR_github_webhooks_token ?= $(GITHUB_TOKEN)
 
 .PHONY: all
 ## Default target
