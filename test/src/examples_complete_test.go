@@ -227,9 +227,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Verify we're getting back the outputs we 
 	expectedTargetResponseTimeAverageCloudwatchMetricAlarmId := "eg-test-ecs-web-app-" + attributes[0] + "-target-response-high"
 	assert.Equal(t, expectedTargetResponseTimeAverageCloudwatchMetricAlarmId, targetResponseTimeAverageCloudwatchMetricAlarmId)
-}
-
-
+	
 	// Run `terraform output` to get the value of an output variable
 	atlantisUrl := terraform.Output(t, terraformOptions, "atlantis_url")
 	// Verify we're getting back the outputs we expect
