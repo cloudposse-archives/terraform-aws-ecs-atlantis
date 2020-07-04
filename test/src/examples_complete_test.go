@@ -18,6 +18,8 @@ func TestExamplesComplete(t *testing.T) {
 
 	targets := []string{"module.label", "module.vpc", "module.subnets", "module.alb"}
 
+	rand.Seed(time.Now().UnixNano())
+
 	attributes := []string{strconv.Itoa(rand.Intn(1000))}
 
 	// We need to create the ALB first because terraform does not wwait for it to be in the ready state before creating ECS target group
@@ -227,7 +229,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Verify we're getting back the outputs we 
 	expectedTargetResponseTimeAverageCloudwatchMetricAlarmId := "eg-test-ecs-web-app-" + attributes[0] + "-target-response-high"
 	assert.Equal(t, expectedTargetResponseTimeAverageCloudwatchMetricAlarmId, targetResponseTimeAverageCloudwatchMetricAlarmId)
-	
+
 	// Run `terraform output` to get the value of an output variable
 	atlantisUrl := terraform.Output(t, terraformOptions, "atlantis_url")
 	// Verify we're getting back the outputs we expect
