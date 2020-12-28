@@ -65,5 +65,3 @@ short_name = "ecs-atlantis-test"
 default_backend_image = "cloudposse/default-backend:0.1.2"
 
 chamber_service = "ecs-atlantis-test"
-
-github_webhooks_token = "XXXXXXXXXXXXXX"
