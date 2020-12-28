@@ -410,6 +410,7 @@ Available targets:
 | aws | >= 2.0 |
 | local | >= 1.3 |
 | null | >= 2.0 |
+| random | >= 2.0 |
 | template | >= 2.0 |
 
 ## Providers
@@ -417,7 +418,7 @@ Available targets:
 | Name | Version |
 |------|---------|
 | aws | >= 2.0 |
-| random | n/a |
+| random | >= 2.0 |
 
 ## Inputs
 
