@@ -33,8 +33,7 @@ locals {
   github_oauth_token_ssm_name = var.github_oauth_token_ssm_name != "" ? var.github_oauth_token_ssm_name : format(var.chamber_format, var.chamber_service, "atlantis_gh_token")
 
   github_webhooks_token = var.github_webhooks_token != "" ? var.github_webhooks_token : join("", data.aws_ssm_parameter.github_webhooks_token.*.value)
-  github_webhooks_token_ssm_name = var.github_webhooks_token_ssm_name != "" ? var.github_webhooks_token_ssm_name : format(var.chamber_format, var.chamber_service, "github_webhooks_token"
-  )
+  github_webhooks_token_ssm_name = var.github_webhooks_token_ssm_name != "" ? var.github_webhooks_token_ssm_name : format(var.chamber_format, var.chamber_service, "github_webhooks_token")
 }
 
 # Modules

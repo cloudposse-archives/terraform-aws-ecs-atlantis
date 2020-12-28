@@ -66,4 +66,4 @@ default_backend_image = "cloudposse/default-backend:0.1.2"
 
 chamber_service = "ecs-atlantis-test"
 
-github_oauth_token = "XXXXXXXXXXXXXX"
+github_webhooks_token = "XXXXXXXXXXXXXX"
