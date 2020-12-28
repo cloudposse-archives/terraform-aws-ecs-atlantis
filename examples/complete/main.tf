@@ -2,50 +2,30 @@ provider "aws" {
   region = var.region
 }
 
-module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  namespace  = var.namespace
-  name       = var.name
-  stage      = var.stage
-  delimiter  = var.delimiter
-  attributes = var.attributes
-  tags       = var.tags
-}
-
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.14.0"
-  namespace  = var.namespace
-  stage      = var.stage
-  name       = var.name
-  delimiter  = var.delimiter
-  attributes = var.attributes
+  source     = "cloudposse/vpc/aws"
+  version    = "0.18.1"
   cidr_block = var.vpc_cidr_block
-  tags       = var.tags
+
+  context = module.this.context
 }
 
 module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.19.0"
+  source               = "cloudposse/dynamic-subnets/aws"
+  version              = "0.33.0"
   availability_zones   = var.availability_zones
-  namespace            = var.namespace
-  stage                = var.stage
-  name                 = var.name
-  attributes           = var.attributes
-  delimiter            = var.delimiter
   vpc_id               = module.vpc.vpc_id
   igw_id               = module.vpc.igw_id
   cidr_block           = module.vpc.vpc_cidr_block
   nat_gateway_enabled  = true
   nat_instance_enabled = false
-  tags                 = var.tags
+
+  context = module.this.context
 }
 
 module "alb" {
-  source                                  = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.11.0"
-  namespace                               = var.namespace
-  stage                                   = var.stage
-  name                                    = var.name
-  attributes                              = var.attributes
-  delimiter                               = var.delimiter
+  source                                  = "cloudposse/alb/aws"
+  version                                 = "0.24.0"
   vpc_id                                  = module.vpc.vpc_id
   security_group_ids                      = [module.vpc.vpc_default_security_group_id]
   subnet_ids                              = module.subnets.public_subnet_ids
@@ -53,47 +33,36 @@ module "alb" {
   http_enabled                            = true
   alb_access_logs_s3_bucket_force_destroy = true
   access_logs_enabled                     = true
-  access_logs_region                      = var.region
   cross_zone_load_balancing_enabled       = true
   http2_enabled                           = true
   deletion_protection_enabled             = false
-  tags                                    = var.tags
+
+  context = module.this.context
 }
 
 resource "aws_ecs_cluster" "default" {
-  name = module.label.id
-  tags = module.label.tags
+  name = module.this.id
+  tags = module.this.tags
 }
 
 resource "aws_sns_topic" "sns_topic" {
-  name         = module.label.id
+  name         = module.this.id
   display_name = "Test terraform-aws-ecs-atlantis"
-  tags         = module.label.tags
+  tags         = module.this.tags
 }
 
 module "kms_key" {
-  source                  = "git::https://github.com/cloudposse/terraform-aws-kms-key.git?ref=tags/0.4.0"
-  enabled                 = var.enabled
-  namespace               = var.namespace
-  stage                   = var.stage
-  name                    = var.name
-  attributes              = var.attributes
-  delimiter               = var.delimiter
-  tags                    = var.tags
+  source                  = "cloudposse/kms-key/aws"
+  version                 = "0.9.0"
   description             = "Test terraform-aws-ecs-atlantis KMS key"
   deletion_window_in_days = 7
   enable_key_rotation     = false
+
+  context = module.this.context
 }
 
 module "atlantis" {
-  source     = "../.."
-  enabled    = var.enabled
-  namespace  = var.namespace
-  stage      = var.stage
-  name       = var.name
-  attributes = var.attributes
-  delimiter  = var.delimiter
-  tags       = var.tags
+  source = "../.."
 
   region               = var.region
   vpc_id               = module.vpc.vpc_id
@@ -189,4 +158,6 @@ module "atlantis" {
   ecs_alarms_memory_utilization_high_ok_actions     = [aws_sns_topic.sns_topic.arn]
   ecs_alarms_memory_utilization_low_alarm_actions   = [aws_sns_topic.sns_topic.arn]
   ecs_alarms_memory_utilization_low_ok_actions      = [aws_sns_topic.sns_topic.arn]
+
+  context = module.this.context
 }

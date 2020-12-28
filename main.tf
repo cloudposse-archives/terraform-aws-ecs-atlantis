@@ -1,29 +1,30 @@
 # Data
 #--------------------------------------------------------------
 data "aws_ssm_parameter" "atlantis_gh_token" {
-  count = var.enabled && var.github_oauth_token == "" ? 1 : 0
+  count = local.enabled && var.github_oauth_token == "" ? 1 : 0
   name  = local.github_oauth_token_ssm_name
 }
 
 data "aws_ssm_parameter" "github_webhooks_token" {
-  count = var.enabled && var.github_webhooks_token == "" ? 1 : 0
+  count = local.enabled && var.github_webhooks_token == "" ? 1 : 0
   name  = local.github_webhooks_token_ssm_name
 }
 
 data "aws_kms_key" "chamber_kms_key" {
-  count  = var.enabled ? 1 : 0
+  count  = local.enabled ? 1 : 0
   key_id = local.kms_key_id
 }
 
 # Locals
 #--------------------------------------------------------------
 locals {
+  enabled                    = module.this.enabled
   hostname                   = var.hostname != "" ? var.hostname : local.default_hostname
   atlantis_webhook_url       = format(var.atlantis_webhook_format, local.hostname)
   atlantis_url               = format(var.atlantis_url_format, local.hostname)
   atlantis_gh_webhook_secret = var.atlantis_gh_webhook_secret != "" ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)
   default_hostname           = join("", aws_route53_record.default.*.fqdn)
-  kms_key_id                 = var.kms_key_id != "" ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)
+  kms_key_id                 = var.kms_key_id != "" ? var.kms_key_id : format("alias/%s-%s-chamber", module.this.namespace, module.this.stage)
 }
 
 # GitHub tokens
@@ -39,21 +40,20 @@ locals {
 # Modules
 #--------------------------------------------------------------
 module "ssh_key_pair" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-ssm-tls-ssh-key-pair.git?ref=tags/0.5.0"
-  enabled              = var.enabled
-  namespace            = var.namespace
-  stage                = var.stage
-  name                 = var.name
-  attributes           = var.attributes
+  source               = "cloudposse/ssm-tls-ssh-key-pair/aws"
+  version              = "0.8.0"
   ssh_private_key_name = var.ssh_private_key_name
   ssh_public_key_name  = var.ssh_public_key_name
   ssm_path_prefix      = var.chamber_service
   kms_key_id           = local.kms_key_id
+
+  context = module.this.context
 }
 
 module "github_webhooks" {
-  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.8.0"
-  enabled              = var.enabled && var.webhook_enabled ? true : false
+  source               = "cloudposse/repository-webhooks/github"
+  version              = "0.10.0"
+  enabled              = local.enabled && var.webhook_enabled ? true : false
   github_anonymous     = var.github_anonymous
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]
@@ -62,23 +62,22 @@ module "github_webhooks" {
   webhook_url          = local.atlantis_webhook_url
   webhook_content_type = "json"
   events               = var.webhook_events
+
+  //  context = module.this.context
 }
 
 module "ecs_web_app" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-web-app.git?ref=tags/0.31.0"
-  namespace  = var.namespace
-  stage      = var.stage
-  name       = var.name
-  attributes = var.attributes
+  source  = "cloudposse/ecs-web-app/aws"
+  version = "0.46.0"
 
   region      = var.region
   vpc_id      = var.vpc_id
   launch_type = var.launch_type
 
-  environment = [
+  container_environment = [
     {
       name  = "ATLANTIS_ENABLED"
-      value = var.enabled
+      value = local.enabled
     }
   ]
 
@@ -170,13 +169,15 @@ module "ecs_web_app" {
   authentication_oidc_authorization_endpoint = var.authentication_oidc_authorization_endpoint
   authentication_oidc_token_endpoint         = var.authentication_oidc_token_endpoint
   authentication_oidc_user_info_endpoint     = var.authentication_oidc_user_info_endpoint
+
+  context = module.this.context
 }
 
 # Resources
 #--------------------------------------------------------------
 
 resource "aws_route53_record" "default" {
-  count   = var.enabled ? 1 : 0
+  count   = local.enabled ? 1 : 0
   zone_id = var.parent_zone_id
   name    = var.short_name
   type    = "A"
@@ -189,13 +190,13 @@ resource "aws_route53_record" "default" {
 }
 
 resource "random_string" "atlantis_gh_webhook_secret" {
-  count   = var.enabled ? 1 : 0
+  count   = local.enabled ? 1 : 0
   length  = var.webhook_secret_length
   special = true
 }
 
 resource "aws_ssm_parameter" "atlantis_port" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Atlantis server port"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_port")
   overwrite   = var.overwrite_ssm_parameter
@@ -204,7 +205,7 @@ resource "aws_ssm_parameter" "atlantis_port" {
 }
 
 resource "aws_ssm_parameter" "atlantis_atlantis_url" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Atlantis URL"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_atlantis_url")
   overwrite   = var.overwrite_ssm_parameter
@@ -213,7 +214,7 @@ resource "aws_ssm_parameter" "atlantis_atlantis_url" {
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_user" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Atlantis GitHub user"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_gh_user")
   overwrite   = var.overwrite_ssm_parameter
@@ -222,7 +223,7 @@ resource "aws_ssm_parameter" "atlantis_gh_user" {
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_team_whitelist" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Atlantis GitHub team whitelist"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_gh_team_whitelist")
   overwrite   = var.overwrite_ssm_parameter
@@ -231,7 +232,7 @@ resource "aws_ssm_parameter" "atlantis_gh_team_whitelist" {
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_webhook_secret" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Atlantis GitHub webhook secret"
   key_id      = join("", data.aws_kms_key.chamber_kms_key.*.id)
   name        = format(var.chamber_format, var.chamber_service, "atlantis_gh_webhook_secret")
@@ -241,7 +242,7 @@ resource "aws_ssm_parameter" "atlantis_gh_webhook_secret" {
 }
 
 resource "aws_ssm_parameter" "atlantis_iam_role_arn" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Atlantis IAM role ARN"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_iam_role_arn")
   overwrite   = var.overwrite_ssm_parameter
@@ -250,7 +251,7 @@ resource "aws_ssm_parameter" "atlantis_iam_role_arn" {
 }
 
 resource "aws_ssm_parameter" "atlantis_log_level" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Atlantis log level"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_log_level")
   overwrite   = var.overwrite_ssm_parameter
@@ -259,7 +260,7 @@ resource "aws_ssm_parameter" "atlantis_log_level" {
 }
 
 resource "aws_ssm_parameter" "atlantis_repo_config" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Path to atlantis config file"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_repo_config")
   overwrite   = var.overwrite_ssm_parameter
@@ -268,7 +269,7 @@ resource "aws_ssm_parameter" "atlantis_repo_config" {
 }
 
 resource "aws_ssm_parameter" "atlantis_repo_whitelist" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Whitelist of repositories Atlantis will accept webhooks from"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_repo_whitelist")
   overwrite   = var.overwrite_ssm_parameter
@@ -277,7 +278,7 @@ resource "aws_ssm_parameter" "atlantis_repo_whitelist" {
 }
 
 resource "aws_ssm_parameter" "atlantis_wake_word" {
-  count       = var.enabled ? 1 : 0
+  count       = local.enabled ? 1 : 0
   description = "Wake world for Atlantis"
   name        = format(var.chamber_format, var.chamber_service, "atlantis_wake_word")
   overwrite   = var.overwrite_ssm_parameter
@@ -286,7 +287,7 @@ resource "aws_ssm_parameter" "atlantis_wake_word" {
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_token" {
-  count       = var.enabled && var.github_oauth_token != "" ? 1 : 0
+  count       = local.enabled && var.github_oauth_token != "" ? 1 : 0
   description = "Atlantis GitHub OAuth token"
   key_id      = join("", data.aws_kms_key.chamber_kms_key.*.id)
   name        = local.github_oauth_token_ssm_name
@@ -296,7 +297,7 @@ resource "aws_ssm_parameter" "atlantis_gh_token" {
 }
 
 resource "aws_ssm_parameter" "github_webhooks_token" {
-  count       = var.enabled && var.github_webhooks_token != "" ? 1 : 0
+  count       = local.enabled && var.github_webhooks_token != "" ? 1 : 0
   description = "GitHub OAuth token with permission to create webhooks"
   key_id      = join("", data.aws_kms_key.chamber_kms_key.*.id)
   name        = local.github_webhooks_token_ssm_name
@@ -306,7 +307,7 @@ resource "aws_ssm_parameter" "github_webhooks_token" {
 }
 
 resource "aws_security_group_rule" "egress_http" {
-  count             = var.enabled ? 1 : 0
+  count             = local.enabled ? 1 : 0
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 80
   protocol          = "tcp"
@@ -316,7 +317,7 @@ resource "aws_security_group_rule" "egress_http" {
 }
 
 resource "aws_security_group_rule" "egress_https" {
-  count             = var.enabled ? 1 : 0
+  count             = local.enabled ? 1 : 0
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 443
   protocol          = "tcp"
@@ -326,7 +327,7 @@ resource "aws_security_group_rule" "egress_https" {
 }
 
 resource "aws_security_group_rule" "egress_udp_dns" {
-  count             = var.enabled ? 1 : 0
+  count             = local.enabled ? 1 : 0
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 53
   protocol          = "udp"
@@ -336,7 +337,7 @@ resource "aws_security_group_rule" "egress_udp_dns" {
 }
 
 resource "aws_security_group_rule" "egress_tcp_dns" {
-  count             = var.enabled ? 1 : 0
+  count             = local.enabled ? 1 : 0
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 53
   protocol          = "tcp"
@@ -346,7 +347,7 @@ resource "aws_security_group_rule" "egress_tcp_dns" {
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
-  count      = var.enabled ? 1 : 0
+  count      = local.enabled ? 1 : 0
   role       = module.ecs_web_app.ecs_task_role_name
   policy_arn = var.policy_arn
 
@@ -398,32 +399,32 @@ locals {
 }
 
 data "aws_ssm_parameter" "atlantis_cognito_user_pool_arn" {
-  count = var.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_arn == "" ? 1 : 0
+  count = local.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_arn == "" ? 1 : 0
   name  = local.authentication_cognito_user_pool_arn_ssm_name
 }
 
 data "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
-  count = var.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_client_id == "" ? 1 : 0
+  count = local.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_client_id == "" ? 1 : 0
   name  = local.authentication_cognito_user_pool_client_id_ssm_name
 }
 
 data "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
-  count = var.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_domain == "" ? 1 : 0
+  count = local.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_domain == "" ? 1 : 0
   name  = local.authentication_cognito_user_pool_domain_ssm_name
 }
 
 data "aws_ssm_parameter" "atlantis_oidc_client_id" {
-  count = var.enabled && var.authentication_type == "OIDC" && var.authentication_oidc_client_id == "" ? 1 : 0
+  count = local.enabled && var.authentication_type == "OIDC" && var.authentication_oidc_client_id == "" ? 1 : 0
   name  = local.authentication_oidc_client_id_ssm_name
 }
 
 data "aws_ssm_parameter" "atlantis_oidc_client_secret" {
-  count = var.enabled && var.authentication_type == "OIDC" && var.authentication_oidc_client_secret == "" ? 1 : 0
+  count = local.enabled && var.authentication_type == "OIDC" && var.authentication_oidc_client_secret == "" ? 1 : 0
   name  = local.authentication_oidc_client_secret_ssm_name
 }
 
 resource "aws_ssm_parameter" "atlantis_cognito_user_pool_arn" {
-  count       = var.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_arn != "" ? 1 : 0
+  count       = local.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_arn != "" ? 1 : 0
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
   description = "Atlantis Cognito User Pool ARN"
@@ -433,7 +434,7 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_arn" {
 }
 
 resource "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
-  count       = var.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_client_id != "" ? 1 : 0
+  count       = local.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_client_id != "" ? 1 : 0
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
   description = "Atlantis Cognito User Pool Client ID"
@@ -443,7 +444,7 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
 }
 
 resource "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
-  count       = var.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_domain != "" ? 1 : 0
+  count       = local.enabled && var.authentication_type == "COGNITO" && var.authentication_cognito_user_pool_domain != "" ? 1 : 0
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
   description = "Atlantis Cognito User Pool Domain"
@@ -453,7 +454,7 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
 }
 
 resource "aws_ssm_parameter" "atlantis_oidc_client_id" {
-  count       = var.enabled && var.authentication_type == "OIDC" && var.authentication_oidc_client_id != "" ? 1 : 0
+  count       = local.enabled && var.authentication_type == "OIDC" && var.authentication_oidc_client_id != "" ? 1 : 0
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
   description = "Atlantis OIDC Client ID"
@@ -463,7 +464,7 @@ resource "aws_ssm_parameter" "atlantis_oidc_client_id" {
 }
 
 resource "aws_ssm_parameter" "atlantis_oidc_client_secret" {
-  count       = var.enabled && var.authentication_type == "OIDC" && var.authentication_oidc_client_secret != "" ? 1 : 0
+  count       = local.enabled && var.authentication_type == "OIDC" && var.authentication_oidc_client_secret != "" ? 1 : 0
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
   description = "Atlantis OIDC Client Secret"

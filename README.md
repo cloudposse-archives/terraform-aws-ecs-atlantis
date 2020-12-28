@@ -1,4 +1,6 @@
+<!-- markdownlint-disable -->
 # terraform-aws-ecs-atlantis [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-atlantis.svg)](https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+<!-- markdownlint-restore -->
 
 [![README Header][readme_header_img]][readme_header_link]
 
@@ -157,8 +159,15 @@ For example, by using [chamber](https://github.com/segmentio/chamber):
 ## Usage
 
 
-**IMPORTANT:** The `master` branch is used in `source` just as an example. In your code, do not pin to `master` because there may be breaking changes between releases.
-Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest releases](https://github.com/cloudposse/terraform-aws-ecs-atlantis/releases).
+**IMPORTANT:** We do not pin modules to versions in our examples because of the
+difficulty of keeping the versions in the documentation in sync with the latest released versions.
+We highly recommend that in your code you pin the version to the exact version you are
+using so that your infrastructure remains stable, and update versions in a
+systematic way so that they do not catch you by surprise.
+
+Also, because of a bug in the Terraform registry ([hashicorp/terraform#21417](https://github.com/hashicorp/terraform/issues/21417)),
+the registry shows many of our inputs as required when in fact they are optional.
+The table below correctly indicates which inputs are required.
 
 
 
@@ -268,7 +277,9 @@ Other examples:
   }
 
   module "atlantis" {
-    source     = "git::https://github.com/cloudposse/terraform-aws-ecs-atlantis.git?ref=master"
+    source = "cloudposse/ecs-atlantis/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
     enabled    = var.enabled
     namespace  = var.namespace
     stage      = var.stage
@@ -390,27 +401,29 @@ Available targets:
 
 ```
 <!-- markdownlint-restore -->
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.0, < 0.14.0 |
-| aws | ~> 2.0 |
-| local | ~> 1.3 |
-| null | ~> 2.0 |
-| template | ~> 2.0 |
+| terraform | >= 0.12.26 |
+| aws | >= 2.0 |
+| local | >= 1.3 |
+| null | >= 2.0 |
+| template | >= 2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.0 |
+| aws | >= 2.0 |
 | random | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| additional\_tag\_map | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
 | alb\_arn\_suffix | The ARN suffix of the ALB | `string` | n/a | yes |
 | alb\_dns\_name | DNS name of ALB | `string` | n/a | yes |
 | alb\_ingress\_authenticated\_hosts | Authenticated hosts to match in Hosts header (a maximum of 1 can be defined) | `list(string)` | `[]` | no |
@@ -439,7 +452,7 @@ Available targets:
 | atlantis\_url\_format | Template for the Atlantis URL which is populated with the hostname | `string` | `"https://%s"` | no |
 | atlantis\_wake\_word | Wake world for atlantis | `string` | `"atlantis"` | no |
 | atlantis\_webhook\_format | Template for the Atlantis webhook URL which is populated with the hostname | `string` | `"https://%s/events"` | no |
-| attributes | Additional attributes (\_e.g.\_ "1") | `list(string)` | `[]` | no |
+| attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
 | authentication\_cognito\_user\_pool\_arn | Cognito User Pool ARN | `string` | `""` | no |
 | authentication\_cognito\_user\_pool\_arn\_ssm\_name | SSM param name to lookup `authentication_cognito_user_pool_arn` if not provided | `string` | `""` | no |
 | authentication\_cognito\_user\_pool\_client\_id | Cognito User Pool Client ID | `string` | `""` | no |
@@ -466,8 +479,9 @@ Available targets:
 | codepipeline\_s3\_bucket\_force\_destroy | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | `bool` | `false` | no |
 | container\_cpu | Atlantis CPUs per task | `number` | `256` | no |
 | container\_memory | Atlantis memory per task | `number` | `512` | no |
+| context | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | <pre>object({<br>    enabled             = bool<br>    namespace           = string<br>    environment         = string<br>    stage               = string<br>    name                = string<br>    delimiter           = string<br>    attributes          = list(string)<br>    tags                = map(string)<br>    additional_tag_map  = map(string)<br>    regex_replace_chars = string<br>    label_order         = list(string)<br>    id_length_limit     = number<br>  })</pre> | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_order": [],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | default\_backend\_image | ECS default (bootstrap) image | `string` | `"cloudposse/default-backend:0.1.2"` | no |
-| delimiter | Delimiter between `namespace`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
+| delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | desired\_count | Atlantis desired number of tasks | `number` | `1` | no |
 | ecs\_alarms\_cpu\_utilization\_high\_alarm\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High Alarm action | `list(string)` | `[]` | no |
 | ecs\_alarms\_cpu\_utilization\_high\_ok\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High OK action | `list(string)` | `[]` | no |
@@ -480,7 +494,8 @@ Available targets:
 | ecs\_alarms\_memory\_utilization\_low\_ok\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low OK action | `list(string)` | `[]` | no |
 | ecs\_cluster\_arn | ARN of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
 | ecs\_cluster\_name | Name of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
-| enabled | Whether to create the resources. Set to `false` to prevent the module from creating any resources | `bool` | `false` | no |
+| enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
+| environment | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
 | github\_anonymous | Github Anonymous API (if `true`, token must not be set as GITHUB\_TOKEN or `github_token`) | `bool` | `false` | no |
 | github\_oauth\_token | GitHub OAuth token. If not provided the token is looked up from SSM | `string` | `""` | no |
 | github\_oauth\_token\_ssm\_name | SSM param name to lookup `github_oauth_token` if not provided | `string` | `""` | no |
@@ -488,14 +503,17 @@ Available targets:
 | github\_webhooks\_token\_ssm\_name | SSM param name to lookup `github_webhooks_token` if not provided | `string` | `""` | no |
 | healthcheck\_path | Healthcheck path | `string` | `"/healthz"` | no |
 | hostname | Atlantis URL | `string` | `""` | no |
+| id\_length\_limit | Limit `id` to this many characters.<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | kms\_key\_id | KMS key ID used to encrypt SSM SecureString parameters | `string` | `""` | no |
+| label\_order | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
 | launch\_type | The ECS launch type (valid options: FARGATE or EC2) | `string` | `"FARGATE"` | no |
-| name | Name of the application | `string` | n/a | yes |
-| namespace | Namespace (e.g. `eg` or `cp`) | `string` | `""` | no |
+| name | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
+| namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
 | overwrite\_ssm\_parameter | Whether to overwrite an existing SSM parameter | `bool` | `true` | no |
 | parent\_zone\_id | The zone ID where the DNS record for the `short_name` will be written | `string` | `""` | no |
 | policy\_arn | Permission to grant to atlantis server | `string` | `"arn:aws:iam::aws:policy/AdministratorAccess"` | no |
 | private\_subnet\_ids | The private subnet IDs | `list(string)` | `[]` | no |
+| regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | region | AWS Region for S3 bucket | `string` | n/a | yes |
 | repo\_name | GitHub repository name of the atlantis to be built and deployed to ECS. | `string` | n/a | yes |
 | repo\_owner | GitHub organization containing the Atlantis repository | `string` | n/a | yes |
@@ -503,8 +521,8 @@ Available targets:
 | short\_name | Alantis short DNS name (e.g. `atlantis`) | `string` | `"atlantis"` | no |
 | ssh\_private\_key\_name | Atlantis SSH private key name | `string` | `"atlantis_ssh_private_key"` | no |
 | ssh\_public\_key\_name | Atlantis SSH public key name | `string` | `"atlantis_ssh_public_key"` | no |
-| stage | Stage (e.g. `prod`, `dev`, `staging`) | `string` | `""` | no |
-| tags | Additional tags (\_e.g.\_ { BusinessUnit : ABC }) | `map(string)` | `{}` | no |
+| stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
+| tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 | vpc\_id | VPC ID for the ECS Cluster | `string` | n/a | yes |
 | webhook\_enabled | Set to false to prevent the module from creating any webhook resources | `bool` | `true` | no |
 | webhook\_events | A list of events which should trigger the webhook. | `list(string)` | <pre>[<br>  "issue_comment",<br>  "pull_request",<br>  "pull_request_review",<br>  "pull_request_review_comment",<br>  "push"<br>]</pre> | no |
@@ -569,6 +587,7 @@ Available targets:
 | target\_response\_time\_average\_cloudwatch\_metric\_alarm\_arn | ALB Target Group response time average CloudWatch metric alarm ARN |
 | target\_response\_time\_average\_cloudwatch\_metric\_alarm\_id | ALB Target Group response time average CloudWatch metric alarm ID |
 
+<!-- markdownlint-restore -->
 
 
 
@@ -731,8 +750,10 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
+<!-- markdownlint-disable -->
 |  [![Josh Myers][joshmyers_avatar]][joshmyers_homepage]<br/>[Josh Myers][joshmyers_homepage] | [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] |
 |---|---|---|---|
+<!-- markdownlint-restore -->
 
   [joshmyers_homepage]: https://github.com/joshmyers
   [joshmyers_avatar]: https://img.cloudposse.com/150x150/https://github.com/joshmyers.png
