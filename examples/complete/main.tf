@@ -54,6 +54,7 @@ resource "aws_sns_topic" "sns_topic" {
 module "kms_key" {
   source                  = "cloudposse/kms-key/aws"
   version                 = "0.9.0"
+  enabled                 = var.kms_key_id == "" ? false : true
   description             = "Test terraform-aws-ecs-atlantis KMS key"
   deletion_window_in_days = 7
   enable_key_rotation     = false
@@ -69,7 +70,7 @@ module "atlantis" {
   policy_arn           = var.policy_arn
   ssh_private_key_name = var.ssh_private_key_name
   ssh_public_key_name  = var.ssh_public_key_name
-  kms_key_id           = module.kms_key.key_id
+  kms_key_id           = var.kms_key_id == "" ? module.kms_key.key_id : var.kms_key_id
   chamber_service      = var.chamber_service
 
   atlantis_gh_user           = var.atlantis_gh_user

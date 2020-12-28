@@ -345,3 +345,9 @@ variable "ecs_alarms_enabled" {
   description = "A boolean to enable/disable CloudWatch Alarms for ECS Service metrics"
   default     = false
 }
+
+variable "kms_key_id" {
+  type        = string
+  default     = ""
+  description = "KMS key ID used to encrypt SSM SecureString parameters"
+}
