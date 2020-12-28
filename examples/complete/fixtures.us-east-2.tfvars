@@ -1,8 +1,8 @@
 enabled = true
 
-region = "us-east-2"
+region = "us-west-2"
 
-availability_zones = ["us-east-2a", "us-east-2b"]
+availability_zones = ["us-west-2a", "us-west-2b"]
 
 namespace = "eg"
 
