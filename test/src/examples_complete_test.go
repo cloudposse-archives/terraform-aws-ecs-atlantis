@@ -167,13 +167,13 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	ecsCloudwatchAutoscalingScaleDownPolicyArn := terraform.Output(t, terraformOptions, "ecs_cloudwatch_autoscaling_scale_down_policy_arn")
 	// Verify we're getting back the outputs we expect
-	expectedEcsCloudwatchAutoscalingScaleDownPolicyArn := "policyName/eg-test-ecs-atlantis-down-" + attributes[0]
+	expectedEcsCloudwatchAutoscalingScaleDownPolicyArn := "policyName/eg-test-ecs-atlantis-" + attributes[0] + ":policyName/down"
 	assert.Contains(t, ecsCloudwatchAutoscalingScaleDownPolicyArn, expectedEcsCloudwatchAutoscalingScaleDownPolicyArn)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsCloudwatchAutoscalingScaleUpPolicyArn := terraform.Output(t, terraformOptions, "ecs_cloudwatch_autoscaling_scale_up_policy_arn")
 	// Verify we're getting back the outputs we expect
-	expectedEcsCloudwatchAutoscalingScaleUpPolicyArn := "policyName/eg-test-ecs-atlantis-up-" + attributes[0]
+	expectedEcsCloudwatchAutoscalingScaleUpPolicyArn := "policyName/eg-test-ecs-atlantis-" + attributes[0] + ":policyName/up"
 	assert.Contains(t, ecsCloudwatchAutoscalingScaleUpPolicyArn, expectedEcsCloudwatchAutoscalingScaleUpPolicyArn)
 
 	// Run `terraform output` to get the value of an output variable
@@ -203,7 +203,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	httpcodeElb5xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_elb_5xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedHttpcodeElb5xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-elb-5xx-count-high" + attributes[0]
+	expectedHttpcodeElb5xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-elb-5xx-count-high-" + attributes[0]
 	assert.Equal(t, expectedHttpcodeElb5xxCountCloudwatchMetricAlarmId, httpcodeElb5xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
@@ -215,13 +215,13 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	httpcodeTarget4xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_target_4xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedHttpcodeTarget4xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-4xx-count-high" + attributes[0]
+	expectedHttpcodeTarget4xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-4xx-count-high-" + attributes[0]
 	assert.Equal(t, expectedHttpcodeTarget4xxCountCloudwatchMetricAlarmId, httpcodeTarget4xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	httpcodeTarget5xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_target_5xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedHttpcodeTarget5xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-5xx-count-high" + attributes[0]
+	expectedHttpcodeTarget5xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-5xx-count-high-" + attributes[0]
 	assert.Equal(t, expectedHttpcodeTarget5xxCountCloudwatchMetricAlarmId, httpcodeTarget5xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
