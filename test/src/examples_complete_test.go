@@ -28,7 +28,7 @@ func TestExamplesComplete(t *testing.T) {
 		TerraformDir: "../../examples/complete",
 		Upgrade:      true,
 		// Variables to pass to our Terraform code using -var-file options
-		VarFiles: []string{"fixtures.us-east-2.tfvars"},
+		VarFiles: []string{"fixtures.us-west-2.tfvars"},
 		Vars: map[string]interface{}{
 			"attributes": attributes,
 		},
