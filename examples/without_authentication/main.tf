@@ -9,39 +9,29 @@ locals {
 }
 
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.8.1"
-  namespace  = var.namespace
-  stage      = var.stage
-  name       = var.name
-  delimiter  = var.delimiter
-  attributes = var.attributes
+  source     = "cloudposse/vpc/aws"
+  version    = "0.18.1"
   cidr_block = "172.16.0.0/16"
-  tags       = var.tags
+
+  context = module.this.context
 }
 
 module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.16.1"
+  source               = "cloudposse/dynamic-subnets/aws"
+  version              = "0.33.0"
   availability_zones   = local.availability_zones
-  namespace            = var.namespace
-  stage                = var.stage
-  name                 = var.name
-  attributes           = var.attributes
-  delimiter            = var.delimiter
   vpc_id               = module.vpc.vpc_id
   igw_id               = module.vpc.igw_id
   cidr_block           = module.vpc.vpc_cidr_block
   nat_gateway_enabled  = true
   nat_instance_enabled = false
-  tags                 = var.tags
+
+  context = module.this.context
 }
 
 module "alb" {
-  source                                  = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.7.0"
-  namespace                               = var.namespace
-  stage                                   = var.stage
-  name                                    = var.name
-  attributes                              = var.attributes
-  delimiter                               = var.delimiter
+  source                                  = "cloudposse/alb/aws"
+  version                                 = "0.24.0"
   vpc_id                                  = module.vpc.vpc_id
   security_group_ids                      = [module.vpc.vpc_default_security_group_id]
   subnet_ids                              = module.subnets.public_subnet_ids
@@ -49,35 +39,21 @@ module "alb" {
   http_enabled                            = true
   alb_access_logs_s3_bucket_force_destroy = true
   access_logs_enabled                     = true
-  access_logs_region                      = var.region
   cross_zone_load_balancing_enabled       = true
   http2_enabled                           = true
   deletion_protection_enabled             = false
-  tags                                    = var.tags
-}
 
-module "ecs_cluster_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  name       = var.name
-  namespace  = var.namespace
-  stage      = var.stage
-  tags       = var.tags
-  attributes = var.attributes
-  delimiter  = var.delimiter
+  context = module.this.context
 }
 
 # ECS Cluster (needed even if using FARGATE launch type)
 resource "aws_ecs_cluster" "default" {
-  name = module.ecs_cluster_label.id
+  name = module.this.id
 }
 
 module "atlantis" {
-  source    = "../.."
-  enabled   = true
-  name      = var.name
-  namespace = var.namespace
-  region    = var.region
-  stage     = var.stage
+  source  = "../.."
+  enabled = true
 
   atlantis_gh_team_whitelist = var.atlantis_gh_team_whitelist
   atlantis_gh_user           = var.atlantis_gh_user
@@ -110,4 +86,6 @@ module "atlantis" {
   alb_ingress_unauthenticated_paths             = ["/*"]
   alb_ingress_listener_unauthenticated_priority = 100
   alb_ingress_authenticated_paths               = []
+
+  context = module.this.context
 }

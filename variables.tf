@@ -3,41 +3,6 @@ variable "region" {
   description = "AWS Region for S3 bucket"
 }
 
-variable "namespace" {
-  type        = string
-  description = "Namespace (e.g. `eg` or `cp`)"
-  default     = ""
-}
-
-variable "stage" {
-  type        = string
-  description = "Stage (e.g. `prod`, `dev`, `staging`)"
-  default     = ""
-}
-
-variable "name" {
-  type        = string
-  description = "Name of the application"
-}
-
-variable "delimiter" {
-  type        = string
-  default     = "-"
-  description = "Delimiter between `namespace`, `stage`, `name` and `attributes`"
-}
-
-variable "attributes" {
-  type        = list(string)
-  description = "Additional attributes (_e.g._ \"1\")"
-  default     = []
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "Additional tags (_e.g._ { BusinessUnit : ABC })"
-  default     = {}
-}
-
 variable "launch_type" {
   type        = string
   description = "The ECS launch type (valid options: FARGATE or EC2)"
@@ -84,12 +49,6 @@ variable "codepipeline_s3_bucket_force_destroy" {
   type        = bool
   description = "A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error"
   default     = false
-}
-
-variable "enabled" {
-  type        = bool
-  default     = false
-  description = "Whether to create the resources. Set to `false` to prevent the module from creating any resources"
 }
 
 variable "codepipeline_enabled" {

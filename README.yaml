@@ -262,7 +262,9 @@ usage: |-
     }
 
     module "atlantis" {
-      source     = "git::https://github.com/cloudposse/terraform-aws-ecs-atlantis.git?ref=master"
+      source = "cloudposse/ecs-atlantis/aws"
+      # Cloud Posse recommends pinning every module to a specific version
+      # version = "x.x.x"
       enabled    = var.enabled
       namespace  = var.namespace
       stage      = var.stage

@@ -1,8 +1,8 @@
 enabled = true
 
-region = "us-east-2"
+region = "us-west-2"
 
-availability_zones = ["us-east-2a", "us-east-2b"]
+availability_zones = ["us-west-2a", "us-west-2b"]
 
 namespace = "eg"
 
@@ -65,3 +65,5 @@ short_name = "ecs-atlantis-test"
 default_backend_image = "cloudposse/default-backend:0.1.2"
 
 chamber_service = "ecs-atlantis-test"
+
+kms_key_id = "alias/cpco-testing-chamber"
