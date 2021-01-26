@@ -2,6 +2,8 @@
 *.tfstate
 *.tfstate.backup
 .terraform.tfstate.lock.info
+**/.terraform.lock.hcl
+**/test.log
 
 # Module directory
 .terraform/
