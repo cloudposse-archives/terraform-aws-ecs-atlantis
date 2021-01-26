@@ -201,6 +201,7 @@ resource "aws_ssm_parameter" "atlantis_port" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = var.atlantis_port
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_atlantis_url" {
@@ -210,6 +211,7 @@ resource "aws_ssm_parameter" "atlantis_atlantis_url" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = local.atlantis_url
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_user" {
@@ -219,6 +221,7 @@ resource "aws_ssm_parameter" "atlantis_gh_user" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = var.atlantis_gh_user
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_team_whitelist" {
@@ -228,6 +231,7 @@ resource "aws_ssm_parameter" "atlantis_gh_team_whitelist" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = var.atlantis_gh_team_whitelist
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_webhook_secret" {
@@ -238,6 +242,7 @@ resource "aws_ssm_parameter" "atlantis_gh_webhook_secret" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
   value       = local.atlantis_gh_webhook_secret
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_iam_role_arn" {
@@ -247,6 +252,7 @@ resource "aws_ssm_parameter" "atlantis_iam_role_arn" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = module.ecs_web_app.ecs_task_role_arn
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_log_level" {
@@ -256,6 +262,7 @@ resource "aws_ssm_parameter" "atlantis_log_level" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = var.atlantis_log_level
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_repo_config" {
@@ -265,6 +272,7 @@ resource "aws_ssm_parameter" "atlantis_repo_config" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = var.atlantis_repo_config
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_repo_whitelist" {
@@ -274,6 +282,7 @@ resource "aws_ssm_parameter" "atlantis_repo_whitelist" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = join(",", var.atlantis_repo_whitelist)
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_wake_word" {
@@ -283,6 +292,7 @@ resource "aws_ssm_parameter" "atlantis_wake_word" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "String"
   value       = var.atlantis_wake_word
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_gh_token" {
@@ -293,6 +303,7 @@ resource "aws_ssm_parameter" "atlantis_gh_token" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
   value       = local.github_oauth_token
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "github_webhooks_token" {
@@ -303,6 +314,7 @@ resource "aws_ssm_parameter" "github_webhooks_token" {
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
   value       = local.github_webhooks_token
+  tags        = module.this.tags
 }
 
 resource "aws_security_group_rule" "egress_http" {
@@ -430,6 +442,7 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_arn" {
   key_id      = local.kms_key_id
   name        = local.authentication_cognito_user_pool_arn_ssm_name
   value       = local.authentication_cognito_user_pool_arn
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
@@ -440,6 +453,7 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_client_id" {
   key_id      = local.kms_key_id
   name        = local.authentication_cognito_user_pool_client_id_ssm_name
   value       = local.authentication_cognito_user_pool_client_id
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
@@ -450,6 +464,7 @@ resource "aws_ssm_parameter" "atlantis_cognito_user_pool_domain" {
   key_id      = local.kms_key_id
   name        = local.authentication_cognito_user_pool_domain_ssm_name
   value       = local.authentication_cognito_user_pool_domain
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_oidc_client_id" {
@@ -460,6 +475,7 @@ resource "aws_ssm_parameter" "atlantis_oidc_client_id" {
   key_id      = local.kms_key_id
   name        = local.authentication_oidc_client_id_ssm_name
   value       = local.authentication_oidc_client_id
+  tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "atlantis_oidc_client_secret" {
@@ -470,4 +486,5 @@ resource "aws_ssm_parameter" "atlantis_oidc_client_secret" {
   key_id      = local.kms_key_id
   name        = local.authentication_oidc_client_secret_ssm_name
   value       = local.authentication_oidc_client_secret
+  tags        = module.this.tags
 }
