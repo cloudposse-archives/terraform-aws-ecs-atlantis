@@ -48,7 +48,11 @@ module "alb" {
 
 # ECS Cluster (needed even if using FARGATE launch type)
 resource "aws_ecs_cluster" "default" {
-  name = module.this.id
+  name    = module.this.id
+  setting {
+    name = "containerInsights"
+    value = "enabled"
+  }
 }
 
 module "atlantis" {

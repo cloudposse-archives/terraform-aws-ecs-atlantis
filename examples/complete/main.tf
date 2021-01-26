@@ -41,11 +41,16 @@ module "alb" {
 }
 
 resource "aws_ecs_cluster" "default" {
-  name = module.this.id
-  tags = module.this.tags
+  name    = module.this.id
+  tags    = module.this.tags
+  setting {
+    name = "containerInsights"
+    value = "enabled"
+  }
 }
 
 resource "aws_sns_topic" "sns_topic" {
+  #bridgecrew:skip=BC_AWS_GENERAL_15:Skipping `Encrypt SNS Topic Data` in example/test modules
   name         = module.this.id
   display_name = "Test terraform-aws-ecs-atlantis"
   tags         = module.this.tags
