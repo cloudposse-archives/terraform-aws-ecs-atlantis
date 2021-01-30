@@ -25,7 +25,7 @@ module "subnets" {
 
 module "alb" {
   source                                  = "cloudposse/alb/aws"
-  version                                 = "0.24.0"
+  version                                 = "0.27.0"
   vpc_id                                  = module.vpc.vpc_id
   security_group_ids                      = [module.vpc.vpc_default_security_group_id]
   subnet_ids                              = module.subnets.public_subnet_ids
@@ -43,9 +43,14 @@ module "alb" {
 resource "aws_ecs_cluster" "default" {
   name = module.this.id
   tags = module.this.tags
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
 }
 
 resource "aws_sns_topic" "sns_topic" {
+  #bridgecrew:skip=BC_AWS_GENERAL_15:Skipping `Encrypt SNS Topic Data` in example/test modules
   name         = module.this.id
   display_name = "Test terraform-aws-ecs-atlantis"
   tags         = module.this.tags
