@@ -67,6 +67,16 @@ module "kms_key" {
   context = module.this.context
 }
 
+module "atlantis_dns_name" {
+  source  = "cloudposse/label/null"
+  version = "0.22.1"
+
+  name       = var.short_name
+  attributes = module.this.attributes
+
+  # Omission of context = module.this.context is intentional
+}
+
 module "atlantis" {
   source = "../.."
 
@@ -90,15 +100,15 @@ module "atlantis" {
 
   default_backend_image = var.default_backend_image
   healthcheck_path      = var.healthcheck_path
-  short_name            = var.short_name
+  short_name            = module.atlantis_dns_name.id
   hostname              = var.hostname
   parent_zone_id        = var.parent_zone_id
 
-  # Container
+  // Container
   container_cpu    = var.container_cpu
   container_memory = var.container_memory
 
-  # Authentication
+  // Authentication
   authentication_type                           = var.authentication_type
   alb_ingress_listener_unauthenticated_priority = var.alb_ingress_listener_unauthenticated_priority
   alb_ingress_listener_authenticated_priority   = var.alb_ingress_listener_authenticated_priority
@@ -116,7 +126,7 @@ module "atlantis" {
   authentication_oidc_token_endpoint            = var.authentication_oidc_token_endpoint
   authentication_oidc_user_info_endpoint        = var.authentication_oidc_user_info_endpoint
 
-  # ECS
+  // ECS
   private_subnet_ids = module.subnets.private_subnet_ids
   ecs_cluster_arn    = aws_ecs_cluster.default.arn
   ecs_cluster_name   = aws_ecs_cluster.default.name
@@ -124,7 +134,7 @@ module "atlantis" {
   desired_count      = var.desired_count
   launch_type        = var.launch_type
 
-  # ALB
+  // ALB
   alb_zone_id                                     = module.alb.alb_zone_id
   alb_arn_suffix                                  = module.alb.alb_arn_suffix
   alb_dns_name                                    = module.alb.alb_dns_name
@@ -132,7 +142,7 @@ module "atlantis" {
   alb_ingress_unauthenticated_listener_arns       = [module.alb.http_listener_arn]
   alb_ingress_unauthenticated_listener_arns_count = 1
 
-  # CodePipeline
+  // CodePipeline
   codepipeline_enabled                 = var.codepipeline_enabled
   github_oauth_token                   = var.github_oauth_token
   github_webhooks_token                = var.github_webhooks_token
@@ -145,12 +155,12 @@ module "atlantis" {
   webhook_events                       = var.webhook_events
   codepipeline_s3_bucket_force_destroy = var.codepipeline_s3_bucket_force_destroy
 
-  # Autoscaling
+  // Autoscaling
   autoscaling_enabled      = var.autoscaling_enabled
   autoscaling_min_capacity = var.autoscaling_min_capacity
   autoscaling_max_capacity = var.autoscaling_max_capacity
 
-  # Alarms
+  // Alarms
   alb_target_group_alarms_enabled                   = var.alb_target_group_alarms_enabled
   ecs_alarms_enabled                                = var.ecs_alarms_enabled
   alb_target_group_alarms_alarm_actions             = [aws_sns_topic.sns_topic.arn]

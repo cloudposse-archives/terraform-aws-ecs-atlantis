@@ -113,19 +113,19 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	codebuildCacheBucketName := terraform.Output(t, terraformOptions, "codebuild_cache_bucket_name")
 	// Verify we're getting back the outputs we expect
-	expectedCodebuildCacheBucketName := "eg-test-ecs-atlantis-build-" + attributes[0]
+	expectedCodebuildCacheBucketName := "eg-test-ecs-atlantis-" + attributes[0] + "-build"
 	assert.Contains(t, codebuildCacheBucketName, expectedCodebuildCacheBucketName)
 
 	// Run `terraform output` to get the value of an output variable
 	codebuildProjectName := terraform.Output(t, terraformOptions, "codebuild_project_name")
 	// Verify we're getting back the outputs we expect
-	expectedCodebuildProjectName := "eg-test-ecs-atlantis-build-" + attributes[0]
+	expectedCodebuildProjectName := "eg-test-ecs-atlantis-" + attributes[0] + "-build"
 	assert.Equal(t, expectedCodebuildProjectName, codebuildProjectName)
 
 	// Run `terraform output` to get the value of an output variable
 	codebuildRoleId := terraform.Output(t, terraformOptions, "codebuild_role_id")
 	// Verify we're getting back the outputs we expect
-	expectedCodebuildRoleId := "eg-test-ecs-atlantis-build-" + attributes[0]
+	expectedCodebuildRoleId := "eg-test-ecs-atlantis-" + attributes[0] + "-build"
 	assert.Equal(t, expectedCodebuildRoleId, codebuildRoleId)
 
 	// Run `terraform output` to get the value of an output variable
@@ -233,10 +233,10 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	atlantisUrl := terraform.Output(t, terraformOptions, "atlantis_url")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "https://ecs-atlantis-test.testing.cloudposse.co", atlantisUrl)
+	assert.Equal(t, "https://ecs-atlantis-test-" + attributes[0] +".testing.cloudposse.co", atlantisUrl)
 
 	// Run `terraform output` to get the value of an output variable
 	atlantisWebhookUrl := terraform.Output(t, terraformOptions, "atlantis_webhook_url")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "https://ecs-atlantis-test.testing.cloudposse.co/events", atlantisWebhookUrl)
+	assert.Equal(t, "https://ecs-atlantis-test-" + attributes[0] +".testing.cloudposse.co/events", atlantisWebhookUrl)
 }

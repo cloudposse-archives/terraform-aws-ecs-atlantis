@@ -27,12 +27,6 @@ variable "github_webhooks_token" {
   default     = ""
 }
 
-variable "github_anonymous" {
-  type        = bool
-  description = "Github Anonymous API (if `true`, token must not be set as GITHUB_TOKEN or `github_token`)"
-  default     = false
-}
-
 variable "github_oauth_token_ssm_name" {
   type        = string
   description = "SSM param name to lookup `github_oauth_token` if not provided"
