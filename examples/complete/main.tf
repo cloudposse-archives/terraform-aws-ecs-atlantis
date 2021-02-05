@@ -71,7 +71,7 @@ module "atlantis_dns_name" {
   source  = "cloudposse/label/null"
   version = "0.22.1"
 
-  name = var.short_name
+  name       = var.short_name
   attributes = module.this.attributes
 
   # Omission of context = module.this.context is intentional
