@@ -51,9 +51,8 @@ module "ssh_key_pair" {
 
 module "github_webhooks" {
   source               = "cloudposse/repository-webhooks/github"
-  version              = "0.10.0"
+  version              = "0.11.0"
   enabled              = local.enabled && var.webhook_enabled ? true : false
-  github_anonymous     = var.github_anonymous
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]
   github_token         = local.github_webhooks_token
@@ -62,12 +61,12 @@ module "github_webhooks" {
   webhook_content_type = "json"
   events               = var.webhook_events
 
-  //  context = module.this.context
+  context = module.this.context
 }
 
 module "ecs_web_app" {
   source  = "cloudposse/ecs-web-app/aws"
-  version = "0.48.2"
+  version = "0.52.0"
 
   region      = var.region
   vpc_id      = var.vpc_id

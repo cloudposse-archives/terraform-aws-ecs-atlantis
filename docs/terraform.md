@@ -91,7 +91,6 @@
 | ecs\_cluster\_name | Name of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
 | enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
 | environment | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
-| github\_anonymous | Github Anonymous API (if `true`, token must not be set as GITHUB\_TOKEN or `github_token`) | `bool` | `false` | no |
 | github\_oauth\_token | GitHub OAuth token. If not provided the token is looked up from SSM | `string` | `""` | no |
 | github\_oauth\_token\_ssm\_name | SSM param name to lookup `github_oauth_token` if not provided | `string` | `""` | no |
 | github\_webhooks\_token | GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM | `string` | `""` | no |
