@@ -137,7 +137,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	ecrRepositoryName := terraform.Output(t, terraformOptions, "ecr_repository_name")
 	// Verify we're getting back the outputs we expect
-	expectedEcrRepositoryName := "eg-test-ecs-atlantis-ecr-" + attributes[0]
+	expectedEcrRepositoryName := "eg-test-ecs-atlantis-" + attributes[0] + "-ecr"
 	assert.Equal(t, expectedEcrRepositoryName, ecrRepositoryName)
 
 	// Run `terraform output` to get the value of an output variable
@@ -179,55 +179,55 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	ecsAlarmsCpuUtilizationHighCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "ecs_alarms_cpu_utilization_high_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedEcsAlarmsCpuUtilizationHighCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-cpu-utilization-high-" + attributes[0]
+	expectedEcsAlarmsCpuUtilizationHighCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-cpu-utilization-high"
 	assert.Equal(t, expectedEcsAlarmsCpuUtilizationHighCloudwatchMetricAlarmId, ecsAlarmsCpuUtilizationHighCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsAlarmsCpuUtilizationLowCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "ecs_alarms_cpu_utilization_low_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedEcsAlarmsCpuUtilizationLowCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-cpu-utilization-low-" + attributes[0]
+	expectedEcsAlarmsCpuUtilizationLowCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-cpu-utilization-low"
 	assert.Equal(t, expectedEcsAlarmsCpuUtilizationLowCloudwatchMetricAlarmId, ecsAlarmsCpuUtilizationLowCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsAlarmsMemoryUtilizationHighCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "ecs_alarms_memory_utilization_high_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedEcsAlarmsMemoryUtilizationHighCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-memory-utilization-high-" + attributes[0]
+	expectedEcsAlarmsMemoryUtilizationHighCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-memory-utilization-high"
 	assert.Equal(t, expectedEcsAlarmsMemoryUtilizationHighCloudwatchMetricAlarmId, ecsAlarmsMemoryUtilizationHighCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	ecsAlarmsMemoryUtilizationLowCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "ecs_alarms_memory_utilization_low_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedEcsAlarmsMemoryUtilizationLowCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-memory-utilization-low-" + attributes[0]
+	expectedEcsAlarmsMemoryUtilizationLowCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-memory-utilization-low"
 	assert.Equal(t, expectedEcsAlarmsMemoryUtilizationLowCloudwatchMetricAlarmId, ecsAlarmsMemoryUtilizationLowCloudwatchMetricAlarmId)
-	
+
 	// Run `terraform output` to get the value of an output variable
 	httpcodeElb5xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_elb_5xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedHttpcodeElb5xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-elb-5xx-count-high-" + attributes[0]
+	expectedHttpcodeElb5xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-elb-5xx-count-high"
 	assert.Equal(t, expectedHttpcodeElb5xxCountCloudwatchMetricAlarmId, httpcodeElb5xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	httpcodeTarget3xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_target_3xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedHttpcodeTarget3xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-3xx-count-high-" + attributes[0]
+	expectedHttpcodeTarget3xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-3xx-count-high"
 	assert.Equal(t, expectedHttpcodeTarget3xxCountCloudwatchMetricAlarmId, httpcodeTarget3xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	httpcodeTarget4xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_target_4xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedHttpcodeTarget4xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-4xx-count-high-" + attributes[0]
+	expectedHttpcodeTarget4xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-4xx-count-high"
 	assert.Equal(t, expectedHttpcodeTarget4xxCountCloudwatchMetricAlarmId, httpcodeTarget4xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	httpcodeTarget5xxCountCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "httpcode_target_5xx_count_cloudwatch_metric_alarm_id")
 	// Verify we're getting back the outputs we expect
-	expectedHttpcodeTarget5xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-5xx-count-high-" + attributes[0]
+	expectedHttpcodeTarget5xxCountCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-5xx-count-high"
 	assert.Equal(t, expectedHttpcodeTarget5xxCountCloudwatchMetricAlarmId, httpcodeTarget5xxCountCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
 	targetResponseTimeAverageCloudwatchMetricAlarmId := terraform.Output(t, terraformOptions, "target_response_time_average_cloudwatch_metric_alarm_id")
-	// Verify we're getting back the outputs we 
-	expectedTargetResponseTimeAverageCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-target-response-high-" + attributes[0]
+	// Verify we're getting back the outputs we
+	expectedTargetResponseTimeAverageCloudwatchMetricAlarmId := "eg-test-ecs-atlantis-" + attributes[0] + "-target-response-high"
 	assert.Equal(t, expectedTargetResponseTimeAverageCloudwatchMetricAlarmId, targetResponseTimeAverageCloudwatchMetricAlarmId)
 
 	// Run `terraform output` to get the value of an output variable
