@@ -233,10 +233,10 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	atlantisUrl := terraform.Output(t, terraformOptions, "atlantis_url")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "https://ecs-atlantis-test.testing.cloudposse.co", atlantisUrl)
+	assert.Equal(t, "https://ecs-atlantis-test-" + attributes[0] +".testing.cloudposse.co", atlantisUrl)
 
 	// Run `terraform output` to get the value of an output variable
 	atlantisWebhookUrl := terraform.Output(t, terraformOptions, "atlantis_webhook_url")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "https://ecs-atlantis-test.testing.cloudposse.co/events", atlantisWebhookUrl)
+	assert.Equal(t, "https://ecs-atlantis-test-" + attributes[0] +".testing.cloudposse.co/events", atlantisWebhookUrl)
 }

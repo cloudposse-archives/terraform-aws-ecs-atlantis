@@ -67,6 +67,26 @@ module "kms_key" {
   context = module.this.context
 }
 
+module "atlantis_dns_name" {
+  source  = "cloudposse/label/null"
+  version = "0.22.1"
+
+  name = var.short_name
+  attributes = module.this.attributes
+
+  # Omission of context = module.this.context is intentional
+}
+
+module "atlantis_chamber_service" {
+  source  = "cloudposse/label/null"
+  version = "0.22.1"
+
+  name = var.chamber_service
+  attributes = module.this.attributes
+
+  # Omission of context = module.this.context is intentional
+}
+
 module "atlantis" {
   source = "../.."
 
@@ -76,7 +96,7 @@ module "atlantis" {
   ssh_private_key_name = var.ssh_private_key_name
   ssh_public_key_name  = var.ssh_public_key_name
   kms_key_id           = var.kms_key_id == "" ? module.kms_key.key_id : var.kms_key_id
-  chamber_service      = var.chamber_service
+  chamber_service      = module.atlantis_chamber_service.id
 
   atlantis_gh_user           = var.atlantis_gh_user
   atlantis_gh_team_whitelist = var.atlantis_gh_team_whitelist
@@ -90,7 +110,7 @@ module "atlantis" {
 
   default_backend_image = var.default_backend_image
   healthcheck_path      = var.healthcheck_path
-  short_name            = var.short_name
+  short_name            = module.atlantis_dns_name.id
   hostname              = var.hostname
   parent_zone_id        = var.parent_zone_id
 
