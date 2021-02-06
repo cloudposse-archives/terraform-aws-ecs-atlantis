@@ -40,7 +40,7 @@ locals {
 #--------------------------------------------------------------
 module "ssh_key_pair" {
   source               = "cloudposse/ssm-tls-ssh-key-pair/aws"
-  version              = "0.8.0"
+  version              = "0.10.0"
   ssh_private_key_name = var.ssh_private_key_name
   ssh_public_key_name  = var.ssh_public_key_name
   ssm_path_prefix      = var.chamber_service
@@ -51,7 +51,7 @@ module "ssh_key_pair" {
 
 module "github_webhooks" {
   source               = "cloudposse/repository-webhooks/github"
-  version              = "0.11.0"
+  version              = "0.12.0"
   enabled              = local.enabled && var.webhook_enabled ? true : false
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]
@@ -66,7 +66,7 @@ module "github_webhooks" {
 
 module "ecs_web_app" {
   source  = "cloudposse/ecs-web-app/aws"
-  version = "0.52.0"
+  version = "0.53.0"
 
   region      = var.region
   vpc_id      = var.vpc_id
