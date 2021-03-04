@@ -66,7 +66,7 @@ module "github_webhooks" {
 
 module "ecs_web_app" {
   source  = "cloudposse/ecs-web-app/aws"
-  version = "0.54.0"
+  version = "0.56.0"
 
   region      = var.region
   vpc_id      = var.vpc_id
