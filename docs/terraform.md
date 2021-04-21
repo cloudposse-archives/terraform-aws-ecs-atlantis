@@ -3,204 +3,230 @@
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.13.0 |
-| aws | >= 2.0 |
-| random | >= 2.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 2.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.0 |
-| random | >= 2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 2.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 2.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| ecs_web_app | cloudposse/ecs-web-app/aws | 0.54.0 |
-| github_webhooks | cloudposse/repository-webhooks/github | 0.12.0 |
-| ssh_key_pair | cloudposse/ssm-tls-ssh-key-pair/aws | 0.10.0 |
-| this | cloudposse/label/null | 0.24.1 |
+| <a name="module_ecs_web_app"></a> [ecs\_web\_app](#module\_ecs\_web\_app) | cloudposse/ecs-web-app/aws | 0.54.0 |
+| <a name="module_github_webhooks"></a> [github\_webhooks](#module\_github\_webhooks) | cloudposse/repository-webhooks/github | 0.12.0 |
+| <a name="module_ssh_key_pair"></a> [ssh\_key\_pair](#module\_ssh\_key\_pair) | cloudposse/ssm-tls-ssh-key-pair/aws | 0.10.0 |
+| <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.24.1 |
 
 ## Resources
 
-| Name |
-|------|
-| [aws_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) |
-| [aws_kms_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/kms_key) |
-| [aws_route53_record](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) |
-| [aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) |
-| [aws_ssm_parameter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) |
-| [aws_ssm_parameter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) |
-| [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) |
+| Name | Type |
+|------|------|
+| [aws_iam_role_policy_attachment.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_route53_record.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_security_group_rule.egress_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.egress_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.egress_tcp_dns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.egress_udp_dns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_ssm_parameter.atlantis_atlantis_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_cognito_user_pool_arn](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_cognito_user_pool_client_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_cognito_user_pool_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_gh_team_whitelist](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_gh_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_gh_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_gh_webhook_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_iam_role_arn](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_log_level](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_oidc_client_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_oidc_client_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_port](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_repo_config](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_repo_whitelist](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_wake_word](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.github_webhooks_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [random_string.atlantis_gh_webhook_secret](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [aws_kms_key.chamber_kms_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/kms_key) | data source |
+| [aws_ssm_parameter.atlantis_cognito_user_pool_arn](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.atlantis_cognito_user_pool_client_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.atlantis_cognito_user_pool_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.atlantis_gh_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.atlantis_oidc_client_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.atlantis_oidc_client_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.github_webhooks_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| additional\_tag\_map | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
-| alb\_arn\_suffix | The ARN suffix of the ALB | `string` | n/a | yes |
-| alb\_dns\_name | DNS name of ALB | `string` | n/a | yes |
-| alb\_ingress\_authenticated\_hosts | Authenticated hosts to match in Hosts header (a maximum of 1 can be defined) | `list(string)` | `[]` | no |
-| alb\_ingress\_authenticated\_listener\_arns | A list of authenticated ALB listener ARNs to attach ALB listener rules to | `list(string)` | `[]` | no |
-| alb\_ingress\_authenticated\_listener\_arns\_count | The number of authenticated ARNs in `alb_ingress_authenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed | `number` | `0` | no |
-| alb\_ingress\_authenticated\_paths | Authenticated path pattern to match (a maximum of 1 can be defined) | `list(string)` | <pre>[<br>  "/*"<br>]</pre> | no |
-| alb\_ingress\_listener\_authenticated\_priority | The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority | `number` | `100` | no |
-| alb\_ingress\_listener\_unauthenticated\_priority | The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority | `number` | `50` | no |
-| alb\_ingress\_unauthenticated\_hosts | Unauthenticated hosts to match in Hosts header (a maximum of 1 can be defined) | `list(string)` | `[]` | no |
-| alb\_ingress\_unauthenticated\_listener\_arns | A list of unauthenticated ALB listener ARNs to attach ALB listener rules to | `list(string)` | `[]` | no |
-| alb\_ingress\_unauthenticated\_listener\_arns\_count | The number of unauthenticated ARNs in `alb_ingress_unauthenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed | `number` | `0` | no |
-| alb\_ingress\_unauthenticated\_paths | Unauthenticated path pattern to match (a maximum of 1 can be defined) | `list(string)` | <pre>[<br>  "/events"<br>]</pre> | no |
-| alb\_security\_group | Security group of the ALB | `string` | n/a | yes |
-| alb\_target\_group\_alarms\_alarm\_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an ALARM state from any other state. | `list(string)` | `[]` | no |
-| alb\_target\_group\_alarms\_enabled | A boolean to enable/disable CloudWatch Alarms for ALB Target metrics | `bool` | `false` | no |
-| alb\_target\_group\_alarms\_insufficient\_data\_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT\_DATA state from any other state. | `list(string)` | `[]` | no |
-| alb\_target\_group\_alarms\_ok\_actions | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an OK state from any other state. | `list(string)` | `[]` | no |
-| alb\_zone\_id | The ID of the zone in which ALB is provisioned | `string` | n/a | yes |
-| atlantis\_gh\_team\_whitelist | Atlantis GitHub team whitelist | `string` | `""` | no |
-| atlantis\_gh\_user | Atlantis GitHub user | `string` | n/a | yes |
-| atlantis\_gh\_webhook\_secret | Atlantis GitHub webhook secret | `string` | `""` | no |
-| atlantis\_log\_level | Atlantis log level | `string` | `"info"` | no |
-| atlantis\_port | Atlantis container port | `number` | `4141` | no |
-| atlantis\_repo\_config | Path to atlantis server-side repo config file (https://www.runatlantis.io/docs/server-side-repo-config.html) | `string` | `"atlantis-repo-config.yaml"` | no |
-| atlantis\_repo\_whitelist | Whitelist of repositories Atlantis will accept webhooks from | `list(string)` | `[]` | no |
-| atlantis\_url\_format | Template for the Atlantis URL which is populated with the hostname | `string` | `"https://%s"` | no |
-| atlantis\_wake\_word | Wake world for atlantis | `string` | `"atlantis"` | no |
-| atlantis\_webhook\_format | Template for the Atlantis webhook URL which is populated with the hostname | `string` | `"https://%s/events"` | no |
-| attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
-| authentication\_cognito\_user\_pool\_arn | Cognito User Pool ARN | `string` | `""` | no |
-| authentication\_cognito\_user\_pool\_arn\_ssm\_name | SSM param name to lookup `authentication_cognito_user_pool_arn` if not provided | `string` | `""` | no |
-| authentication\_cognito\_user\_pool\_client\_id | Cognito User Pool Client ID | `string` | `""` | no |
-| authentication\_cognito\_user\_pool\_client\_id\_ssm\_name | SSM param name to lookup `authentication_cognito_user_pool_client_id` if not provided | `string` | `""` | no |
-| authentication\_cognito\_user\_pool\_domain | Cognito User Pool Domain. The User Pool Domain should be set to the domain prefix (`xxx`) instead of full domain (https://xxx.auth.us-west-2.amazoncognito.com) | `string` | `""` | no |
-| authentication\_cognito\_user\_pool\_domain\_ssm\_name | SSM param name to lookup `authentication_cognito_user_pool_domain` if not provided | `string` | `""` | no |
-| authentication\_oidc\_authorization\_endpoint | OIDC Authorization Endpoint | `string` | `""` | no |
-| authentication\_oidc\_client\_id | OIDC Client ID | `string` | `""` | no |
-| authentication\_oidc\_client\_id\_ssm\_name | SSM param name to lookup `authentication_oidc_client_id` if not provided | `string` | `""` | no |
-| authentication\_oidc\_client\_secret | OIDC Client Secret | `string` | `""` | no |
-| authentication\_oidc\_client\_secret\_ssm\_name | SSM param name to lookup `authentication_oidc_client_secret` if not provided | `string` | `""` | no |
-| authentication\_oidc\_issuer | OIDC Issuer | `string` | `""` | no |
-| authentication\_oidc\_token\_endpoint | OIDC Token Endpoint | `string` | `""` | no |
-| authentication\_oidc\_user\_info\_endpoint | OIDC User Info Endpoint | `string` | `""` | no |
-| authentication\_type | Authentication type. Supported values are `COGNITO` and `OIDC` | `string` | `""` | no |
-| autoscaling\_enabled | A boolean to enable/disable Autoscaling policy for ECS Service | `bool` | `false` | no |
-| autoscaling\_max\_capacity | Atlantis maximum tasks to run | `number` | `1` | no |
-| autoscaling\_min\_capacity | Atlantis minimum tasks to run | `number` | `1` | no |
-| branch | Atlantis branch of the GitHub repository, _e.g._ `master` | `string` | `"master"` | no |
-| build\_timeout | How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed. | `number` | `10` | no |
-| chamber\_format | Format to store parameters in SSM, for consumption with chamber | `string` | `"/%s/%s"` | no |
-| chamber\_service | SSM parameter service name for use with chamber. This is used in chamber\_format where /$chamber\_service/$parameter would be the default. | `string` | `"atlantis"` | no |
-| codepipeline\_enabled | A boolean to enable/disable AWS Codepipeline and ECR | `bool` | `false` | no |
-| codepipeline\_s3\_bucket\_force\_destroy | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | `bool` | `false` | no |
-| container\_cpu | Atlantis CPUs per task | `number` | `256` | no |
-| container\_memory | Atlantis memory per task | `number` | `512` | no |
-| context | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
-| default\_backend\_image | ECS default (bootstrap) image | `string` | `"cloudposse/default-backend:0.1.2"` | no |
-| delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
-| desired\_count | Atlantis desired number of tasks | `number` | `1` | no |
-| ecs\_alarms\_cpu\_utilization\_high\_alarm\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High Alarm action | `list(string)` | `[]` | no |
-| ecs\_alarms\_cpu\_utilization\_high\_ok\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High OK action | `list(string)` | `[]` | no |
-| ecs\_alarms\_cpu\_utilization\_low\_alarm\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization Low Alarm action | `list(string)` | `[]` | no |
-| ecs\_alarms\_cpu\_utilization\_low\_ok\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization Low OK action | `list(string)` | `[]` | no |
-| ecs\_alarms\_enabled | A boolean to enable/disable CloudWatch Alarms for ECS Service metrics | `bool` | `false` | no |
-| ecs\_alarms\_memory\_utilization\_high\_alarm\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization High Alarm action | `list(string)` | `[]` | no |
-| ecs\_alarms\_memory\_utilization\_high\_ok\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization High OK action | `list(string)` | `[]` | no |
-| ecs\_alarms\_memory\_utilization\_low\_alarm\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low Alarm action | `list(string)` | `[]` | no |
-| ecs\_alarms\_memory\_utilization\_low\_ok\_actions | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low OK action | `list(string)` | `[]` | no |
-| ecs\_cluster\_arn | ARN of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
-| ecs\_cluster\_name | Name of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
-| enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
-| environment | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
-| github\_oauth\_token | GitHub OAuth token. If not provided the token is looked up from SSM | `string` | `""` | no |
-| github\_oauth\_token\_ssm\_name | SSM param name to lookup `github_oauth_token` if not provided | `string` | `""` | no |
-| github\_webhooks\_token | GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM | `string` | `""` | no |
-| github\_webhooks\_token\_ssm\_name | SSM param name to lookup `github_webhooks_token` if not provided | `string` | `""` | no |
-| healthcheck\_path | Healthcheck path | `string` | `"/healthz"` | no |
-| hostname | Atlantis URL | `string` | `""` | no |
-| id\_length\_limit | Limit `id` to this many characters (minimum 6).<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
-| kms\_key\_id | KMS key ID used to encrypt SSM SecureString parameters | `string` | `""` | no |
-| label\_key\_case | The letter case of label keys (`tag` names) (i.e. `name`, `namespace`, `environment`, `stage`, `attributes`) to use in `tags`.<br>Possible values: `lower`, `title`, `upper`.<br>Default value: `title`. | `string` | `null` | no |
-| label\_order | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
-| label\_value\_case | The letter case of output label values (also used in `tags` and `id`).<br>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br>Default value: `lower`. | `string` | `null` | no |
-| launch\_type | The ECS launch type (valid options: FARGATE or EC2) | `string` | `"FARGATE"` | no |
-| name | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
-| namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
-| overwrite\_ssm\_parameter | Whether to overwrite an existing SSM parameter | `bool` | `true` | no |
-| parent\_zone\_id | The zone ID where the DNS record for the `short_name` will be written | `string` | `""` | no |
-| policy\_arn | Permission to grant to atlantis server | `string` | `"arn:aws:iam::aws:policy/AdministratorAccess"` | no |
-| private\_subnet\_ids | The private subnet IDs | `list(string)` | `[]` | no |
-| regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
-| region | AWS Region for S3 bucket | `string` | n/a | yes |
-| repo\_name | GitHub repository name of the atlantis to be built and deployed to ECS. | `string` | n/a | yes |
-| repo\_owner | GitHub organization containing the Atlantis repository | `string` | n/a | yes |
-| security\_group\_ids | Additional Security Group IDs to allow into ECS Service. | `list(string)` | `[]` | no |
-| short\_name | Alantis short DNS name (e.g. `atlantis`) | `string` | `"atlantis"` | no |
-| ssh\_private\_key\_name | Atlantis SSH private key name | `string` | `"atlantis_ssh_private_key"` | no |
-| ssh\_public\_key\_name | Atlantis SSH public key name | `string` | `"atlantis_ssh_public_key"` | no |
-| stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
-| tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
-| vpc\_id | VPC ID for the ECS Cluster | `string` | n/a | yes |
-| webhook\_enabled | Set to false to prevent the module from creating any webhook resources | `bool` | `true` | no |
-| webhook\_events | A list of events which should trigger the webhook. | `list(string)` | <pre>[<br>  "issue_comment",<br>  "pull_request",<br>  "pull_request_review",<br>  "pull_request_review_comment",<br>  "push"<br>]</pre> | no |
-| webhook\_secret\_length | GitHub webhook secret length | `number` | `32` | no |
+| <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
+| <a name="input_alb_arn_suffix"></a> [alb\_arn\_suffix](#input\_alb\_arn\_suffix) | The ARN suffix of the ALB | `string` | n/a | yes |
+| <a name="input_alb_dns_name"></a> [alb\_dns\_name](#input\_alb\_dns\_name) | DNS name of ALB | `string` | n/a | yes |
+| <a name="input_alb_ingress_authenticated_hosts"></a> [alb\_ingress\_authenticated\_hosts](#input\_alb\_ingress\_authenticated\_hosts) | Authenticated hosts to match in Hosts header (a maximum of 1 can be defined) | `list(string)` | `[]` | no |
+| <a name="input_alb_ingress_authenticated_listener_arns"></a> [alb\_ingress\_authenticated\_listener\_arns](#input\_alb\_ingress\_authenticated\_listener\_arns) | A list of authenticated ALB listener ARNs to attach ALB listener rules to | `list(string)` | `[]` | no |
+| <a name="input_alb_ingress_authenticated_listener_arns_count"></a> [alb\_ingress\_authenticated\_listener\_arns\_count](#input\_alb\_ingress\_authenticated\_listener\_arns\_count) | The number of authenticated ARNs in `alb_ingress_authenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed | `number` | `0` | no |
+| <a name="input_alb_ingress_authenticated_paths"></a> [alb\_ingress\_authenticated\_paths](#input\_alb\_ingress\_authenticated\_paths) | Authenticated path pattern to match (a maximum of 1 can be defined) | `list(string)` | <pre>[<br>  "/*"<br>]</pre> | no |
+| <a name="input_alb_ingress_listener_authenticated_priority"></a> [alb\_ingress\_listener\_authenticated\_priority](#input\_alb\_ingress\_listener\_authenticated\_priority) | The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority | `number` | `100` | no |
+| <a name="input_alb_ingress_listener_unauthenticated_priority"></a> [alb\_ingress\_listener\_unauthenticated\_priority](#input\_alb\_ingress\_listener\_unauthenticated\_priority) | The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority | `number` | `50` | no |
+| <a name="input_alb_ingress_unauthenticated_hosts"></a> [alb\_ingress\_unauthenticated\_hosts](#input\_alb\_ingress\_unauthenticated\_hosts) | Unauthenticated hosts to match in Hosts header (a maximum of 1 can be defined) | `list(string)` | `[]` | no |
+| <a name="input_alb_ingress_unauthenticated_listener_arns"></a> [alb\_ingress\_unauthenticated\_listener\_arns](#input\_alb\_ingress\_unauthenticated\_listener\_arns) | A list of unauthenticated ALB listener ARNs to attach ALB listener rules to | `list(string)` | `[]` | no |
+| <a name="input_alb_ingress_unauthenticated_listener_arns_count"></a> [alb\_ingress\_unauthenticated\_listener\_arns\_count](#input\_alb\_ingress\_unauthenticated\_listener\_arns\_count) | The number of unauthenticated ARNs in `alb_ingress_unauthenticated_listener_arns`. This is necessary to work around a limitation in Terraform where counts cannot be computed | `number` | `0` | no |
+| <a name="input_alb_ingress_unauthenticated_paths"></a> [alb\_ingress\_unauthenticated\_paths](#input\_alb\_ingress\_unauthenticated\_paths) | Unauthenticated path pattern to match (a maximum of 1 can be defined) | `list(string)` | <pre>[<br>  "/events"<br>]</pre> | no |
+| <a name="input_alb_security_group"></a> [alb\_security\_group](#input\_alb\_security\_group) | Security group of the ALB | `string` | n/a | yes |
+| <a name="input_alb_target_group_alarms_alarm_actions"></a> [alb\_target\_group\_alarms\_alarm\_actions](#input\_alb\_target\_group\_alarms\_alarm\_actions) | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an ALARM state from any other state. | `list(string)` | `[]` | no |
+| <a name="input_alb_target_group_alarms_enabled"></a> [alb\_target\_group\_alarms\_enabled](#input\_alb\_target\_group\_alarms\_enabled) | A boolean to enable/disable CloudWatch Alarms for ALB Target metrics | `bool` | `false` | no |
+| <a name="input_alb_target_group_alarms_insufficient_data_actions"></a> [alb\_target\_group\_alarms\_insufficient\_data\_actions](#input\_alb\_target\_group\_alarms\_insufficient\_data\_actions) | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an INSUFFICIENT\_DATA state from any other state. | `list(string)` | `[]` | no |
+| <a name="input_alb_target_group_alarms_ok_actions"></a> [alb\_target\_group\_alarms\_ok\_actions](#input\_alb\_target\_group\_alarms\_ok\_actions) | A list of ARNs (i.e. SNS Topic ARN) to execute when ALB Target Group alarms transition into an OK state from any other state. | `list(string)` | `[]` | no |
+| <a name="input_alb_zone_id"></a> [alb\_zone\_id](#input\_alb\_zone\_id) | The ID of the zone in which ALB is provisioned | `string` | n/a | yes |
+| <a name="input_atlantis_gh_team_whitelist"></a> [atlantis\_gh\_team\_whitelist](#input\_atlantis\_gh\_team\_whitelist) | Atlantis GitHub team whitelist | `string` | `""` | no |
+| <a name="input_atlantis_gh_user"></a> [atlantis\_gh\_user](#input\_atlantis\_gh\_user) | Atlantis GitHub user | `string` | n/a | yes |
+| <a name="input_atlantis_gh_webhook_secret"></a> [atlantis\_gh\_webhook\_secret](#input\_atlantis\_gh\_webhook\_secret) | Atlantis GitHub webhook secret | `string` | `""` | no |
+| <a name="input_atlantis_log_level"></a> [atlantis\_log\_level](#input\_atlantis\_log\_level) | Atlantis log level | `string` | `"info"` | no |
+| <a name="input_atlantis_port"></a> [atlantis\_port](#input\_atlantis\_port) | Atlantis container port | `number` | `4141` | no |
+| <a name="input_atlantis_repo_config"></a> [atlantis\_repo\_config](#input\_atlantis\_repo\_config) | Path to atlantis server-side repo config file (https://www.runatlantis.io/docs/server-side-repo-config.html) | `string` | `"atlantis-repo-config.yaml"` | no |
+| <a name="input_atlantis_repo_whitelist"></a> [atlantis\_repo\_whitelist](#input\_atlantis\_repo\_whitelist) | Whitelist of repositories Atlantis will accept webhooks from | `list(string)` | `[]` | no |
+| <a name="input_atlantis_url_format"></a> [atlantis\_url\_format](#input\_atlantis\_url\_format) | Template for the Atlantis URL which is populated with the hostname | `string` | `"https://%s"` | no |
+| <a name="input_atlantis_wake_word"></a> [atlantis\_wake\_word](#input\_atlantis\_wake\_word) | Wake world for atlantis | `string` | `"atlantis"` | no |
+| <a name="input_atlantis_webhook_format"></a> [atlantis\_webhook\_format](#input\_atlantis\_webhook\_format) | Template for the Atlantis webhook URL which is populated with the hostname | `string` | `"https://%s/events"` | no |
+| <a name="input_attributes"></a> [attributes](#input\_attributes) | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
+| <a name="input_authentication_cognito_user_pool_arn"></a> [authentication\_cognito\_user\_pool\_arn](#input\_authentication\_cognito\_user\_pool\_arn) | Cognito User Pool ARN | `string` | `""` | no |
+| <a name="input_authentication_cognito_user_pool_arn_ssm_name"></a> [authentication\_cognito\_user\_pool\_arn\_ssm\_name](#input\_authentication\_cognito\_user\_pool\_arn\_ssm\_name) | SSM param name to lookup `authentication_cognito_user_pool_arn` if not provided | `string` | `""` | no |
+| <a name="input_authentication_cognito_user_pool_client_id"></a> [authentication\_cognito\_user\_pool\_client\_id](#input\_authentication\_cognito\_user\_pool\_client\_id) | Cognito User Pool Client ID | `string` | `""` | no |
+| <a name="input_authentication_cognito_user_pool_client_id_ssm_name"></a> [authentication\_cognito\_user\_pool\_client\_id\_ssm\_name](#input\_authentication\_cognito\_user\_pool\_client\_id\_ssm\_name) | SSM param name to lookup `authentication_cognito_user_pool_client_id` if not provided | `string` | `""` | no |
+| <a name="input_authentication_cognito_user_pool_domain"></a> [authentication\_cognito\_user\_pool\_domain](#input\_authentication\_cognito\_user\_pool\_domain) | Cognito User Pool Domain. The User Pool Domain should be set to the domain prefix (`xxx`) instead of full domain (https://xxx.auth.us-west-2.amazoncognito.com) | `string` | `""` | no |
+| <a name="input_authentication_cognito_user_pool_domain_ssm_name"></a> [authentication\_cognito\_user\_pool\_domain\_ssm\_name](#input\_authentication\_cognito\_user\_pool\_domain\_ssm\_name) | SSM param name to lookup `authentication_cognito_user_pool_domain` if not provided | `string` | `""` | no |
+| <a name="input_authentication_oidc_authorization_endpoint"></a> [authentication\_oidc\_authorization\_endpoint](#input\_authentication\_oidc\_authorization\_endpoint) | OIDC Authorization Endpoint | `string` | `""` | no |
+| <a name="input_authentication_oidc_client_id"></a> [authentication\_oidc\_client\_id](#input\_authentication\_oidc\_client\_id) | OIDC Client ID | `string` | `""` | no |
+| <a name="input_authentication_oidc_client_id_ssm_name"></a> [authentication\_oidc\_client\_id\_ssm\_name](#input\_authentication\_oidc\_client\_id\_ssm\_name) | SSM param name to lookup `authentication_oidc_client_id` if not provided | `string` | `""` | no |
+| <a name="input_authentication_oidc_client_secret"></a> [authentication\_oidc\_client\_secret](#input\_authentication\_oidc\_client\_secret) | OIDC Client Secret | `string` | `""` | no |
+| <a name="input_authentication_oidc_client_secret_ssm_name"></a> [authentication\_oidc\_client\_secret\_ssm\_name](#input\_authentication\_oidc\_client\_secret\_ssm\_name) | SSM param name to lookup `authentication_oidc_client_secret` if not provided | `string` | `""` | no |
+| <a name="input_authentication_oidc_issuer"></a> [authentication\_oidc\_issuer](#input\_authentication\_oidc\_issuer) | OIDC Issuer | `string` | `""` | no |
+| <a name="input_authentication_oidc_token_endpoint"></a> [authentication\_oidc\_token\_endpoint](#input\_authentication\_oidc\_token\_endpoint) | OIDC Token Endpoint | `string` | `""` | no |
+| <a name="input_authentication_oidc_user_info_endpoint"></a> [authentication\_oidc\_user\_info\_endpoint](#input\_authentication\_oidc\_user\_info\_endpoint) | OIDC User Info Endpoint | `string` | `""` | no |
+| <a name="input_authentication_type"></a> [authentication\_type](#input\_authentication\_type) | Authentication type. Supported values are `COGNITO` and `OIDC` | `string` | `""` | no |
+| <a name="input_autoscaling_enabled"></a> [autoscaling\_enabled](#input\_autoscaling\_enabled) | A boolean to enable/disable Autoscaling policy for ECS Service | `bool` | `false` | no |
+| <a name="input_autoscaling_max_capacity"></a> [autoscaling\_max\_capacity](#input\_autoscaling\_max\_capacity) | Atlantis maximum tasks to run | `number` | `1` | no |
+| <a name="input_autoscaling_min_capacity"></a> [autoscaling\_min\_capacity](#input\_autoscaling\_min\_capacity) | Atlantis minimum tasks to run | `number` | `1` | no |
+| <a name="input_branch"></a> [branch](#input\_branch) | Atlantis branch of the GitHub repository, _e.g._ `master` | `string` | `"master"` | no |
+| <a name="input_build_timeout"></a> [build\_timeout](#input\_build\_timeout) | How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed. | `number` | `10` | no |
+| <a name="input_chamber_format"></a> [chamber\_format](#input\_chamber\_format) | Format to store parameters in SSM, for consumption with chamber | `string` | `"/%s/%s"` | no |
+| <a name="input_chamber_service"></a> [chamber\_service](#input\_chamber\_service) | SSM parameter service name for use with chamber. This is used in chamber\_format where /$chamber\_service/$parameter would be the default. | `string` | `"atlantis"` | no |
+| <a name="input_codepipeline_enabled"></a> [codepipeline\_enabled](#input\_codepipeline\_enabled) | A boolean to enable/disable AWS Codepipeline and ECR | `bool` | `false` | no |
+| <a name="input_codepipeline_s3_bucket_force_destroy"></a> [codepipeline\_s3\_bucket\_force\_destroy](#input\_codepipeline\_s3\_bucket\_force\_destroy) | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | `bool` | `false` | no |
+| <a name="input_container_cpu"></a> [container\_cpu](#input\_container\_cpu) | Atlantis CPUs per task | `number` | `256` | no |
+| <a name="input_container_memory"></a> [container\_memory](#input\_container\_memory) | Atlantis memory per task | `number` | `512` | no |
+| <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
+| <a name="input_default_backend_image"></a> [default\_backend\_image](#input\_default\_backend\_image) | ECS default (bootstrap) image | `string` | `"cloudposse/default-backend:0.1.2"` | no |
+| <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
+| <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | Atlantis desired number of tasks | `number` | `1` | no |
+| <a name="input_ecs_alarms_cpu_utilization_high_alarm_actions"></a> [ecs\_alarms\_cpu\_utilization\_high\_alarm\_actions](#input\_ecs\_alarms\_cpu\_utilization\_high\_alarm\_actions) | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High Alarm action | `list(string)` | `[]` | no |
+| <a name="input_ecs_alarms_cpu_utilization_high_ok_actions"></a> [ecs\_alarms\_cpu\_utilization\_high\_ok\_actions](#input\_ecs\_alarms\_cpu\_utilization\_high\_ok\_actions) | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization High OK action | `list(string)` | `[]` | no |
+| <a name="input_ecs_alarms_cpu_utilization_low_alarm_actions"></a> [ecs\_alarms\_cpu\_utilization\_low\_alarm\_actions](#input\_ecs\_alarms\_cpu\_utilization\_low\_alarm\_actions) | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization Low Alarm action | `list(string)` | `[]` | no |
+| <a name="input_ecs_alarms_cpu_utilization_low_ok_actions"></a> [ecs\_alarms\_cpu\_utilization\_low\_ok\_actions](#input\_ecs\_alarms\_cpu\_utilization\_low\_ok\_actions) | A list of ARNs (i.e. SNS Topic ARN) to notify on CPU Utilization Low OK action | `list(string)` | `[]` | no |
+| <a name="input_ecs_alarms_enabled"></a> [ecs\_alarms\_enabled](#input\_ecs\_alarms\_enabled) | A boolean to enable/disable CloudWatch Alarms for ECS Service metrics | `bool` | `false` | no |
+| <a name="input_ecs_alarms_memory_utilization_high_alarm_actions"></a> [ecs\_alarms\_memory\_utilization\_high\_alarm\_actions](#input\_ecs\_alarms\_memory\_utilization\_high\_alarm\_actions) | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization High Alarm action | `list(string)` | `[]` | no |
+| <a name="input_ecs_alarms_memory_utilization_high_ok_actions"></a> [ecs\_alarms\_memory\_utilization\_high\_ok\_actions](#input\_ecs\_alarms\_memory\_utilization\_high\_ok\_actions) | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization High OK action | `list(string)` | `[]` | no |
+| <a name="input_ecs_alarms_memory_utilization_low_alarm_actions"></a> [ecs\_alarms\_memory\_utilization\_low\_alarm\_actions](#input\_ecs\_alarms\_memory\_utilization\_low\_alarm\_actions) | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low Alarm action | `list(string)` | `[]` | no |
+| <a name="input_ecs_alarms_memory_utilization_low_ok_actions"></a> [ecs\_alarms\_memory\_utilization\_low\_ok\_actions](#input\_ecs\_alarms\_memory\_utilization\_low\_ok\_actions) | A list of ARNs (i.e. SNS Topic ARN) to notify on Memory Utilization Low OK action | `list(string)` | `[]` | no |
+| <a name="input_ecs_cluster_arn"></a> [ecs\_cluster\_arn](#input\_ecs\_cluster\_arn) | ARN of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
+| <a name="input_ecs_cluster_name"></a> [ecs\_cluster\_name](#input\_ecs\_cluster\_name) | Name of the ECS cluster to deploy Atlantis | `string` | n/a | yes |
+| <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
+| <a name="input_github_oauth_token"></a> [github\_oauth\_token](#input\_github\_oauth\_token) | GitHub OAuth token. If not provided the token is looked up from SSM | `string` | `""` | no |
+| <a name="input_github_oauth_token_ssm_name"></a> [github\_oauth\_token\_ssm\_name](#input\_github\_oauth\_token\_ssm\_name) | SSM param name to lookup `github_oauth_token` if not provided | `string` | `""` | no |
+| <a name="input_github_webhooks_token"></a> [github\_webhooks\_token](#input\_github\_webhooks\_token) | GitHub OAuth Token with permissions to create webhooks. If not provided the token is looked up from SSM | `string` | `""` | no |
+| <a name="input_github_webhooks_token_ssm_name"></a> [github\_webhooks\_token\_ssm\_name](#input\_github\_webhooks\_token\_ssm\_name) | SSM param name to lookup `github_webhooks_token` if not provided | `string` | `""` | no |
+| <a name="input_healthcheck_path"></a> [healthcheck\_path](#input\_healthcheck\_path) | Healthcheck path | `string` | `"/healthz"` | no |
+| <a name="input_hostname"></a> [hostname](#input\_hostname) | Atlantis URL | `string` | `""` | no |
+| <a name="input_id_length_limit"></a> [id\_length\_limit](#input\_id\_length\_limit) | Limit `id` to this many characters (minimum 6).<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
+| <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | KMS key ID used to encrypt SSM SecureString parameters | `string` | `""` | no |
+| <a name="input_label_key_case"></a> [label\_key\_case](#input\_label\_key\_case) | The letter case of label keys (`tag` names) (i.e. `name`, `namespace`, `environment`, `stage`, `attributes`) to use in `tags`.<br>Possible values: `lower`, `title`, `upper`.<br>Default value: `title`. | `string` | `null` | no |
+| <a name="input_label_order"></a> [label\_order](#input\_label\_order) | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
+| <a name="input_label_value_case"></a> [label\_value\_case](#input\_label\_value\_case) | The letter case of output label values (also used in `tags` and `id`).<br>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br>Default value: `lower`. | `string` | `null` | no |
+| <a name="input_launch_type"></a> [launch\_type](#input\_launch\_type) | The ECS launch type (valid options: FARGATE or EC2) | `string` | `"FARGATE"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
+| <a name="input_overwrite_ssm_parameter"></a> [overwrite\_ssm\_parameter](#input\_overwrite\_ssm\_parameter) | Whether to overwrite an existing SSM parameter | `bool` | `true` | no |
+| <a name="input_parent_zone_id"></a> [parent\_zone\_id](#input\_parent\_zone\_id) | The zone ID where the DNS record for the `short_name` will be written | `string` | `""` | no |
+| <a name="input_policy_arn"></a> [policy\_arn](#input\_policy\_arn) | Permission to grant to atlantis server | `string` | `"arn:aws:iam::aws:policy/AdministratorAccess"` | no |
+| <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | The private subnet IDs | `list(string)` | `[]` | no |
+| <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
+| <a name="input_region"></a> [region](#input\_region) | AWS Region for S3 bucket | `string` | n/a | yes |
+| <a name="input_repo_name"></a> [repo\_name](#input\_repo\_name) | GitHub repository name of the atlantis to be built and deployed to ECS. | `string` | n/a | yes |
+| <a name="input_repo_owner"></a> [repo\_owner](#input\_repo\_owner) | GitHub organization containing the Atlantis repository | `string` | n/a | yes |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Additional Security Group IDs to allow into ECS Service. | `list(string)` | `[]` | no |
+| <a name="input_short_name"></a> [short\_name](#input\_short\_name) | Alantis short DNS name (e.g. `atlantis`) | `string` | `"atlantis"` | no |
+| <a name="input_ssh_private_key_name"></a> [ssh\_private\_key\_name](#input\_ssh\_private\_key\_name) | Atlantis SSH private key name | `string` | `"atlantis_ssh_private_key"` | no |
+| <a name="input_ssh_public_key_name"></a> [ssh\_public\_key\_name](#input\_ssh\_public\_key\_name) | Atlantis SSH public key name | `string` | `"atlantis_ssh_public_key"` | no |
+| <a name="input_stage"></a> [stage](#input\_stage) | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
+| <a name="input_use_alb_security_group"></a> [use\_alb\_security\_group](#input\_use\_alb\_security\_group) | A flag to enable/disable adding the ingress rule to the ALB security group | `bool` | `true` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID for the ECS Cluster | `string` | n/a | yes |
+| <a name="input_webhook_enabled"></a> [webhook\_enabled](#input\_webhook\_enabled) | Set to false to prevent the module from creating any webhook resources | `bool` | `true` | no |
+| <a name="input_webhook_events"></a> [webhook\_events](#input\_webhook\_events) | A list of events which should trigger the webhook. | `list(string)` | <pre>[<br>  "issue_comment",<br>  "pull_request",<br>  "pull_request_review",<br>  "pull_request_review_comment",<br>  "push"<br>]</pre> | no |
+| <a name="input_webhook_secret_length"></a> [webhook\_secret\_length](#input\_webhook\_secret\_length) | GitHub webhook secret length | `number` | `32` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| alb\_ingress\_target\_group\_arn | ALB Target Group ARN |
-| alb\_ingress\_target\_group\_arn\_suffix | ALB Target Group ARN suffix |
-| alb\_ingress\_target\_group\_name | ALB Target Group name |
-| atlantis\_ssh\_public\_key | Atlantis SSH Public Key |
-| atlantis\_url | The URL endpoint for the atlantis server |
-| atlantis\_webhook\_url | atlantis webhook URL |
-| codebuild\_badge\_url | The URL of the build badge when badge\_enabled is enabled |
-| codebuild\_cache\_bucket\_arn | CodeBuild cache S3 bucket ARN |
-| codebuild\_cache\_bucket\_name | CodeBuild cache S3 bucket name |
-| codebuild\_project\_id | CodeBuild project ID |
-| codebuild\_project\_name | CodeBuild project name |
-| codebuild\_role\_arn | CodeBuild IAM Role ARN |
-| codebuild\_role\_id | CodeBuild IAM Role ID |
-| codepipeline\_arn | CodePipeline ARN |
-| codepipeline\_id | CodePipeline ID |
-| codepipeline\_webhook\_id | The CodePipeline webhook's ID |
-| codepipeline\_webhook\_url | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target |
-| container\_definition\_json | JSON encoded list of container definitions for use with other terraform resources such as aws\_ecs\_task\_definition |
-| container\_definition\_json\_map | JSON encoded container definitions for use with other terraform resources such as aws\_ecs\_task\_definition |
-| ecr\_registry\_id | Registry ID |
-| ecr\_repository\_name | Repository name |
-| ecr\_repository\_url | Repository URL |
-| ecs\_alarms\_cpu\_utilization\_high\_cloudwatch\_metric\_alarm\_arn | ECS CPU utilization high CloudWatch metric alarm ARN |
-| ecs\_alarms\_cpu\_utilization\_high\_cloudwatch\_metric\_alarm\_id | ECS CPU utilization high CloudWatch metric alarm ID |
-| ecs\_alarms\_cpu\_utilization\_low\_cloudwatch\_metric\_alarm\_arn | ECS CPU utilization low CloudWatch metric alarm ARN |
-| ecs\_alarms\_cpu\_utilization\_low\_cloudwatch\_metric\_alarm\_id | ECS CPU utilization low CloudWatch metric alarm ID |
-| ecs\_alarms\_memory\_utilization\_high\_cloudwatch\_metric\_alarm\_arn | ECS Memory utilization high CloudWatch metric alarm ARN |
-| ecs\_alarms\_memory\_utilization\_high\_cloudwatch\_metric\_alarm\_id | ECS Memory utilization high CloudWatch metric alarm ID |
-| ecs\_alarms\_memory\_utilization\_low\_cloudwatch\_metric\_alarm\_arn | ECS Memory utilization low CloudWatch metric alarm ARN |
-| ecs\_alarms\_memory\_utilization\_low\_cloudwatch\_metric\_alarm\_id | ECS Memory utilization low CloudWatch metric alarm ID |
-| ecs\_cloudwatch\_autoscaling\_scale\_down\_policy\_arn | ARN of the scale down policy |
-| ecs\_cloudwatch\_autoscaling\_scale\_up\_policy\_arn | ARN of the scale up policy |
-| ecs\_exec\_role\_policy\_id | The ECS service role policy ID, in the form of `role_name:role_policy_name` |
-| ecs\_exec\_role\_policy\_name | ECS service role name |
-| ecs\_service\_name | ECS Service name |
-| ecs\_service\_role\_arn | ECS Service role ARN |
-| ecs\_service\_security\_group\_id | Security Group ID of the ECS task |
-| ecs\_task\_definition\_family | ECS task definition family |
-| ecs\_task\_definition\_revision | ECS task definition revision |
-| ecs\_task\_exec\_role\_arn | ECS Task exec role ARN |
-| ecs\_task\_exec\_role\_name | ECS Task role name |
-| ecs\_task\_role\_arn | ECS Task role ARN |
-| ecs\_task\_role\_id | ECS Task role id |
-| ecs\_task\_role\_name | ECS Task role name |
-| httpcode\_elb\_5xx\_count\_cloudwatch\_metric\_alarm\_arn | ALB 5xx count CloudWatch metric alarm ARN |
-| httpcode\_elb\_5xx\_count\_cloudwatch\_metric\_alarm\_id | ALB 5xx count CloudWatch metric alarm ID |
-| httpcode\_target\_3xx\_count\_cloudwatch\_metric\_alarm\_arn | ALB Target Group 3xx count CloudWatch metric alarm ARN |
-| httpcode\_target\_3xx\_count\_cloudwatch\_metric\_alarm\_id | ALB Target Group 3xx count CloudWatch metric alarm ID |
-| httpcode\_target\_4xx\_count\_cloudwatch\_metric\_alarm\_arn | ALB Target Group 4xx count CloudWatch metric alarm ARN |
-| httpcode\_target\_4xx\_count\_cloudwatch\_metric\_alarm\_id | ALB Target Group 4xx count CloudWatch metric alarm ID |
-| httpcode\_target\_5xx\_count\_cloudwatch\_metric\_alarm\_arn | ALB Target Group 5xx count CloudWatch metric alarm ARN |
-| httpcode\_target\_5xx\_count\_cloudwatch\_metric\_alarm\_id | ALB Target Group 5xx count CloudWatch metric alarm ID |
-| target\_response\_time\_average\_cloudwatch\_metric\_alarm\_arn | ALB Target Group response time average CloudWatch metric alarm ARN |
-| target\_response\_time\_average\_cloudwatch\_metric\_alarm\_id | ALB Target Group response time average CloudWatch metric alarm ID |
+| <a name="output_alb_ingress_target_group_arn"></a> [alb\_ingress\_target\_group\_arn](#output\_alb\_ingress\_target\_group\_arn) | ALB Target Group ARN |
+| <a name="output_alb_ingress_target_group_arn_suffix"></a> [alb\_ingress\_target\_group\_arn\_suffix](#output\_alb\_ingress\_target\_group\_arn\_suffix) | ALB Target Group ARN suffix |
+| <a name="output_alb_ingress_target_group_name"></a> [alb\_ingress\_target\_group\_name](#output\_alb\_ingress\_target\_group\_name) | ALB Target Group name |
+| <a name="output_atlantis_ssh_public_key"></a> [atlantis\_ssh\_public\_key](#output\_atlantis\_ssh\_public\_key) | Atlantis SSH Public Key |
+| <a name="output_atlantis_url"></a> [atlantis\_url](#output\_atlantis\_url) | The URL endpoint for the atlantis server |
+| <a name="output_atlantis_webhook_url"></a> [atlantis\_webhook\_url](#output\_atlantis\_webhook\_url) | atlantis webhook URL |
+| <a name="output_codebuild_badge_url"></a> [codebuild\_badge\_url](#output\_codebuild\_badge\_url) | The URL of the build badge when badge\_enabled is enabled |
+| <a name="output_codebuild_cache_bucket_arn"></a> [codebuild\_cache\_bucket\_arn](#output\_codebuild\_cache\_bucket\_arn) | CodeBuild cache S3 bucket ARN |
+| <a name="output_codebuild_cache_bucket_name"></a> [codebuild\_cache\_bucket\_name](#output\_codebuild\_cache\_bucket\_name) | CodeBuild cache S3 bucket name |
+| <a name="output_codebuild_project_id"></a> [codebuild\_project\_id](#output\_codebuild\_project\_id) | CodeBuild project ID |
+| <a name="output_codebuild_project_name"></a> [codebuild\_project\_name](#output\_codebuild\_project\_name) | CodeBuild project name |
+| <a name="output_codebuild_role_arn"></a> [codebuild\_role\_arn](#output\_codebuild\_role\_arn) | CodeBuild IAM Role ARN |
+| <a name="output_codebuild_role_id"></a> [codebuild\_role\_id](#output\_codebuild\_role\_id) | CodeBuild IAM Role ID |
+| <a name="output_codepipeline_arn"></a> [codepipeline\_arn](#output\_codepipeline\_arn) | CodePipeline ARN |
+| <a name="output_codepipeline_id"></a> [codepipeline\_id](#output\_codepipeline\_id) | CodePipeline ID |
+| <a name="output_codepipeline_webhook_id"></a> [codepipeline\_webhook\_id](#output\_codepipeline\_webhook\_id) | The CodePipeline webhook's ID |
+| <a name="output_codepipeline_webhook_url"></a> [codepipeline\_webhook\_url](#output\_codepipeline\_webhook\_url) | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target |
+| <a name="output_container_definition_json"></a> [container\_definition\_json](#output\_container\_definition\_json) | JSON encoded list of container definitions for use with other terraform resources such as aws\_ecs\_task\_definition |
+| <a name="output_container_definition_json_map"></a> [container\_definition\_json\_map](#output\_container\_definition\_json\_map) | JSON encoded container definitions for use with other terraform resources such as aws\_ecs\_task\_definition |
+| <a name="output_ecr_registry_id"></a> [ecr\_registry\_id](#output\_ecr\_registry\_id) | Registry ID |
+| <a name="output_ecr_repository_name"></a> [ecr\_repository\_name](#output\_ecr\_repository\_name) | Repository name |
+| <a name="output_ecr_repository_url"></a> [ecr\_repository\_url](#output\_ecr\_repository\_url) | Repository URL |
+| <a name="output_ecs_alarms_cpu_utilization_high_cloudwatch_metric_alarm_arn"></a> [ecs\_alarms\_cpu\_utilization\_high\_cloudwatch\_metric\_alarm\_arn](#output\_ecs\_alarms\_cpu\_utilization\_high\_cloudwatch\_metric\_alarm\_arn) | ECS CPU utilization high CloudWatch metric alarm ARN |
+| <a name="output_ecs_alarms_cpu_utilization_high_cloudwatch_metric_alarm_id"></a> [ecs\_alarms\_cpu\_utilization\_high\_cloudwatch\_metric\_alarm\_id](#output\_ecs\_alarms\_cpu\_utilization\_high\_cloudwatch\_metric\_alarm\_id) | ECS CPU utilization high CloudWatch metric alarm ID |
+| <a name="output_ecs_alarms_cpu_utilization_low_cloudwatch_metric_alarm_arn"></a> [ecs\_alarms\_cpu\_utilization\_low\_cloudwatch\_metric\_alarm\_arn](#output\_ecs\_alarms\_cpu\_utilization\_low\_cloudwatch\_metric\_alarm\_arn) | ECS CPU utilization low CloudWatch metric alarm ARN |
+| <a name="output_ecs_alarms_cpu_utilization_low_cloudwatch_metric_alarm_id"></a> [ecs\_alarms\_cpu\_utilization\_low\_cloudwatch\_metric\_alarm\_id](#output\_ecs\_alarms\_cpu\_utilization\_low\_cloudwatch\_metric\_alarm\_id) | ECS CPU utilization low CloudWatch metric alarm ID |
+| <a name="output_ecs_alarms_memory_utilization_high_cloudwatch_metric_alarm_arn"></a> [ecs\_alarms\_memory\_utilization\_high\_cloudwatch\_metric\_alarm\_arn](#output\_ecs\_alarms\_memory\_utilization\_high\_cloudwatch\_metric\_alarm\_arn) | ECS Memory utilization high CloudWatch metric alarm ARN |
+| <a name="output_ecs_alarms_memory_utilization_high_cloudwatch_metric_alarm_id"></a> [ecs\_alarms\_memory\_utilization\_high\_cloudwatch\_metric\_alarm\_id](#output\_ecs\_alarms\_memory\_utilization\_high\_cloudwatch\_metric\_alarm\_id) | ECS Memory utilization high CloudWatch metric alarm ID |
+| <a name="output_ecs_alarms_memory_utilization_low_cloudwatch_metric_alarm_arn"></a> [ecs\_alarms\_memory\_utilization\_low\_cloudwatch\_metric\_alarm\_arn](#output\_ecs\_alarms\_memory\_utilization\_low\_cloudwatch\_metric\_alarm\_arn) | ECS Memory utilization low CloudWatch metric alarm ARN |
+| <a name="output_ecs_alarms_memory_utilization_low_cloudwatch_metric_alarm_id"></a> [ecs\_alarms\_memory\_utilization\_low\_cloudwatch\_metric\_alarm\_id](#output\_ecs\_alarms\_memory\_utilization\_low\_cloudwatch\_metric\_alarm\_id) | ECS Memory utilization low CloudWatch metric alarm ID |
+| <a name="output_ecs_cloudwatch_autoscaling_scale_down_policy_arn"></a> [ecs\_cloudwatch\_autoscaling\_scale\_down\_policy\_arn](#output\_ecs\_cloudwatch\_autoscaling\_scale\_down\_policy\_arn) | ARN of the scale down policy |
+| <a name="output_ecs_cloudwatch_autoscaling_scale_up_policy_arn"></a> [ecs\_cloudwatch\_autoscaling\_scale\_up\_policy\_arn](#output\_ecs\_cloudwatch\_autoscaling\_scale\_up\_policy\_arn) | ARN of the scale up policy |
+| <a name="output_ecs_exec_role_policy_id"></a> [ecs\_exec\_role\_policy\_id](#output\_ecs\_exec\_role\_policy\_id) | The ECS service role policy ID, in the form of `role_name:role_policy_name` |
+| <a name="output_ecs_exec_role_policy_name"></a> [ecs\_exec\_role\_policy\_name](#output\_ecs\_exec\_role\_policy\_name) | ECS service role name |
+| <a name="output_ecs_service_name"></a> [ecs\_service\_name](#output\_ecs\_service\_name) | ECS Service name |
+| <a name="output_ecs_service_role_arn"></a> [ecs\_service\_role\_arn](#output\_ecs\_service\_role\_arn) | ECS Service role ARN |
+| <a name="output_ecs_service_security_group_id"></a> [ecs\_service\_security\_group\_id](#output\_ecs\_service\_security\_group\_id) | Security Group ID of the ECS task |
+| <a name="output_ecs_task_definition_family"></a> [ecs\_task\_definition\_family](#output\_ecs\_task\_definition\_family) | ECS task definition family |
+| <a name="output_ecs_task_definition_revision"></a> [ecs\_task\_definition\_revision](#output\_ecs\_task\_definition\_revision) | ECS task definition revision |
+| <a name="output_ecs_task_exec_role_arn"></a> [ecs\_task\_exec\_role\_arn](#output\_ecs\_task\_exec\_role\_arn) | ECS Task exec role ARN |
+| <a name="output_ecs_task_exec_role_name"></a> [ecs\_task\_exec\_role\_name](#output\_ecs\_task\_exec\_role\_name) | ECS Task role name |
+| <a name="output_ecs_task_role_arn"></a> [ecs\_task\_role\_arn](#output\_ecs\_task\_role\_arn) | ECS Task role ARN |
+| <a name="output_ecs_task_role_id"></a> [ecs\_task\_role\_id](#output\_ecs\_task\_role\_id) | ECS Task role id |
+| <a name="output_ecs_task_role_name"></a> [ecs\_task\_role\_name](#output\_ecs\_task\_role\_name) | ECS Task role name |
+| <a name="output_httpcode_elb_5xx_count_cloudwatch_metric_alarm_arn"></a> [httpcode\_elb\_5xx\_count\_cloudwatch\_metric\_alarm\_arn](#output\_httpcode\_elb\_5xx\_count\_cloudwatch\_metric\_alarm\_arn) | ALB 5xx count CloudWatch metric alarm ARN |
+| <a name="output_httpcode_elb_5xx_count_cloudwatch_metric_alarm_id"></a> [httpcode\_elb\_5xx\_count\_cloudwatch\_metric\_alarm\_id](#output\_httpcode\_elb\_5xx\_count\_cloudwatch\_metric\_alarm\_id) | ALB 5xx count CloudWatch metric alarm ID |
+| <a name="output_httpcode_target_3xx_count_cloudwatch_metric_alarm_arn"></a> [httpcode\_target\_3xx\_count\_cloudwatch\_metric\_alarm\_arn](#output\_httpcode\_target\_3xx\_count\_cloudwatch\_metric\_alarm\_arn) | ALB Target Group 3xx count CloudWatch metric alarm ARN |
+| <a name="output_httpcode_target_3xx_count_cloudwatch_metric_alarm_id"></a> [httpcode\_target\_3xx\_count\_cloudwatch\_metric\_alarm\_id](#output\_httpcode\_target\_3xx\_count\_cloudwatch\_metric\_alarm\_id) | ALB Target Group 3xx count CloudWatch metric alarm ID |
+| <a name="output_httpcode_target_4xx_count_cloudwatch_metric_alarm_arn"></a> [httpcode\_target\_4xx\_count\_cloudwatch\_metric\_alarm\_arn](#output\_httpcode\_target\_4xx\_count\_cloudwatch\_metric\_alarm\_arn) | ALB Target Group 4xx count CloudWatch metric alarm ARN |
+| <a name="output_httpcode_target_4xx_count_cloudwatch_metric_alarm_id"></a> [httpcode\_target\_4xx\_count\_cloudwatch\_metric\_alarm\_id](#output\_httpcode\_target\_4xx\_count\_cloudwatch\_metric\_alarm\_id) | ALB Target Group 4xx count CloudWatch metric alarm ID |
+| <a name="output_httpcode_target_5xx_count_cloudwatch_metric_alarm_arn"></a> [httpcode\_target\_5xx\_count\_cloudwatch\_metric\_alarm\_arn](#output\_httpcode\_target\_5xx\_count\_cloudwatch\_metric\_alarm\_arn) | ALB Target Group 5xx count CloudWatch metric alarm ARN |
+| <a name="output_httpcode_target_5xx_count_cloudwatch_metric_alarm_id"></a> [httpcode\_target\_5xx\_count\_cloudwatch\_metric\_alarm\_id](#output\_httpcode\_target\_5xx\_count\_cloudwatch\_metric\_alarm\_id) | ALB Target Group 5xx count CloudWatch metric alarm ID |
+| <a name="output_target_response_time_average_cloudwatch_metric_alarm_arn"></a> [target\_response\_time\_average\_cloudwatch\_metric\_alarm\_arn](#output\_target\_response\_time\_average\_cloudwatch\_metric\_alarm\_arn) | ALB Target Group response time average CloudWatch metric alarm ARN |
+| <a name="output_target_response_time_average_cloudwatch_metric_alarm_id"></a> [target\_response\_time\_average\_cloudwatch\_metric\_alarm\_id](#output\_target\_response\_time\_average\_cloudwatch\_metric\_alarm\_id) | ALB Target Group response time average CloudWatch metric alarm ID |
 <!-- markdownlint-restore -->
