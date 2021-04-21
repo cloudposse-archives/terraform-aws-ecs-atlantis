@@ -258,7 +258,7 @@ variable "alb_arn_suffix" {
 }
 
 variable "use_alb_security_group" {
-  type        = boolean
+  type        = bool
   description = "A flag to enable/disable adding the ingress rule to the ALB security group"
   default     = true
 }
