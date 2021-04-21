@@ -586,7 +586,7 @@ Available targets:
 | <a name="input_ssh_public_key_name"></a> [ssh\_public\_key\_name](#input\_ssh\_public\_key\_name) | Atlantis SSH public key name | `string` | `"atlantis_ssh_public_key"` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
-| <a name="input_use_alb_security_group"></a> [use\_alb\_security\_group](#input\_use\_alb\_security\_group) | A flag to enable/disable adding the ingress rule to the ALB security group | `boolean` | `true` | no |
+| <a name="input_use_alb_security_group"></a> [use\_alb\_security\_group](#input\_use\_alb\_security\_group) | A flag to enable/disable adding the ingress rule to the ALB security group | `bool` | `true` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID for the ECS Cluster | `string` | n/a | yes |
 | <a name="input_webhook_enabled"></a> [webhook\_enabled](#input\_webhook\_enabled) | Set to false to prevent the module from creating any webhook resources | `bool` | `true` | no |
 | <a name="input_webhook_events"></a> [webhook\_events](#input\_webhook\_events) | A list of events which should trigger the webhook. | `list(string)` | <pre>[<br>  "issue_comment",<br>  "pull_request",<br>  "pull_request_review",<br>  "pull_request_review_comment",<br>  "push"<br>]</pre> | no |
