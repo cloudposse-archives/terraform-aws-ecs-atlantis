@@ -257,6 +257,12 @@ variable "alb_arn_suffix" {
   description = "The ARN suffix of the ALB"
 }
 
+variable "use_alb_security_group" {
+  type        = boolean
+  description = "A flag to enable/disable adding the ingress rule to the ALB security group"
+  default     = true
+}
+
 variable "alb_security_group" {
   type        = string
   description = "Security group of the ALB"

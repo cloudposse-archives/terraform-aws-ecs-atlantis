@@ -138,6 +138,7 @@ module "ecs_web_app" {
   alb_target_group_alarms_period                  = 300
   alb_target_group_alarms_evaluation_periods      = 1
   alb_arn_suffix                                  = var.alb_arn_suffix
+  use_alb_security_group                          = var.use_alb_security_group
   alb_security_group                              = var.alb_security_group
 
   alb_target_group_alarms_alarm_actions             = var.alb_target_group_alarms_alarm_actions
