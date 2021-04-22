@@ -186,6 +186,12 @@ variable "autoscaling_max_capacity" {
   default     = 1
 }
 
+variable "container_repo_credentials" {
+  type        = map(string)
+  default     = null
+  description = "Container repository credentials; required when using a private repo. This map currently supports a single key; \"credentialsParameter\", which should be the ARN of a Secrets Manager's secret holding the credentials"
+}
+
 variable "container_cpu" {
   type        = number
   description = "Atlantis CPUs per task"
