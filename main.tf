@@ -66,7 +66,7 @@ module "github_webhooks" {
 
 module "ecs_web_app" {
   source  = "cloudposse/ecs-web-app/aws"
-  version = "0.54.0"
+  version = "0.60.0"
 
   region      = var.region
   vpc_id      = var.vpc_id
@@ -82,6 +82,8 @@ module "ecs_web_app" {
   container_image  = var.default_backend_image
   container_cpu    = var.container_cpu
   container_memory = var.container_memory
+
+  container_repo_credentials = var.container_repo_credentials
 
   container_port = var.atlantis_port
 

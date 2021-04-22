@@ -439,7 +439,7 @@ Available targets:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ecs_web_app"></a> [ecs\_web\_app](#module\_ecs\_web\_app) | cloudposse/ecs-web-app/aws | 0.54.0 |
+| <a name="module_ecs_web_app"></a> [ecs\_web\_app](#module\_ecs\_web\_app) | cloudposse/ecs-web-app/aws | 0.60.0 |
 | <a name="module_github_webhooks"></a> [github\_webhooks](#module\_github\_webhooks) | cloudposse/repository-webhooks/github | 0.12.0 |
 | <a name="module_ssh_key_pair"></a> [ssh\_key\_pair](#module\_ssh\_key\_pair) | cloudposse/ssm-tls-ssh-key-pair/aws | 0.10.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.24.1 |
@@ -541,6 +541,7 @@ Available targets:
 | <a name="input_codepipeline_s3_bucket_force_destroy"></a> [codepipeline\_s3\_bucket\_force\_destroy](#input\_codepipeline\_s3\_bucket\_force\_destroy) | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | `bool` | `false` | no |
 | <a name="input_container_cpu"></a> [container\_cpu](#input\_container\_cpu) | Atlantis CPUs per task | `number` | `256` | no |
 | <a name="input_container_memory"></a> [container\_memory](#input\_container\_memory) | Atlantis memory per task | `number` | `512` | no |
+| <a name="input_container_repo_credentials"></a> [container\_repo\_credentials](#input\_container\_repo\_credentials) | Container repository credentials; required when using a private repo. This map currently supports a single key; "credentialsParameter", which should be the ARN of a Secrets Manager's secret holding the credentials | `map(string)` | `null` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | <a name="input_default_backend_image"></a> [default\_backend\_image](#input\_default\_backend\_image) | ECS default (bootstrap) image | `string` | `"cloudposse/default-backend:0.1.2"` | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
