@@ -40,7 +40,7 @@ locals {
 #--------------------------------------------------------------
 module "ssh_key_pair" {
   source               = "cloudposse/ssm-tls-ssh-key-pair/aws"
-  version              = "0.10.0"
+  version              = "0.10.2"
   ssh_private_key_name = var.ssh_private_key_name
   ssh_public_key_name  = var.ssh_public_key_name
   ssm_path_prefix      = var.chamber_service
