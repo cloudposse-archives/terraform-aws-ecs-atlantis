@@ -18,7 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ecs_web_app"></a> [ecs\_web\_app](#module\_ecs\_web\_app) | cloudposse/ecs-web-app/aws | 0.60.0 |
+| <a name="module_ecs_web_app"></a> [ecs\_web\_app](#module\_ecs\_web\_app) | cloudposse/ecs-web-app/aws | 1.0.0 |
 | <a name="module_github_webhooks"></a> [github\_webhooks](#module\_github\_webhooks) | cloudposse/repository-webhooks/github | 0.12.0 |
 | <a name="module_ssh_key_pair"></a> [ssh\_key\_pair](#module\_ssh\_key\_pair) | cloudposse/ssm-tls-ssh-key-pair/aws | 0.10.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
