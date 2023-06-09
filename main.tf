@@ -22,17 +22,17 @@ locals {
   hostname                   = var.hostname != "" ? var.hostname : local.default_hostname
   atlantis_webhook_url       = format(var.atlantis_webhook_format, local.hostname)
   atlantis_url               = format(var.atlantis_url_format, local.hostname)
-  atlantis_gh_webhook_secret = var.atlantis_gh_webhook_secret != "" ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret.*.result)
-  default_hostname           = join("", aws_route53_record.default.*.fqdn)
+  atlantis_gh_webhook_secret = var.atlantis_gh_webhook_secret != "" ? var.atlantis_gh_webhook_secret : join("", random_string.atlantis_gh_webhook_secret[*].result)
+  default_hostname           = join("", aws_route53_record.default[*].fqdn)
   kms_key_id                 = var.kms_key_id != "" ? var.kms_key_id : format("alias/%s-%s-chamber", module.this.namespace, module.this.stage)
 }
 
 # GitHub tokens
 locals {
-  github_oauth_token          = var.github_oauth_token != "" ? var.github_oauth_token : join("", data.aws_ssm_parameter.atlantis_gh_token.*.value)
+  github_oauth_token          = var.github_oauth_token != "" ? var.github_oauth_token : join("", data.aws_ssm_parameter.atlantis_gh_token[*].value)
   github_oauth_token_ssm_name = var.github_oauth_token_ssm_name != "" ? var.github_oauth_token_ssm_name : format(var.chamber_format, var.chamber_service, "atlantis_gh_token")
 
-  github_webhooks_token          = var.github_webhooks_token != "" ? var.github_webhooks_token : join("", data.aws_ssm_parameter.github_webhooks_token.*.value)
+  github_webhooks_token          = var.github_webhooks_token != "" ? var.github_webhooks_token : join("", data.aws_ssm_parameter.github_webhooks_token[*].value)
   github_webhooks_token_ssm_name = var.github_webhooks_token_ssm_name != "" ? var.github_webhooks_token_ssm_name : format(var.chamber_format, var.chamber_service, "github_webhooks_token")
 }
 
@@ -239,7 +239,7 @@ resource "aws_ssm_parameter" "atlantis_gh_team_whitelist" {
 resource "aws_ssm_parameter" "atlantis_gh_webhook_secret" {
   count       = local.enabled ? 1 : 0
   description = "Atlantis GitHub webhook secret"
-  key_id      = join("", data.aws_kms_key.chamber_kms_key.*.id)
+  key_id      = join("", data.aws_kms_key.chamber_kms_key[*].id)
   name        = format(var.chamber_format, var.chamber_service, "atlantis_gh_webhook_secret")
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
@@ -300,7 +300,7 @@ resource "aws_ssm_parameter" "atlantis_wake_word" {
 resource "aws_ssm_parameter" "atlantis_gh_token" {
   count       = local.enabled && var.github_oauth_token != "" ? 1 : 0
   description = "Atlantis GitHub OAuth token"
-  key_id      = join("", data.aws_kms_key.chamber_kms_key.*.id)
+  key_id      = join("", data.aws_kms_key.chamber_kms_key[*].id)
   name        = local.github_oauth_token_ssm_name
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
@@ -311,7 +311,7 @@ resource "aws_ssm_parameter" "atlantis_gh_token" {
 resource "aws_ssm_parameter" "github_webhooks_token" {
   count       = local.enabled && var.github_webhooks_token != "" ? 1 : 0
   description = "GitHub OAuth token with permission to create webhooks"
-  key_id      = join("", data.aws_kms_key.chamber_kms_key.*.id)
+  key_id      = join("", data.aws_kms_key.chamber_kms_key[*].id)
   name        = local.github_webhooks_token_ssm_name
   overwrite   = var.overwrite_ssm_parameter
   type        = "SecureString"
@@ -370,7 +370,7 @@ resource "aws_iam_role_policy_attachment" "default" {
 }
 
 locals {
-  authentication_cognito_user_pool_arn = var.authentication_cognito_user_pool_arn != "" ? var.authentication_cognito_user_pool_arn : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_arn.*.value)
+  authentication_cognito_user_pool_arn = var.authentication_cognito_user_pool_arn != "" ? var.authentication_cognito_user_pool_arn : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_arn[*].value)
 
   authentication_cognito_user_pool_arn_ssm_name = var.authentication_cognito_user_pool_arn_ssm_name != "" ? var.authentication_cognito_user_pool_arn_ssm_name : format(
     var.chamber_format,
@@ -378,7 +378,7 @@ locals {
     "atlantis_cognito_user_pool_arn"
   )
 
-  authentication_cognito_user_pool_client_id = var.authentication_cognito_user_pool_client_id != "" ? var.authentication_cognito_user_pool_client_id : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_client_id.*.value)
+  authentication_cognito_user_pool_client_id = var.authentication_cognito_user_pool_client_id != "" ? var.authentication_cognito_user_pool_client_id : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_client_id[*].value)
 
   authentication_cognito_user_pool_client_id_ssm_name = var.authentication_cognito_user_pool_client_id_ssm_name != "" ? var.authentication_cognito_user_pool_client_id_ssm_name : format(
     var.chamber_format,
@@ -386,7 +386,7 @@ locals {
     "atlantis_cognito_user_pool_client_id"
   )
 
-  authentication_cognito_user_pool_domain = var.authentication_cognito_user_pool_domain != "" ? var.authentication_cognito_user_pool_domain : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_domain.*.value)
+  authentication_cognito_user_pool_domain = var.authentication_cognito_user_pool_domain != "" ? var.authentication_cognito_user_pool_domain : join("", data.aws_ssm_parameter.atlantis_cognito_user_pool_domain[*].value)
 
   authentication_cognito_user_pool_domain_ssm_name = var.authentication_cognito_user_pool_domain_ssm_name != "" ? var.authentication_cognito_user_pool_domain_ssm_name : format(
     var.chamber_format,
@@ -394,7 +394,7 @@ locals {
     "atlantis_cognito_user_pool_domain"
   )
 
-  authentication_oidc_client_id = var.authentication_oidc_client_id != "" ? var.authentication_oidc_client_id : join("", data.aws_ssm_parameter.atlantis_oidc_client_id.*.value)
+  authentication_oidc_client_id = var.authentication_oidc_client_id != "" ? var.authentication_oidc_client_id : join("", data.aws_ssm_parameter.atlantis_oidc_client_id[*].value)
 
   authentication_oidc_client_id_ssm_name = var.authentication_oidc_client_id_ssm_name != "" ? var.authentication_oidc_client_id_ssm_name : format(
     var.chamber_format,
@@ -402,7 +402,7 @@ locals {
     "atlantis_oidc_client_id"
   )
 
-  authentication_oidc_client_secret = var.authentication_oidc_client_secret != "" ? var.authentication_oidc_client_secret : join("", data.aws_ssm_parameter.atlantis_oidc_client_secret.*.value)
+  authentication_oidc_client_secret = var.authentication_oidc_client_secret != "" ? var.authentication_oidc_client_secret : join("", data.aws_ssm_parameter.atlantis_oidc_client_secret[*].value)
 
   authentication_oidc_client_secret_ssm_name = var.authentication_oidc_client_secret_ssm_name != "" ? var.authentication_oidc_client_secret_ssm_name : format(
     var.chamber_format,
